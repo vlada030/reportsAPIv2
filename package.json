@@ -1,0 +1,27 @@
+{
+  "name": "reportsapi",
+  "version": "1.0.0",
+  "description": "prodyct codes, test reports",
+  "main": "server.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=production node server.js",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vlada030/reportsAPI.git"
+  },
+  "author": "Vladimir Nikodijevic",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vlada030/reportsAPI/issues"
+  },
+  "homepage": "https://github.com/vlada030/reportsAPI#readme",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "cross-env": "^7.0.2",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.12"
+  }
+}
