@@ -1,6 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const colors = require('colors');
+const morgan = require('morgan');
 
 // import routa
 const products = require('./routes/products');
@@ -12,6 +13,11 @@ dotenv.config({
 
 // kreiranje aplikacije
 const app = express();
+
+// pozivanje morgan loggera
+if (process.env.NODE_ENV = 'development') {
+    app.use(morgan('dev'));
+}
 
 // postavljanje routa
 app.use('/api/v1/products', products);
