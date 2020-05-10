@@ -1,3 +1,6 @@
+const mongoose = require('mongoose');
+const Product = require('../models/Product');
+
 // @desc   Get all products
 // @route  GET /api/v1/products
 // @access Private
@@ -26,10 +29,33 @@ exports.getProduct = (req, res, next) => {
 // @route  POST /api/v1/products
 // @access Private
 
-exports.createProduct = (req, res, next) => {
+exports.createProduct = async (req, res, next) => {
+    // const modifiedProduct = {
+    //     sifra: req.body.sifra,
+    //     proizvod: req.body.proizvod,
+    //     napon: req.body.napon,
+    //     boja: req.body.boja,
+    //     propis: req.body.propis,
+    //     brojZica: req.body.brojZica,
+    //     // precnikZice: mongoose.types.Decimal128.fromString(req.body.precnikZice),
+    //     // otpor: mongoose.types.Decimal128.fromString(req.body.otpor),
+    //     // debIzolacije: mongoose.types.Decimal128.fromString(req.body.debIzolacije),
+    //     // debPlasta: mongoose.types.Decimal128.fromString(req.body.debPlasta),
+    //     // spPrecnik: mongoose.types.Decimal128.fromString(req.body.spPrecnik),
+    //     precnikZice: mongoose.types.Decimal128.fromString("0.12356"),
+    //     otpor: mongoose.types.Decimal128.fromString("2.25684"),
+    //     debIzolacije: mongoose.types.Decimal128.fromString("2.3698"),
+    //     debPlasta: mongoose.types.Decimal128.fromString("32.1584562"),
+    //     spPrecnik: mongoose.types.Decimal128.fromString("0.0036987"),
+    //     ispitniNapon: req.body.ispitniNapon
+    // };
+
+    // const product = await Product.create(modifiedProduct);
+    const product = await Product.create(req.body);
+
     res.status(201).json({
         success: true,
-        message: 'Kreiran proizvod'
+        data: product
     });
 };
 
