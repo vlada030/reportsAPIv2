@@ -72,13 +72,15 @@ const ProductSchema = new mongoose.Schema({
     },
 
     debPPS1: {
-        type: mongoose.Decimal128,
-        default: 0
+        type: String,
+        trim: true,
+        default: "/"
     },
 
     debPPS2: {
-        type: mongoose.Decimal128,
-        default: 0
+        type: String,
+        trim: true,
+        default: "/"
     },
 
     debPlasta: {

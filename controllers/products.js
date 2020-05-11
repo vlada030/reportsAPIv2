@@ -37,20 +37,21 @@ exports.createProduct = async (req, res, next) => {
     //     boja: req.body.boja,
     //     propis: req.body.propis,
     //     brojZica: req.body.brojZica,
-    //     // precnikZice: mongoose.types.Decimal128.fromString(req.body.precnikZice),
-    //     // otpor: mongoose.types.Decimal128.fromString(req.body.otpor),
-    //     // debIzolacije: mongoose.types.Decimal128.fromString(req.body.debIzolacije),
-    //     // debPlasta: mongoose.types.Decimal128.fromString(req.body.debPlasta),
-    //     // spPrecnik: mongoose.types.Decimal128.fromString(req.body.spPrecnik),
-    //     precnikZice: mongoose.types.Decimal128.fromString("0.12356"),
-    //     otpor: mongoose.types.Decimal128.fromString("2.25684"),
-    //     debIzolacije: mongoose.types.Decimal128.fromString("2.3698"),
-    //     debPlasta: mongoose.types.Decimal128.fromString("32.1584562"),
-    //     spPrecnik: mongoose.types.Decimal128.fromString("0.0036987"),
+    //     precnikZice: mongoose.Types.Decimal128.fromString(req.body.precnikZice),
+    //     otpor: mongoose.Types.Decimal128.fromString(req.body.otpor),
+    //     debIzolacije: mongoose.Types.Decimal128.fromString(req.body.debIzolacije),
+    //     debPlasta: mongoose.Types.Decimal128.fromString(req.body.debPlasta),
+    //     spPrecnik: mongoose.Types.Decimal128.fromString(req.body.spPrecnik),
     //     ispitniNapon: req.body.ispitniNapon
     // };
 
     // const product = await Product.create(modifiedProduct);
+    req.body.precnikZice = mongoose.Types.Decimal128.fromString(req.body.precnikZice);
+    req.body.otpor = mongoose.Types.Decimal128.fromString(req.body.otpor);
+    req.body.debIzolacije = mongoose.Types.Decimal128.fromString(req.body.debIzolacije);
+    req.body.debPlasta = mongoose.Types.Decimal128.fromString(req.body.debPlasta);
+    req.body.spPrecnik = mongoose.Types.Decimal128.fromString(req.body.spPrecnik);
+    
     const product = await Product.create(req.body);
 
     res.status(201).json({
