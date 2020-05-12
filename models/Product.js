@@ -51,21 +51,21 @@ const ProductSchema = new mongoose.Schema({
     },
 
     precnikZice: {
-        type: mongoose.Decimal128,
+        type: mongoose.Types.Decimal128,
         required: [true, 'Please add a diametar of component wires'],
         min: [0.2, 'Min diametar of component wire is 0.2'],
         max: [3.6, 'Max diametar of component wire is 3.6']
     },
 
     otpor: {
-        type: mongoose.Decimal128,
+        type: mongoose.Types.Decimal128,
         required: [true, 'Please add a resistance'],
         min: [0.1, 'Min resistance is 0.1'],
         max: [24, 'Max resistance is 24']
     },
 
     debIzolacije: {
-        type: mongoose.Decimal128,
+        type: mongoose.Types.Decimal128,
         required: [true, 'Please add a insulation thickness'],
         min: [0.4, 'Min insulation thickness is 0.4'],
         max: [9, 'Max insulation thickness is 9']
@@ -84,14 +84,14 @@ const ProductSchema = new mongoose.Schema({
     },
 
     debPlasta: {
-        type: mongoose.Decimal128,
+        type: mongoose.Types.Decimal128,
         required: [true, 'Please add a sheath thickness'],
         min: [0.4, 'Min sheath thickness is 0.4'],
         max: [4, 'Max sheath thickness is 4']
     },
 
     spPrecnik: {
-        type: mongoose.Decimal128,
+        type: mongoose.Types.Decimal128,
         required: [true, 'Please add a insulation thickness'],
         min: [2, 'Min insulation thickness is 2'],
         max: [70, 'Max insulation thickness is 70']
