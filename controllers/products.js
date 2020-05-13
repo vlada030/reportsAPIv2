@@ -9,14 +9,8 @@ exports.getProducts = async (req, res, next) => {
     try {
         const products = await Product.find();
 
-        const newProducts = products.map( product => {
-            product.precnikZice = mongoose.Types.Decimal128.toString(product.precnikZice);
-            product.otpor = product.otpor.toString();
-            product.debIzolacije = product.debIzolacije.toString();
-            product.debPlasta = product.debPlasta.toString();
-            product.spPrecnik = product.spPrecnik.toString();
-            return product;
-        });
+        // poziva fju za pretvaranje Decimal128 u String
+        const newProducts = decimal128ToStringOutput(products);
         
         res.status(200).json({
             success: true,
@@ -35,30 +29,31 @@ exports.getProducts = async (req, res, next) => {
 
 exports.getProduct = async (req, res, next) => {
     try {
-        const product = await Product.find({sifra: req.params.id}, (err, doc) => {
-            
-            //console.log(doc[0].precnikZice);
-            //return doc[0].precnikZice = mongoose.Types.Decimal128.toString(doc[0].precnikZice);
-            //return doc[0].precnikZice = parseFloat(doc[0].precnikZice);
-        });
+        const product = await Product.find({sifra: req.params.id});
+        //     {
+        //         $match: {sifra: 1111112}
+        //     },
+        //     {
+        //         $addFields : {
+        //             precnikZice: {"$toString" : "$precnikZice"}
+        //         }
+        //     }
+        // ]);
         
         // u slucaju da u ObjectId promenimo jedno slovo, a ukupan broj/format
         // id ostane isti zbacuje success: true, DATA: NULL
         // vazi i za ObjectId i za npr {sifra: 777}
-        if (!product) {
+        if (product.length !== 1 )  {
             return res.status(400).json({success: false});
         }
-        console.log(product[0].precnikZice);
-        product[0].precnikZice = mongoose.Types.Decimal128.toString(product[0].precnikZice);
-        console.log(product[0].precnikZice);
-        // product.otpor = product.otpor.toString();
-        // product.debIzolacije = product.debIzolacije.toString();
-        // product.debPlasta = product.debPlasta.toString();
-        // product.spPrecnik = product.spPrecnik.toString();
+        
+        
+        // poziva fju za pretvaranje Decimal128 u String
+        const newProduct = decimal128ToStringOutput(product);
 
         res.status(200).json({
             success: true,
-            data: product
+            data: newProduct
     });
     } catch (err) {
        console.log(err);
@@ -73,29 +68,7 @@ exports.getProduct = async (req, res, next) => {
 // @access Private
 
 exports.createProduct = async (req, res, next) => {
-    try {
-        // const modifiedProduct = {
-        //     sifra: req.body.sifra,
-        //     proizvod: req.body.proizvod,
-        //     napon: req.body.napon,
-        //     boja: req.body.boja,
-        //     propis: req.body.propis,
-        //     brojZica: req.body.brojZica,
-        //     precnikZice: mongoose.Types.Decimal128.fromString(req.body.precnikZice),
-        //     otpor: mongoose.Types.Decimal128.fromString(req.body.otpor),
-        //     debIzolacije: mongoose.Types.Decimal128.fromString(req.body.debIzolacije),
-        //     debPlasta: mongoose.Types.Decimal128.fromString(req.body.debPlasta),
-        //     spPrecnik: mongoose.Types.Decimal128.fromString(req.body.spPrecnik),
-        //     ispitniNapon: req.body.ispitniNapon
-        // };
-
-        // const product = await Product.create(modifiedProduct);
-        // req.body.precnikZice = mongoose.Types.Decimal128.fromString(req.body.precnikZice);
-        // req.body.otpor = mongoose.Types.Decimal128.fromString(req.body.otpor);
-        // req.body.debIzolacije = mongoose.Types.Decimal128.fromString(req.body.debIzolacije);
-        // req.body.debPlasta = mongoose.Types.Decimal128.fromString(req.body.debPlasta);
-        // req.body.spPrecnik = mongoose.Types.Decimal128.fromString(req.body.spPrecnik);
-        
+    try {        
         const product = await Product.create(req.body);
 
         res.status(201).json({
@@ -120,6 +93,7 @@ exports.updateProduct = async (req, res, next) => {
             new: true,
             runValidators: true
         });
+
         // u slucaju da u ObjectId promenimo jedno slovo, a ukupan broj/format
         // id ostane isti izbacuje success: true, DATA: NULL
         // vazi i za ObjectId i za npr {sifra: 777}
@@ -158,4 +132,31 @@ exports.deleteProduct = async (req, res, next) => {
         res.status(400).json({success: false});
     }
     
+};
+
+// helper fja za prebacivanje Decimal128 u String
+
+const decimal128ToStringOutput = (arrOfProducts) => {
+    return arrOfProducts.map( product => {
+        return {
+            _id: product._id,
+            sifra: product.sifra,
+            debPPS1: product.debPPS1,
+            debPPS2: product.debPPS2,
+            parcijalna: product.parcijalna,
+            proizvod: product.proizvod,
+            napon: product.napon,
+            boja: product.boja,
+            propis: product.propis,
+            brojZica: product.brojZica,
+            precnikZice: product.precnikZice.toString(),
+            otpor: product.otpor.toString(),
+            debIzolacije: product.debIzolacije.toString(),
+            debPlasta: product.debPlasta.toString(),
+            spPrecnik: product.spPrecnik.toString(),
+            ispitniNapon: product.ispitniNapon,
+            createdAt: product.createdAt
+        };
+        
+    });
 };
