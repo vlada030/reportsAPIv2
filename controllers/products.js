@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Product = require('../models/Product');
+const ErrorResponse = require('../utils/errorResponse');
 
 // @desc   Get all products
 // @route  GET /api/v1/products
@@ -41,10 +42,15 @@ exports.getProduct = async (req, res, next) => {
         // ]);
         
         // u slucaju da u ObjectId promenimo jedno slovo, a ukupan broj/format
-        // id ostane isti zbacuje success: true, DATA: NULL
+        // id ostane isti izbacuje success: true, DATA: NULL
         // vazi i za ObjectId i za npr {sifra: 777}
-        if (product.length !== 1 )  {
-            return res.status(400).json({success: false});
+        if (product.length !== 1) {
+            // return res.status(400).json({success: false});
+            
+            // throw new Error('Invalid id for sifra');
+            // return next(err);
+
+            return next(new ErrorResponse(`Product with id ${req.params.id} not found`, 404)); 
         }
         
         
@@ -56,8 +62,8 @@ exports.getProduct = async (req, res, next) => {
             data: newProduct
     });
     } catch (err) {
-       console.log(err);
-       res.status(400).json({success: false}); 
+    //    res.status(400).json({success: false});
+        next(new ErrorResponse(`Product with id ${req.params.id} not found`, 404)); 
     }
     
 };
@@ -98,7 +104,7 @@ exports.updateProduct = async (req, res, next) => {
         // id ostane isti izbacuje success: true, DATA: NULL
         // vazi i za ObjectId i za npr {sifra: 777}
         if (!product) {
-            return res.status(400).json({success: false, msg: "sifra 7 karaktera"});
+            return res.status(400).json({success: false});
         }
     
         res.status(200).json({

@@ -3,6 +3,8 @@ const dotenv = require('dotenv');
 const colors = require('colors');
 const morgan = require('morgan');
 
+//import custom error handlera
+const errorHandler = require('./middleware/errorHandler');
 // import MONGO konekcije 
 const connectDB = require('./config/db');
 // import routa
@@ -29,6 +31,8 @@ if (process.env.NODE_ENV = 'development') {
 
 // postavljanje routa
 app.use('/api/v1/products', products);
+// pozivanje custom errorHandlera koji se inicijalizira preko next iz controllera
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => console.log(`Server is running in ${process.env.NODE_ENV} mode on port ${PORT}`.brightYellow));
