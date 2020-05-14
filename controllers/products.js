@@ -19,7 +19,7 @@ exports.getProducts = async (req, res, next) => {
             data: newProducts
         }); 
     } catch (err) {
-        res.status(500).json({success: false});
+        next(err);
     }  
 };
 
@@ -31,15 +31,6 @@ exports.getProducts = async (req, res, next) => {
 exports.getProduct = async (req, res, next) => {
     try {
         const product = await Product.find({sifra: req.params.id});
-        //     {
-        //         $match: {sifra: 1111112}
-        //     },
-        //     {
-        //         $addFields : {
-        //             precnikZice: {"$toString" : "$precnikZice"}
-        //         }
-        //     }
-        // ]);
         
         // u slucaju da u ObjectId promenimo jedno slovo, a ukupan broj/format
         // id ostane isti izbacuje success: true, DATA: NULL
@@ -62,8 +53,9 @@ exports.getProduct = async (req, res, next) => {
             data: newProduct
     });
     } catch (err) {
-    //    res.status(400).json({success: false});
-        next(new ErrorResponse(`Product with id ${req.params.id} not found`, 404)); 
+    // res.status(400).json({success: false});
+    // next(new ErrorResponse(`Product with id ${req.params.id} not found`, 404));
+        next(err); 
     }
     
 };
@@ -82,8 +74,7 @@ exports.createProduct = async (req, res, next) => {
             data: product
         });
     } catch (err) {
-        console.log(err);
-        res.status(400).json({ success: false, error: `${err}`});
+        next(err);
     }
     
 };
@@ -104,7 +95,7 @@ exports.updateProduct = async (req, res, next) => {
         // id ostane isti izbacuje success: true, DATA: NULL
         // vazi i za ObjectId i za npr {sifra: 777}
         if (!product) {
-            return res.status(400).json({success: false});
+            return next(new ErrorResponse(`Product with id ${req.params.id} not found`, 404));
         }
     
         res.status(200).json({
@@ -112,8 +103,7 @@ exports.updateProduct = async (req, res, next) => {
             data: product
         }); 
     } catch (err) {
-        console.log(err);
-        res.status(400).json({success: false});
+        next(err);
     }
     
 };
@@ -127,7 +117,7 @@ exports.deleteProduct = async (req, res, next) => {
         const product = await Product.findOneAndDelete({sifra: req.params.id});
 
         if (!product) {
-            return res.status(400).json({success: false});
+            return next(new ErrorResponse(`Product with id ${req.params.id} not found`, 404));
         }
 
         res.status(200).json({
@@ -135,7 +125,7 @@ exports.deleteProduct = async (req, res, next) => {
             data: {}
         });
     } catch (err) {
-        res.status(400).json({success: false});
+        next(err);
     }
     
 };
@@ -161,7 +151,7 @@ const decimal128ToStringOutput = (arrOfProducts) => {
             debPlasta: product.debPlasta.toString(),
             spPrecnik: product.spPrecnik.toString(),
             ispitniNapon: product.ispitniNapon,
-            createdAt: product.createdAt
+            createdAt: product.createdAt.toUTCString()
         };
         
     });
