@@ -11,6 +11,7 @@ const errorHandler = (err, req, res, next) => {
     
     // kada iz controllera posaljemo ErrorResponse message mora ova linija da bi se videla
     error.message = err.message;
+
     // console.log(err.stack.red);
     // console.log(err.message.bgCyan);
     // console.log(err);
@@ -22,6 +23,18 @@ const errorHandler = (err, req, res, next) => {
         error = new ErrorResponse(message, 404);
     }
 
+    // Mongoose duplikat vrednosti koje su postavljene kao required: unique
+    if (err.code === 11000) {
+        const message = `Duplicate field value entered.`;
+        error = new ErrorResponse(message, 400);
+    }
+
+    // Mongoose greska prilikom validacije polja
+    // err vraca .errors koji sadrzi arr svih gresaka i odatle cupamo message itd
+    if (err.name === "ValidationError") {
+        const message = Object.values(err.errors).map(err => err.message);
+        error = new ErrorResponse(message, 400);
+    }
     res.status(error.statusCode || 500).json({
         success: false,
         error: error.message || "Server Error"

@@ -92,7 +92,7 @@ const ProductSchema = new mongoose.Schema({
 
     spPrecnik: {
         type: mongoose.Types.Decimal128,
-        required: [true, 'Please add a insulation thickness'],
+        required: [true, 'Please add a overall diametar'],
         min: [2, 'Min insulation thickness is 2'],
         max: [70, 'Max insulation thickness is 70']
     },
