@@ -60,14 +60,14 @@ const ProductSchema = new mongoose.Schema({
     otpor: {
         type: mongoose.Types.Decimal128,
         required: [true, 'Please add a resistance'],
-        min: [0.1, 'Min resistance is 0.1'],
+        min: [0.01, 'Min resistance is 0.1'],
         max: [24, 'Max resistance is 24']
     },
 
     debIzolacije: {
         type: mongoose.Types.Decimal128,
         required: [true, 'Please add a insulation thickness'],
-        min: [0.4, 'Min insulation thickness is 0.4'],
+        min: [0.3, 'Min insulation thickness is 0.4'],
         max: [9, 'Max insulation thickness is 9']
     },
 
@@ -86,7 +86,7 @@ const ProductSchema = new mongoose.Schema({
     debPlasta: {
         type: mongoose.Types.Decimal128,
         required: [true, 'Please add a sheath thickness'],
-        min: [0.4, 'Min sheath thickness is 0.4'],
+        min: [0.3, 'Min sheath thickness is 0.4'],
         max: [4, 'Max sheath thickness is 4']
     },
 

@@ -51,8 +51,7 @@ exports.getProduct = asyncHandler(async (req, res, next) => {
     if (product.length !== 1) {
         // return res.status(400).json({success: false});
         
-        // throw new Error('Invalid id for sifra');
-        // return next(err);
+        //throw new Error('Invalid id for sifra');
 
         return next(new ErrorResponse(`Product with id ${req.params.id} not found`, 404)); 
     }
