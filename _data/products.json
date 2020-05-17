@@ -1,7 +1,6 @@
 [
     {
-        "_id":
-            {"$oid":"5e66783b15dedb21a432a326"},
+        "_id":"5e66783b15dedb21a432a326",
         "sifra":1000606,
         "proizvod":"PP00  4x95+50",
         "napon":"0.6/1kV",
@@ -19,8 +18,7 @@
         "parcijalna":"/"
         },
     {
-        "_id":
-            {"$oid":"5e66783b15dedb21a432a327"},
+        "_id":"5e66783b15dedb21a432a327",
         "sifra":1000617,
         "proizvod":"PP00  1x240",
         "napon":"0.6/1kV",
@@ -38,8 +36,7 @@
         "parcijalna":"/"
         },
     {
-        "_id":
-            {"$oid":"5e66783b15dedb21a432a328"},
+        "_id":"5e66783b15dedb21a432a328",
         "sifra":1000628,
         "proizvod":"PP00  4x150",
         "napon":"0.6/1kV",
@@ -57,11 +54,10 @@
         "parcijalna":"/"
         },
     {
-        "_id":
-            {"$oid":"5e66783b15dedb21a432a32a"},
+        "_id":"5e66783b15dedb21a432a32a",
         "sifra":8000025,
         "proizvod":"PP/R 2x1.5",
-        "napon":"380 V",
+        "napon":"380V",
         "boja":"CRNA",
         "propis":"SRPSN.C3.230",
         "brojZica":1,
@@ -71,13 +67,12 @@
         "debPPS1":"/",
         "debPPS2":"/",
         "debPlasta":"0.6",
-        "spPrecnik":"/",
-        "ispitniNapon":"/",
+        "spPrecnik":"0",
+        "ispitniNapon":"2kV",
         "parcijalna":"/"
     },
     {
-        "_id":
-            {"$oid":"5e66783b15dedb21a432a32f"},
+        "_id":"5e66783b15dedb21a432a32f",
         "sifra":8000102,
         "proizvod":"PP-Y  3x2.5",
         "napon":"300/500V",
@@ -90,13 +85,12 @@
         "debPPS1":"/",
         "debPPS2":"/",
         "debPlasta":"1.00",
-        "spPrecnik":"",
-        "ispitniNapon":"2.5kV",
+        "spPrecnik":"9.25",
+        "ispitniNapon":"2kV",
         "parcijalna":"/"
     },
     {
-        "_id":
-            {"$oid":"5e66783b15dedb21a432a361"},
+        "_id":"5e66783b15dedb21a432a361",
         "sifra":8006856,
         "proizvod":"PP00-Y 24x1.5",
         "napon":"0.6/1kV",
@@ -114,8 +108,7 @@
         "parcijalna":"/"
     },
     {
-        "_id":
-        {"$oid":"5e66783b15dedb21a432a35"},
+        "_id":"5e66783b15dedb21a432a375",
         "sifra":8007197,
         "proizvod":"PP00-Y  4x35",
         "napon":"0.6/1kV",
@@ -133,8 +126,7 @@
         "parcijalna":"/"
     },
     {
-        "_id":
-            {"$oid":"5e66783b15dedb21a432a378"},
+        "_id":"5e66783b15dedb21a432a378",
         "sifra":8007230,
         "proizvod":"PP00-Y  4x95",
         "napon":"0.6/1kV",
@@ -152,8 +144,7 @@
         "parcijalna":"/"
     },
     {
-        "_id":
-            {"$oid":"5e66783b15dedb21a432a3c8"},
+        "_id":"5e66783b15dedb21a432a3c8",
         "sifra":8008627,
         "proizvod":"PP41-Y  4x35",
         "napon":"0.6/1kV",
@@ -171,8 +162,7 @@
         "parcijalna":"/"
     },
     {
-        "_id":
-            {"$oid":"5e66783b15dedb21a432a3d4"},
+        "_id":"5e66783b15dedb21a432a3d4",
         "sifra":8008759,
         "proizvod":"PP41-A-Y  4x150",
         "napon":"0.6/1kV",
@@ -190,8 +180,7 @@
         "parcijalna":"/"
     },
     {
-        "_id":
-            {"$oid":"5e66783b15dedb21a432a3fc"},
+        "_id":"5e66783b15dedb21a432a3fc",
         "sifra":8011718,
         "proizvod":"NYY  1x16 RE",
         "napon":"0.6/1kV",
@@ -209,8 +198,7 @@
         "parcijalna":"/"
     },
     {
-        "_id":
-            {"$oid":"5e66783b15dedb21a432a427"},
+        "_id":"5e66783b15dedb21a432a427",
         "sifra":8017273,
         "proizvod":"N2XS2Y  1x300/25 6/10kV",
         "napon":"6/10kV",

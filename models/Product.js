@@ -24,7 +24,7 @@ const ProductSchema = new mongoose.Schema({
     napon: {
         type: String,
         required: [true, 'Please add a rated voltage'],
-        enum: ['300/300V', '300/500V', '450/750V', '0.6/1kV', '3.6/6kV', '6/10kV', '12/20kV', '20/35kV']
+        enum: ['300/300V', '300/500V', '380V', '450/750V', '0.6/1kV', '3.6/6kV', '6/10kV', '12/20kV', '20/35kV']
     },
 
     boja: {
@@ -100,7 +100,7 @@ const ProductSchema = new mongoose.Schema({
     ispitniNapon: {
         type: String,
         required: [true, 'Please add a test voltage'],
-        enum: ['2kV', '3kV', '3.5kV', '4kV', '15kV', '21kV', '30kV', '42kV', '50kV', '83.2kV']
+        enum: ['2kV', '2.5kV', '3kV', '3.5kV', '4kV', '15kV', '21kV', '30kV', '42kV', '50kV', '83.2kV']
     },
 
     parcijalna: {
