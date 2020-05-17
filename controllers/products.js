@@ -25,7 +25,12 @@ const asyncHandler = require('../middleware/asyncHandler');
 
 // umesto try/catch koristimo wrapper fju asyncHandler 
 exports.getProducts = asyncHandler(async (req, res, next) => {
-    const products = await Product.find();
+
+    let queryStr = JSON.stringify(req.query);
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt|in)\b/g, match => `$${match}`);
+
+    console.log(JSON.parse(queryStr));
+    const products = await Product.find(JSON.parse(queryStr));
 
     // poziva fju za pretvaranje Decimal128 u String
     const newProducts = decimal128ToStringOutput(products);

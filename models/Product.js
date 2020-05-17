@@ -98,9 +98,10 @@ const ProductSchema = new mongoose.Schema({
     },
 
     ispitniNapon: {
-        type: String,
+        type: Number,
         required: [true, 'Please add a test voltage'],
-        enum: ['2kV', '2.5kV', '3kV', '3.5kV', '4kV', '15kV', '21kV', '30kV', '42kV', '50kV', '83.2kV']
+        //enum: ['2kV', '2.5kV', '3kV', '3.5kV', '4kV', '15kV', '21kV', '30kV', '42kV', '50kV', '83.2kV']
+        enum: [2, 2.5, 3, 3.5, 4, 15, 21, 30, 42, 50, 83.2]
     },
 
     parcijalna: {
