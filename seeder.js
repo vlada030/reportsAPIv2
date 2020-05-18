@@ -28,7 +28,7 @@ const importData = async () => {
     } catch (err) {
         console.log(err);
     }
-    
+
 };
 
 const deleteData = async () => {
