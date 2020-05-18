@@ -146,10 +146,7 @@ exports.createProduct = asyncHandler(
 // @access Private
 
 exports.updateProduct = asyncHandler(async (req, res, next) => {    
-    const product = await Product.findOneAndUpdate({sifra: req.params.id}, req.body, {
-        new: true,
-        runValidators: true
-    });
+    let product = await Product.findOne({sifra: req.params.id});
 
     // u slucaju da u ObjectId promenimo jedno slovo, a ukupan broj/format
     // id ostane isti izbacuje success: true, DATA: NULL
@@ -157,6 +154,11 @@ exports.updateProduct = asyncHandler(async (req, res, next) => {
     if (!product) {
         return next(new ErrorResponse(`Product with id ${req.params.id} not found`, 404));
     }
+
+    product = await Product.findOneAndUpdate({sifra: req.params.id}, req.body, {
+        new: true,
+        runValidators: true
+    });
 
     res.status(200).json({
         success: true,
@@ -169,11 +171,13 @@ exports.updateProduct = asyncHandler(async (req, res, next) => {
 // @access Private
 
 exports.deleteProduct = asyncHandler(async (req, res, next) => {
-    const product = await Product.findOneAndDelete({sifra: req.params.id});
+    const product = await Product.findOne({sifra: req.params.id});
 
     if (!product) {
         return next(new ErrorResponse(`Product with id ${req.params.id} not found`, 404));
     }
+
+    await Product.remove({sifra: req.params.id});
 
     res.status(200).json({
         success: true,
