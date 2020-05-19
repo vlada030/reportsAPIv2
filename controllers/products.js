@@ -25,76 +25,18 @@ const asyncHandler = require('../middleware/asyncHandler');
 
 // umesto try/catch koristimo wrapper fju asyncHandler 
 exports.getProducts = asyncHandler(async (req, res, next) => {
-    let query;
-
-    let reqQuery = {...req.query};
-
-    // izbacujemo iz req.query reci koje nisu polja u Mongo
-    const removeFields = ['select', 'sort', 'page', 'limit'];
-    removeFields.forEach( field => delete reqQuery[field]);
-
-    // Mongo u find prihvata objekat koji je slican req.query tj
-    // specijalnim recima gt, lt nedostaje $ da bi bili identicni
-    let queryStr = JSON.stringify(reqQuery);
-    queryStr = queryStr.replace(/\b(gte|gt|lte|lt|in)\b/g, match => `$${match}`);
-
-    query = Product.find(JSON.parse(queryStr));
-
-    // ukoliko postoji select filter u req.query, u mongoose on se dodaje sa razmacima
-    // izmedju imena polja 
-    if (req.query.select) {
-        // const selQuery = req.query.select.replace(/,/g, ' ' );
-        const selQuery = req.query.select.split(',').join(' ');
-        query = query.select(selQuery);
-    }
-
-    // ukoliko postoji sort filter u req.query,ako ne defaultno je po datumu kreiranja
-    if (req.query.sort) {
-        query = query.sort(req.query.sort);
-    } else {
-        query = query.sort('-createdAt');
-    }
-
-    // Dodavanje paginacije
-    const page = parseInt(req.query.page, 10) || 1;
-    const limit = parseInt(req.query.limit, 10) || 10;
-
-    const startIndex = (page - 1) * limit;
-    const endIndex = page * limit;
-    // ukupan broj dokumenata
-    const total = await Product.countDocuments();
-
-    query = query.skip(startIndex).limit(limit);
-
-    const products = await query;
     
-    // poziva fju za pretvaranje Decimal128 u String
-    const newProducts = decimal128ToStringOutput(products);
+    // poziva fju za pretvaranje Decimal128 u String jer smo u routes pre ove fje
+    // pozvali middleware advancedResults
+    res.advancedResults.data = decimal128ToStringOutput(res.advancedResults.data);
     
-    // prilagodjavanje responsa za lakse povezivanje sa front-endom
-    // vraca u res da li ima prev/next strana
-    let pagination = {};
-
-    if (startIndex > 0) {
-        pagination.prev = {
-            page: page - 1,
-            limit 
-        };
-    }
-
-    if (endIndex < total) {
-        pagination.next = {
-            page: page + 1,
-            limit
-        };
-    }
-
-    res.status(200).json({
-        success: true,
-        count: newProducts.length,
-        pagination,
-        data: newProducts
-    });    
+    res.status(200).json(res.advancedResults);    
+    // res.status(200).json({
+    //     success: true,
+    //     count: newProducts.length,
+    //     pagination,
+    //     data: newProducts
+    // });    
 });
 
 
