@@ -14,6 +14,10 @@ const advancedResults = (model, populate) =>async (req, res, next) => {
 
     query = model.find(JSON.parse(queryStr));
 
+    // ukupan broj pronadjenih dokumenata nakon zadatog query, a pre limit/page
+    const queryResults = await query;
+    const total = queryResults.length;
+
     // ukoliko postoji select filter u req.query, u mongoose on se dodaje sa razmacima
     // izmedju imena polja 
     if (req.query.select) {
@@ -35,8 +39,8 @@ const advancedResults = (model, populate) =>async (req, res, next) => {
 
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
-    // ukupan broj dokumenata
-    const total = await model.countDocuments();
+    // za ukupan broj doumenata u kolekciji
+    // const total = await model.countDocuments();
 
     query = query.skip(startIndex).limit(limit);
 
@@ -67,7 +71,7 @@ const advancedResults = (model, populate) =>async (req, res, next) => {
 
     res.advancedResults = {
         success: true,
-        count: results.length,
+        count: total,
         pagination,
         data: results
     };

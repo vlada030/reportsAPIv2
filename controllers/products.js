@@ -28,7 +28,7 @@ exports.getProducts = asyncHandler(async (req, res, next) => {
     
     // poziva fju za pretvaranje Decimal128 u String jer smo u routes pre ove fje
     // pozvali middleware advancedResults
-    res.advancedResults.data = decimal128ToStringOutput(res.advancedResults.data);
+    //res.advancedResults.data = decimal128ToStringOutput(res.advancedResults.data);
     
     res.status(200).json(res.advancedResults);    
     // res.status(200).json({

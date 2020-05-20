@@ -18,8 +18,7 @@ const ProductSchema = new mongoose.Schema({
         required: [true, 'Please add a product name'],
         trim: true,
         minlength: [2, 'Name can not be less than 2 characters'],
-        maxlength: [45, 'Name can not be more than 45 characters'],
-        unique: true
+        maxlength: [45, 'Name can not be more than 45 characters']
     },
 
     napon: {

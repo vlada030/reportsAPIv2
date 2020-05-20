@@ -24,14 +24,15 @@ const importData = async () => {
     const products = JSON.parse(
         fs.readFileSync(`${__dirname}/_data/products.json`, 'utf-8')
     );
-    
-    console.log('Uspesno je ucitan products.json'.bgGreen);
-    
+    console.log('Loaded products.json'.bgGreen);
+
+    // normiraj podatke
     const normalizedProducts = normalize(products);
-    
+
+    // napravi kopiju na disku
     fs.writeFileSync(`${__dirname}/_data/normalizedProducts.json`, JSON.stringify(normalizedProducts, null, 4));
-    
-    console.log('Uspesno je kreiran normalizedProducts.json'.bgGreen);
+    console.log('Successfully created and writed normalizedProducts.json'.bgGreen);
+
     try {
         await Product.create(normalizedProducts);
         console.log('Data Imported'.bgGreen);

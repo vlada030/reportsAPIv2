@@ -21,7 +21,7 @@ const normalize = (products) => {
 
         //  boja
         if (product.boja !== "") {
-            const boja = product.boja.toLowerCase();
+            const boja = product.boja.trim().toLowerCase();
             switch (boja) {
                 case 'schwarz': 
                     product.boja = 'crna';
@@ -45,9 +45,10 @@ const normalize = (products) => {
         } else {
             if (!nazivProizvoda.startsWith('H0')) {
                 product.boja = 'crna';
+            } else {
+                product.boja = 'N/A';
             }
             //console.log(`Za sifru proizvoda ${product.sifra} boja nije ubacena.`);
-            product.boja = 'N/A';
         }
 
         // propis
@@ -105,7 +106,7 @@ const normalize = (products) => {
         // obrisi propertie cije ime je promenjeno
         delete product.debljinaPlasta;
 
-        // debljina izolacije
+        // precnik kabla
         if (product.sPrecnik !== '') {
             product.spPrecnik = product.sPrecnik.toString();
         } else {
@@ -141,7 +142,7 @@ const normalize = (products) => {
 
         // parcijalna
         if (product.parcijalna !== '' && product.parcijalna !== 0) {
-            product.parcijalna = product.parcijalna.toString();
+            product.parcijalna = product.parcijalna.toString().split(' ').join('');
         } else {
             //console.log(`Za sifru proizvoda ${product.sifra} parcijalna nije ubacen.`);
             product.parcijalna = '/';
