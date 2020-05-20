@@ -23,14 +23,14 @@ const ProductSchema = new mongoose.Schema({
 
     napon: {
         type: String,
-        required: [true, 'Please add a rated voltage']
-        //enum: ['300/300V', '300/500V', '380V', '450/750V', '0.6/1kV', '3.6/6kV', '6/10kV', '12/20kV', '20/35kV', 'N/A']
+        required: [true, 'Please add a rated voltage'],
+        enum: ['300/300V', '300/500V', '380V', '450/750V', '0.6/1kV', '3.6/6kV', '6/10kV', '12/20kV', '20/35kV', 'N/A']
     },
 
     boja: {
         type: String,
         required: [true, 'Please add a product color'],
-        //enum: ['CRNA', 'SIVA', 'BELA', 'CRVENA', 'NARANDZASTA', 'NARANDŽASTA', 'N/A'],
+        enum: ['CRNA', 'SIVA', 'BELA', 'CRVENA', 'NARANDZASTA', 'NARANDŽASTA', 'ZELENA', 'ZUTO-ZELENA', 'PLAVA','BRAON', 'N/A'],
         uppercase: true
         
     },
@@ -101,7 +101,7 @@ const ProductSchema = new mongoose.Schema({
         type: Number,
         required: [true, 'Please add a test voltage'],
         //enum: ['2kV', '2.5kV', '3kV', '3.5kV', '4kV', '15kV', '21kV', '30kV', '42kV', '50kV', '83.2kV']
-        //enum: [0, 2, 2.5, 3, 3.5, 4, 15, 21, 30, 42, 50, 83.2]
+        enum: [0, 2, 2.5, 3, 3.5, 4, 15, 21, 30, 42, 50, 83.2]
     },
 
     parcijalna: {
