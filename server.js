@@ -2,6 +2,8 @@ const express = require('express');
 const dotenv = require('dotenv');
 const colors = require('colors');
 const morgan = require('morgan');
+const mongoSanitize = require('express-mongo-sanitize');
+const cors = require('cors');
 
 //import custom error handlera
 const errorHandler = require('./middleware/errorHandler');
@@ -24,10 +26,17 @@ const app = express();
 // pozivanje defaultnog body parsera
 app.use(express.json());
 
+
 // pozivanje morgan loggera
 if (process.env.NODE_ENV = 'development') {
     app.use(morgan('dev'));
 }
+
+// Mongo sanitize - No-SQL injection
+app.use(mongoSanitize());
+
+// CORS
+app.use(cors());
 
 // postavljanje routa
 app.use('/api/v1/products', products);
