@@ -30,7 +30,7 @@ const ProductSchema = new mongoose.Schema({
     boja: {
         type: String,
         required: [true, 'Please add a product color'],
-        enum: ['CRNA', 'SIVA', 'BELA', 'CRVENA', 'NARANDZASTA', 'NARANDŽASTA', 'ZELENA', 'ZUTO-ZELENA', 'PLAVA','BRAON', 'N/A'],
+        enum: ['CRNA', 'SIVA', 'BELA', 'CRVENA', 'NARANDŽASTA','ŽUTA', 'ZELENA', 'ŽUTO-ZELENA', 'PLAVA','BRAON', 'N/A', 'BEZBOJNA'],
         uppercase: true
         
     },
@@ -86,15 +86,15 @@ const ProductSchema = new mongoose.Schema({
     debPlasta: {
         type: mongoose.Types.Decimal128,
         required: [true, 'Please add a sheath thickness'],
-        min: [0.3, 'Min sheath thickness is 0.4'],
+        min: [0.3, 'Min sheath thickness is 0.3'],
         max: [4, 'Max sheath thickness is 4']
     },
 
     spPrecnik: {
         type: mongoose.Types.Decimal128,
         required: [true, 'Please add a overall diametar'],
-        min: [2, 'Min insulation thickness is 2'],
-        max: [70, 'Max insulation thickness is 70']
+        min: [2, 'Min overall diametar is 2'],
+        max: [70, 'Max overall diametar is 70']
     },
 
     ispitniNapon: {
