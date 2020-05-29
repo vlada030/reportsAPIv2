@@ -13,12 +13,19 @@ const ProductSchema = new mongoose.Schema({
         unique: true        
     },
 
+    // proizvod: {
+    //     type: String,
+    //     required: [true, 'Please add a product name'],
+    //     trim: true,
+    //     minlength: [2, 'Name can not be less than 2 characters'],
+    //     maxlength: [45, 'Name can not be more than 45 characters']
+    // },
     proizvod: {
         type: String,
-        required: [true, 'Please add a product name'],
+        required: [true, 'Unesite naziv proizvoda'],
         trim: true,
-        minlength: [2, 'Name can not be less than 2 characters'],
-        maxlength: [45, 'Name can not be more than 45 characters']
+        minlength: [2, 'Najkraći naziv 2 karaktera'],
+        maxlength: [45, 'Najduži naziv 45 karaktera']
     },
 
     napon: {
@@ -35,40 +42,71 @@ const ProductSchema = new mongoose.Schema({
         
     },
 
+    // propis: {
+    //     type: String,
+    //     required: [true, 'Please add a product standard'],
+    //     trim: true,
+    //     maxlength: [40, 'Max length for standard name is 40 characters'],
+    //     uppercase: true
+    // },
     propis: {
         type: String,
-        required: [true, 'Please add a product standard'],
+        required: [true, 'Unesite standard za izradu proizvoda.'],
         trim: true,
-        maxlength: [40, 'Max length for standard name is 40 characters'],
+        maxlength: [40, 'Najduže ime za standard 40 karaktera'],
         uppercase: true
     },
 
+    // brojZica: {
+    //     type: Number,
+    //     required: [true, 'Please add a number of component wires'],
+    //     min: [1, 'Min number of component wires is 1']
+    //     max: [2500, 'Max number of component wires is 2500']
+    // },
     brojZica: {
         type: Number,
-        required: [true, 'Please add a number of component wires'],
-        min: [1, 'Min number of component wires is 1']
-        //max: [60, 'Max number of component wires is 60']
+        required: [true, 'Unesi ukupan broj komponenti žica'],
+        min: [1, 'Najmanje komponenti je 1'],
+        max: [2500, 'Najviše komponenti je 2500']
     },
 
+    // precnikZice: {
+    //     type: mongoose.Types.Decimal128,
+    //     required: [true, 'Please add a diametar of component wires'],
+    //     min: [0.2, 'Min diametar of component wire is 0.2'],
+    //     max: [3.6, 'Max diametar of component wire is 3.6']
+    // },
     precnikZice: {
         type: mongoose.Types.Decimal128,
-        required: [true, 'Please add a diametar of component wires'],
-        min: [0.2, 'Min diametar of component wire is 0.2'],
-        max: [3.6, 'Max diametar of component wire is 3.6']
+        required: [true, 'Unesi prečnik jedne žice'],
+        min: [0.2, 'Najmanji prečnik je 0.2'],
+        max: [3.6, 'Najveći prečnik je 3.6']
     },
 
+    // otpor: {
+    //     type: mongoose.Types.Decimal128,
+    //     required: [true, 'Please add a resistance'],
+    //     min: [0.01, 'Min resistance is 0.1'],
+    //     max: [24, 'Max resistance is 24']
+    // },
     otpor: {
         type: mongoose.Types.Decimal128,
-        required: [true, 'Please add a resistance'],
-        min: [0.01, 'Min resistance is 0.1'],
-        max: [24, 'Max resistance is 24']
+        required: [true, 'Unesi otpor provodnika'],
+        min: [0.01, 'Najmanji otpor je 0.1'],
+        max: [24, 'Najveći otpor je 24']
     },
 
+    // debIzolacije: {
+    //     type: mongoose.Types.Decimal128,
+    //     required: [true, 'Please add a insulation thickness'],
+    //     //min: [0.3, 'Min insulation thickness is 0.3'],
+    //     max: [9, 'Max insulation thickness is 9']
+    // },
     debIzolacije: {
         type: mongoose.Types.Decimal128,
-        required: [true, 'Please add a insulation thickness'],
+        required: [true, 'Unesi debljinu izolacije.'],
         //min: [0.3, 'Min insulation thickness is 0.3'],
-        max: [9, 'Max insulation thickness is 9']
+        max: [9, 'Najveća debljina izolacije je 9']
     },
 
     debPPS1: {
@@ -83,18 +121,30 @@ const ProductSchema = new mongoose.Schema({
         default: "/"
     },
 
+    // debPlasta: {
+    //     type: mongoose.Types.Decimal128,
+    //     required: [true, 'Please add a sheath thickness'],
+    //     min: [0.3, 'Min sheath thickness is 0.3'],
+    //     max: [4, 'Max sheath thickness is 4']
+    // },
     debPlasta: {
         type: mongoose.Types.Decimal128,
-        required: [true, 'Please add a sheath thickness'],
-        min: [0.3, 'Min sheath thickness is 0.3'],
-        max: [4, 'Max sheath thickness is 4']
+        required: [true, 'Unesi debljinu plašta.'],
+        min: [0.3, 'Najmanja debljina plašta 0.3'],
+        max: [4, 'Najveća debljina plašta 4']
     },
 
+    // spPrecnik: {
+    //     type: mongoose.Types.Decimal128,
+    //     required: [true, 'Please add a overall diametar'],
+    //     min: [2, 'Min overall diametar is 2'],
+    //     max: [70, 'Max overall diametar is 70']
+    // },
     spPrecnik: {
         type: mongoose.Types.Decimal128,
-        required: [true, 'Please add a overall diametar'],
-        min: [2, 'Min overall diametar is 2'],
-        max: [70, 'Max overall diametar is 70']
+        required: [true, 'Unesi spoljnji prečnik'],
+        min: [2, 'Najmanji spoljnji prečnik je 2'],
+        max: [70, 'Najveći spoljnji prečnik je 70']
     },
 
     ispitniNapon: {
