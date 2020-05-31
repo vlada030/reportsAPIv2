@@ -24,14 +24,14 @@ const ProductSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Unesite naziv proizvoda'],
         trim: true,
-        minlength: [2, 'Najkraći naziv 2 karaktera'],
-        maxlength: [45, 'Najduži naziv 45 karaktera']
+        minlength: [2, 'Najkraći naziv proizvoda je 2 karaktera'],
+        maxlength: [45, 'Najduži naziv proizvoda je 45 karaktera']
     },
 
     napon: {
         type: String,
         required: [true, 'Please add a rated voltage'],
-        enum: ['300/300V', '300/500V', '380V', '450/750V', '0.6/1kV', '3.6/6kV', '6/10kV', '12/20kV', '20/35kV', 'N/A']
+        enum: ['100V','300/300V', '300/500V', '380V', '450/750V', '0.6/1kV', '3.6/6kV', '6/10kV', '12/20kV','18/30kV', '20/35kV', 'N/A']
     },
 
     boja: {
@@ -53,7 +53,7 @@ const ProductSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Unesite standard za izradu proizvoda.'],
         trim: true,
-        maxlength: [40, 'Najduže ime za standard 40 karaktera'],
+        maxlength: [40, 'Najduže ime za standard je 40 karaktera'],
         uppercase: true
     },
 
@@ -66,8 +66,8 @@ const ProductSchema = new mongoose.Schema({
     brojZica: {
         type: Number,
         required: [true, 'Unesi ukupan broj komponenti žica'],
-        min: [1, 'Najmanje komponenti je 1'],
-        max: [2500, 'Najviše komponenti je 2500']
+        min: [1, 'Najmanji broj komponenti je 1 žica'],
+        max: [2500, 'Najve broj komponenti je 2500 žica']
     },
 
     // precnikZice: {
@@ -79,8 +79,8 @@ const ProductSchema = new mongoose.Schema({
     precnikZice: {
         type: mongoose.Types.Decimal128,
         required: [true, 'Unesi prečnik jedne žice'],
-        min: [0.2, 'Najmanji prečnik je 0.2'],
-        max: [3.6, 'Najveći prečnik je 3.6']
+        min: [0.2, 'Najmanji prečnik jedne žice je 0.2'],
+        max: [3.6, 'Najveći prečnik jedne žice je 3.6']
     },
 
     // otpor: {
@@ -92,8 +92,8 @@ const ProductSchema = new mongoose.Schema({
     otpor: {
         type: mongoose.Types.Decimal128,
         required: [true, 'Unesi otpor provodnika'],
-        min: [0.01, 'Najmanji otpor je 0.1'],
-        max: [24, 'Najveći otpor je 24']
+        min: [0.01, 'Najmanji otpor provodnika je 0.1'],
+        max: [24, 'Najveći otpor provodnika je 24']
     },
 
     // debIzolacije: {
@@ -142,9 +142,9 @@ const ProductSchema = new mongoose.Schema({
     // },
     spPrecnik: {
         type: mongoose.Types.Decimal128,
-        required: [true, 'Unesi spoljnji prečnik'],
-        min: [2, 'Najmanji spoljnji prečnik je 2'],
-        max: [70, 'Najveći spoljnji prečnik je 70']
+        required: [true, 'Unesi spoljnji prečnik kabla'],
+        min: [2, 'Najmanji spoljnji prečnik kabla je 2'],
+        max: [70, 'Najveći spoljnji prečnik kabla je 70']
     },
 
     ispitniNapon: {
