@@ -4,11 +4,14 @@ const productCodeLength = function() {
     return this.sifra.toString().length == 7;
 };
 
-const wiresNumber = function() {
+const minlimitValidation = function() {
     const min = mongoose.Types.Decimal128.fromString('0.2');
-    // const input = mongoose.Types.Decimal128.fromString(this.precnikZice);
-    const input = this.precnikZice;
-    return input < min;
+    return this.precnikZice >= min;
+};
+
+const maxlimitValidation = function() {
+    const max = mongoose.Types.Decimal128.fromString('3.6');
+    return this.precnikZice <= max;
 };
 
 const ProductSchema = new mongoose.Schema({
@@ -86,7 +89,11 @@ const ProductSchema = new mongoose.Schema({
     precnikZice: {
         type: mongoose.Schema.Types.Decimal128,
         required: [true, 'Unesi prečnik jedne žice'],
-        validate: [wiresNumber, 'Najmanji prečnik jedne žice je 0.2']
+        validate: [
+            minlimitValidation, 'Najmanji prečnik jedne žice je 0.2'
+            
+        ],
+        validate: [maxlimitValidation, 'Najveći prečnik jedne žice je 3.6']
         // min: [0.2, 'Najmanji prečnik jedne žice je 0.2'],
         // max: [3.6, 'Najveći prečnik jedne žice je 3.6']
     },
@@ -98,7 +105,7 @@ const ProductSchema = new mongoose.Schema({
     //     max: [24, 'Max resistance is 24']
     // },
     otpor: {
-        type: mongoose.Types.Decimal128,
+        type: mongoose.Schema.Types.Decimal128,
         required: [true, 'Unesi otpor provodnika'],
         min: [0.01, 'Najmanji otpor provodnika je 0.1'],
         max: [24, 'Najveći otpor provodnika je 24']
@@ -111,7 +118,7 @@ const ProductSchema = new mongoose.Schema({
     //     max: [9, 'Max insulation thickness is 9']
     // },
     debIzolacije: {
-        type: mongoose.Types.Decimal128,
+        type: mongoose.Schema.Types.Decimal128,
         required: [true, 'Unesi debljinu izolacije.'],
         //min: [0.3, 'Min insulation thickness is 0.3'],
         max: [9, 'Najveća debljina izolacije je 9']
@@ -136,7 +143,7 @@ const ProductSchema = new mongoose.Schema({
     //     max: [4, 'Max sheath thickness is 4']
     // },
     debPlasta: {
-        type: mongoose.Types.Decimal128,
+        type: mongoose.Schema.Types.Decimal128,
         required: [true, 'Unesi debljinu plašta.'],
         min: [0.3, 'Najmanja debljina plašta 0.3'],
         max: [4, 'Najveća debljina plašta 4']
@@ -149,7 +156,7 @@ const ProductSchema = new mongoose.Schema({
     //     max: [70, 'Max overall diametar is 70']
     // },
     spPrecnik: {
-        type: mongoose.Types.Decimal128,
+        type: mongoose.Schema.Types.Decimal128,
         required: [true, 'Unesi spoljnji prečnik kabla'],
         min: [2, 'Najmanji spoljnji prečnik kabla je 2'],
         max: [70, 'Najveći spoljnji prečnik kabla je 70']
