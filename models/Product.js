@@ -1,14 +1,21 @@
 const mongoose = require('mongoose');
 // validator fja mora preko function da bi radilo this
-const validator = function() {
+const productCodeLength = function() {
     return this.sifra.toString().length == 7;
+};
+
+const wiresNumber = function() {
+    const min = mongoose.Types.Decimal128.fromString('0.2');
+    // const input = mongoose.Types.Decimal128.fromString(this.precnikZice);
+    const input = this.precnikZice;
+    return input < min;
 };
 
 const ProductSchema = new mongoose.Schema({
     sifra: {
         type: Number,
         required: [true, 'Please add a product code'],
-        validate: [validator, 'Sifra mora da sadrzi 7 broja'],
+        validate: [productCodeLength, 'Sifra mora da sadrzi 7 broja'],
         //validate: [function() {return this.sifra.toString().length == 7}, 'Sifra mora da sadrzi 7 broja'],
         unique: true        
     },
@@ -77,10 +84,11 @@ const ProductSchema = new mongoose.Schema({
     //     max: [3.6, 'Max diametar of component wire is 3.6']
     // },
     precnikZice: {
-        type: mongoose.Types.Decimal128,
+        type: mongoose.Schema.Types.Decimal128,
         required: [true, 'Unesi prečnik jedne žice'],
-        min: [0.2, 'Najmanji prečnik jedne žice je 0.2'],
-        max: [3.6, 'Najveći prečnik jedne žice je 3.6']
+        validate: [wiresNumber, 'Najmanji prečnik jedne žice je 0.2']
+        // min: [0.2, 'Najmanji prečnik jedne žice je 0.2'],
+        // max: [3.6, 'Najveći prečnik jedne žice je 3.6']
     },
 
     // otpor: {
