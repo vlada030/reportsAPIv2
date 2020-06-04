@@ -6,16 +6,7 @@ const productCodeLength = function() {
 };
 
 // ZA DECIMAL128 NE RADE BUILTIN VALIDATORI MIN / MAX ZATO MORA CUSTOM
-// CAKA - ispred this se stavlja + da pretvori u broj inace poredi stringove!!!
 // validacija precnika zice
-// ovo vazi kad samo hoćemo da uradimo findOneAndUpdate, neće za create
-// const minlimitValidation = function() {
-//     const min = mongoose.Types.Decimal128.fromString('0.2');
-//     console.log(this.getUpdate().$set.precnikZice instanceof String);
-//     console.log(this.getUpdate().$set.precnikZice);
-//     return +this.getUpdate().$set.precnikZice >= min;
-// };
-
 const minlimitValidation = function() {
     const min = mongoose.Types.Decimal128.fromString('0.2');
     return +this.precnikZice >= min;
@@ -68,13 +59,6 @@ const ProductSchema = new mongoose.Schema({
         unique: true        
     },
 
-    // proizvod: {
-    //     type: String,
-    //     required: [true, 'Please add a product name'],
-    //     trim: true,
-    //     minlength: [2, 'Name can not be less than 2 characters'],
-    //     maxlength: [45, 'Name can not be more than 45 characters']
-    // },
     proizvod: {
         type: String,
         required: [true, 'Unesite naziv proizvoda'],
@@ -93,17 +77,9 @@ const ProductSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please add a product color'],
         enum: ['CRNA', 'SIVA', 'BELA', 'CRVENA', 'NARANDŽASTA','ŽUTA', 'ZELENA', 'ŽUTO-ZELENA', 'PLAVA','BRAON', 'N/A', 'BEZBOJNA'],
-        uppercase: true
-        
+        uppercase: true        
     },
 
-    // propis: {
-    //     type: String,
-    //     required: [true, 'Please add a product standard'],
-    //     trim: true,
-    //     maxlength: [40, 'Max length for standard name is 40 characters'],
-    //     uppercase: true
-    // },
     propis: {
         type: String,
         required: [true, 'Unesite standard za izradu proizvoda.'],
@@ -112,37 +88,20 @@ const ProductSchema = new mongoose.Schema({
         uppercase: true
     },
 
-    // brojZica: {
-    //     type: Number,
-    //     required: [true, 'Please add a number of component wires'],
-    //     min: [1, 'Min number of component wires is 1']
-    //     max: [2500, 'Max number of component wires is 2500']
-    // },
     brojZica: {
         type: Number,
         required: [true, 'Unesi ukupan broj komponenti žica'],
         min: [1, 'Najmanji broj komponenti je 1 žica'],
-        max: [2500, 'Najveći broj komponenti je 2500 žica']
+        max: [2500, 'Najve broj komponenti je 2500 žica']
     },
 
-    // precnikZice: {
-    //     type: mongoose.Types.Decimal128,
-    //     required: [true, 'Please add a diametar of component wires'],
-    //     min: [0.2, 'Min diametar of component wire is 0.2'],
-    //     max: [3.6, 'Max diametar of component wire is 3.6']
-    // },
     precnikZice: {
         type: mongoose.Schema.Types.Decimal128,
         required: [true, 'Unesi prečnik jedne žice'],
         validate: manyValidators
+        // min: [0.2, 'Najmanji prečnik jedne žice je 0.2'],
+        // max: [3.6, 'Najveći prečnik jedne žice je 3.6']
     },
-
-    // otpor: {
-    //     type: mongoose.Types.Decimal128,
-    //     required: [true, 'Please add a resistance'],
-    //     min: [0.01, 'Min resistance is 0.1'],
-    //     max: [24, 'Max resistance is 24']
-    // },
     otpor: {
         type: mongoose.Schema.Types.Decimal128,
         required: [true, 'Unesi otpor provodnika'],
@@ -152,12 +111,6 @@ const ProductSchema = new mongoose.Schema({
         }
     },
 
-    // debIzolacije: {
-    //     type: mongoose.Types.Decimal128,
-    //     required: [true, 'Please add a insulation thickness'],
-    //     //min: [0.3, 'Min insulation thickness is 0.3'],
-    //     max: [9, 'Max insulation thickness is 9']
-    // },
     debIzolacije: {
         type: mongoose.Schema.Types.Decimal128,
         required: [true, 'Unesi debljinu izolacije'],
@@ -176,12 +129,6 @@ const ProductSchema = new mongoose.Schema({
         default: "/"
     },
 
-    // debPlasta: {
-    //     type: mongoose.Types.Decimal128,
-    //     required: [true, 'Please add a sheath thickness'],
-    //     min: [0.3, 'Min sheath thickness is 0.3'],
-    //     max: [4, 'Max sheath thickness is 4']
-    // },
     debPlasta: {
         type: mongoose.Schema.Types.Decimal128,
         required: [true, 'Unesi debljinu plašta.'],
@@ -190,12 +137,6 @@ const ProductSchema = new mongoose.Schema({
         }       
     },
 
-    // spPrecnik: {
-    //     type: mongoose.Types.Decimal128,
-    //     required: [true, 'Please add a overall diametar'],
-    //     min: [2, 'Min overall diametar is 2'],
-    //     max: [70, 'Max overall diametar is 70']
-    // },
     spPrecnik: {
         type: mongoose.Schema.Types.Decimal128,
         required: [true, 'Unesi spoljnji prečnik kabla'],
@@ -205,7 +146,6 @@ const ProductSchema = new mongoose.Schema({
     ispitniNapon: {
         type: Number,
         required: [true, 'Please add a test voltage'],
-        //enum: ['2kV', '2.5kV', '3kV', '3.5kV', '4kV', '15kV', '21kV', '30kV', '42kV', '50kV', '83.2kV']
         enum: [0, 2, 2.5, 3, 3.5, 4, 15, 21, 30, 42, 50, 83.2]
     },
 
@@ -219,13 +159,6 @@ const ProductSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }
-});
-
-ProductSchema.pre('findOneAndUpdate', { document: false, query: true }, async function(req) {
-    const docToUpdate = await this.model.findOne(this.getQuery());
-    
-
-    console.log(docToUpdate);
 });
 
 module.exports = mongoose.model('Product', ProductSchema);

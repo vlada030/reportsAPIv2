@@ -98,8 +98,9 @@ exports.updateProduct = asyncHandler(async (req, res, next) => {
     }
 
     product = await Product.findOneAndUpdate({sifra: req.params.id}, req.body, {
-        new: true,
-        runValidators: true
+        new: true, 
+        runValidators: true,
+        context: 'query'
     });
 
     res.status(200).json({
