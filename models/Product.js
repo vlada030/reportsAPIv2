@@ -8,7 +8,7 @@ const productCodeLength = function() {
 // ZA DECIMAL128 NE RADE BUILTIN VALIDATORI MIN / MAX ZATO MORA CUSTOM
 // CAKA - ispred this se stavlja + da pretvori u broj inace poredi stringove!!!
 // validacija precnika zice
-// ovo vazi kad samo hoćemo da uradimo findOneAndUpdate, neće za create
+// ovo vazi kad samo hoćemo da uradimo findOneAndUpdate jer this setuje na Query, neće za create
 // const minlimitValidation = function() {
 //     const min = mongoose.Types.Decimal128.fromString('0.2');
 //     console.log(this.getUpdate().$set.precnikZice instanceof String);
@@ -18,12 +18,15 @@ const productCodeLength = function() {
 
 const minlimitValidation = function() {
     const min = mongoose.Types.Decimal128.fromString('0.2');
-    return +this.precnikZice >= min;
+    // sa ovim dodatkom radi i update,
+    const precnik = this.precnikZice || this.getUpdate().$set.precnikZice;
+    return +precnik >= min;
 };
 
 const maxlimitValidation = function() {
     const max = mongoose.Types.Decimal128.fromString('3.6');
-    return +this.precnikZice <= max;
+    const precnik = this.precnikZice || this.getUpdate().$set.precnikZice;
+    return +precnik <= max;
 };
 
 const manyValidators = [
@@ -36,27 +39,31 @@ const manyValidators = [
 const resistanceValidation = function() {
     const min = mongoose.Types.Decimal128.fromString('0.01');
     const max = mongoose.Types.Decimal128.fromString('24');
-    return (+this.otpor >= min && +this.otpor <= max);
+    const otpor = this.otpor || this.getUpdate().$set.otpor;
+    return (+otpor >= min && +otpor <= max);
 };
 
 // validacija debljine izolacije
 const insulationValidation = function() {
     const max = mongoose.Types.Decimal128.fromString('9');
-    return +this.debIzolacije <= max;
+    const debIzol = this.debIzolacije || this.getUpdate().$set.debIzolacije;
+    return +debIzol <= max;
 };
 
 // validacija debljine plašta
 const sheathValidation = function() {
     // const min = mongoose.Types.Decimal128.fromString('0.3');
     const max = mongoose.Types.Decimal128.fromString('4');
-    return +this.debPlasta <= max;
+    const debPl = this.debPlasta || this.getUpdate().$set.debPlasta;
+    return +debPl <= max;
 };
 
 // validacija spoljnog prečnika
 const outdiametarValidation = function() {
     const min = mongoose.Types.Decimal128.fromString('2');
     const max = mongoose.Types.Decimal128.fromString('70');
-    return (+this.spPrecnik >= min && +this.spPrecnik <= max);
+    const spPrecnik = this.spPrecnik || this.getUpdate().$set.spPrecnik;
+    return (spPrecnik >= min && spPrecnik <= max);
 };
 
 const ProductSchema = new mongoose.Schema({
@@ -221,11 +228,12 @@ const ProductSchema = new mongoose.Schema({
     }
 });
 
-ProductSchema.pre('findOneAndUpdate', { document: false, query: true }, async function(req) {
-    const docToUpdate = await this.model.findOne(this.getQuery());
-    
-
-    console.log(docToUpdate);
-});
+// primer pozivanja validacije pre izvršenja update
+// ProductSchema.pre('findOneAndUpdate', { document: false, query: true }, async function(req) {
+//     // this.getFilter() / this.getQuery() -sinonimi, vraca query tj sifra: 2222222 i pronalazi dokument u db
+//     const documentToUpdate = await this.model.findOne(this.getFilter());
+//     // this.getUpdate() vraca properties iz req.body - ono sto hocemo da update
+//     const updateQuery = this.getUpdate();
+// });
 
 module.exports = mongoose.model('Product', ProductSchema);
