@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const colors = require('colors');
 const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
 const mongoSanitize = require('express-mongo-sanitize');
 const cors = require('cors');
 
@@ -11,6 +12,7 @@ const errorHandler = require('./middleware/errorHandler');
 const connectDB = require('./config/db');
 // import routa
 const products = require('./routes/products');
+const users = require('./routes/auth');
 
 // ENV fajl nije u root folderu zato mora da se navede putanja
 dotenv.config({
@@ -23,9 +25,11 @@ connectDB();
 // kreiranje aplikacije
 const app = express();
 
-// pozivanje defaultnog body parsera
+// pozivanje defaultnog body parsera za dobijanje req.body
 app.use(express.json());
 
+// pozivanje cookie parsera da bi u cookie mogao sa se ubaci token
+app.use(cookieParser());
 
 // pozivanje morgan loggera
 if (process.env.NODE_ENV = 'development') {
@@ -40,6 +44,7 @@ app.use(cors());
 
 // postavljanje routa
 app.use('/api/v1/products', products);
+app.use('/api/v1/auth', users);
 // pozivanje custom errorHandlera koji se inicijalizira preko next iz controllera
 app.use(errorHandler);
 
