@@ -81,6 +81,7 @@ const sendTokenResponse = (user, statusCode, res) => {
 
     // kada se app pokreće u production modu pošalji cookie preko https, u tom slučaju postavi Security flag na true    
     if (process.env.NODE_ENV === "production") {
+        // ovim se to postize
         options.secure = true;
     }
 
@@ -92,3 +93,17 @@ const sendTokenResponse = (user, statusCode, res) => {
         token
     })
 };
+
+// @desc   Get loged user
+// @route  GET /api/v1/auth/me
+// @access Private
+
+exports.getMe = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user.id);
+    
+    res.status(200).json({
+        success: true,
+        data: user,
+        prtData: req.user
+    });
+});

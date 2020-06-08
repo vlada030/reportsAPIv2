@@ -39,10 +39,9 @@ exports.getProducts = asyncHandler(async (req, res, next) => {
     // });    
 });
 
-
 // @desc   Get single product
 // @route  GET /api/v1/products/:id
-// @access Private
+// @access Public
 
 exports.getProduct = asyncHandler(async (req, res, next) => {
     const product = await Product.find({sifra: req.params.id});

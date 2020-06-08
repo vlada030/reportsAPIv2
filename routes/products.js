@@ -3,9 +3,12 @@ const {getProducts, getProduct, createProduct, updateProduct, deleteProduct} = r
 const advancedResults = require('../middleware/advancedResults');
 const Product = require('../models/Product');
 
+// dodavanje middleware fja
+const { protect } = require('../middleware/auth');
+
 const router = express.Router();
 
-router.route('/').get(advancedResults(Product), getProducts).post(createProduct);
-router.route('/:id').get(getProduct).put(updateProduct).delete(deleteProduct);
+router.route('/').get(advancedResults(Product), getProducts).post(protect, createProduct);
+router.route('/:id').get(getProduct).put(protect, updateProduct).delete(protect, deleteProduct);
 
 module.exports = router;
