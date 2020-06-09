@@ -74,6 +74,9 @@ exports.getProduct = asyncHandler(async (req, res, next) => {
 
 exports.createProduct = asyncHandler(
     async (req, res, next) => {
+        // protect middleware koji se poziva pre ove fje ubacuje iz tokena req.user i sa ovim će svaki novokreirani proizvod da ima usera koji ga je uneo
+        req.body.createdByUser = req.user.id;
+
         const product = await Product.create(req.body);
 
         res.status(201).json({
@@ -95,6 +98,10 @@ exports.updateProduct = asyncHandler(async (req, res, next) => {
     if (!product) {
         return next(new ErrorResponse(`Product with id ${req.params.id} not found`, 404));
     }
+
+    // dodavanje usera iz middleware tokena koji je modifikovao proizvod
+    req.body.modifiedByUser = req.user.id;
+    req.body.modifiedAt = Date.now();
 
     product = await Product.findOneAndUpdate({sifra: req.params.id}, req.body, {
         new: true, 

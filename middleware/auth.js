@@ -27,6 +27,16 @@ exports.protect = asyncHandler(async (req, res, next) => {
 
         next();
     } catch (err) {
-            return next(new errorResponse('Korisnik nema autorizaciju da pristupi ovoj ruti.', 401));
+            return next(new errorResponse('Korisnik nema autorizaciju da pristupi ovoj ruti', 401));
     }
 });
+
+// odobri pristup samo određenim user roles
+exports.authorize = (...roles) => {
+        return (req, res, next) => {
+            if (!roles.includes(req.user.role)) {
+                return next(new errorResponse(`Korisnik sa role: ${req.user.role} ne može da pristupi ovoj ruti`, 403));
+            }
+            next();
+    }
+};

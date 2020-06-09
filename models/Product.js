@@ -222,9 +222,24 @@ const ProductSchema = new mongoose.Schema({
         default: "/"
     },
 
+    createdByUser: {
+        type: mongoose.Schema.ObjectId,
+        ref: "User",
+        required: true
+    },
+
+    modifiedByUser: {
+        type: mongoose.Schema.ObjectId,
+        ref: "User"
+    },
+
     createdAt: {
         type: Date,
         default: Date.now
+    },
+
+    modifiedAt: {
+        type: Date
     }
 });
 

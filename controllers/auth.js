@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const User = require('../models/User');
 const asyncHandler = require('../middleware/asyncHandler');
 const errorResponse = require('../utils/errorResponse');
@@ -103,7 +102,7 @@ exports.getMe = asyncHandler(async (req, res) => {
     
     res.status(200).json({
         success: true,
-        data: user,
-        prtData: req.user
+        data: user
+        //prtData: req.user
     });
 });
