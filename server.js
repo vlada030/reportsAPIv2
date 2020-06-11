@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const colors = require('colors');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
+const formidableMiddleware = require('express-formidable');
 const mongoSanitize = require('express-mongo-sanitize');
 const cors = require('cors');
 
@@ -26,7 +27,14 @@ connectDB();
 const app = express();
 
 // pozivanje defaultnog body parsera za dobijanje req.body
-app.use(express.json());
+// ako je req.body u vidu objects ili arrays
+// app.use(express.urlencoded({extended: false}));
+// ako je req.body JSON format
+//app.use(express.json());
+
+// kada se podaci salju preko formData, formData automatski setuje 'content-type': 'multipart/form-data' koji bodyparser iznad ne moze da iscita
+// formidable moze da iscita i json type tako da body parser ne treba
+app.use(formidableMiddleware());
 
 // pozivanje cookie parsera da bi u cookie mogao sa se ubaci token
 app.use(cookieParser());

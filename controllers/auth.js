@@ -2,8 +2,6 @@ const User = require('../models/User');
 const asyncHandler = require('../middleware/asyncHandler');
 const errorResponse = require('../utils/errorResponse');
 
-
-
 // @desc   Register User
 // @route  POST /api/v1/auth/register
 // @access Public
@@ -32,13 +30,18 @@ exports.register = asyncHandler(async (req, res, next) => {
 
 
 // @desc   Login User
-// @route  POST /api/v1/auth/register
+// @route  POST /api/v1/auth/login
 // @access Public
 
 exports.login = asyncHandler(async (req, res, next) => {
+    
+    // ako se podaci salju kao json, bodyparser ih ubacuje u req.body
+    // var {email, password} = req.body;
 
-    const {email, password} = req.body;
-
+    // formidable pored podataka iz formData moze da prihvata i json , u tom slucaju ne treba bodyparser
+    // ubacuje ih u body.fields
+    const {email, password} = req.fields;
+    
     // validacija da li su polja prazna
     if (!email || !password) {
         return next(new errorResponse('Unesite email i šifru', 400));

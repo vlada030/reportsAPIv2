@@ -75,9 +75,10 @@ exports.getProduct = asyncHandler(async (req, res, next) => {
 exports.createProduct = asyncHandler(
     async (req, res, next) => {
         // protect middleware koji se poziva pre ove fje ubacuje iz tokena req.user i sa ovim će svaki novokreirani proizvod da ima usera koji ga je uneo
-        req.body.createdByUser = req.user.id;
+        //req.body.createdByUser = req.user.id;
+        req.fields.createdByUser = req.user.id;
 
-        const product = await Product.create(req.body);
+        const product = await Product.create(req.fields);
 
         res.status(201).json({
             success: true,
@@ -100,10 +101,14 @@ exports.updateProduct = asyncHandler(async (req, res, next) => {
     }
 
     // dodavanje usera iz middleware tokena koji je modifikovao proizvod
-    req.body.modifiedByUser = req.user.id;
-    req.body.modifiedAt = Date.now();
+    // req.body.modifiedByUser = req.user.id;
+    // req.body.modifiedAt = Date.now();
+    req.fields.modifiedByUser = req.user.id;
+    req.fields.modifiedAt = Date.now();
 
-    product = await Product.findOneAndUpdate({sifra: req.params.id}, req.body, {
+
+
+    product = await Product.findOneAndUpdate({sifra: req.params.id}, req.fields, {
         new: true, 
         runValidators: true,
         context: 'query'
