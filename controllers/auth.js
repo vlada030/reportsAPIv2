@@ -78,7 +78,9 @@ const sendTokenResponse = (user, statusCode, res) => {
     const options = {
         expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRE*24*60*60*1000),
         // cookie moze da procita samo http scripta na FE
-        httpOnly: true
+        httpOnly: true,
+        // domain: 'localhost',
+        path: '/'
     };
 
     // kada se app pokreće u production modu pošalji cookie preko https, u tom slučaju postavi Security flag na true    
