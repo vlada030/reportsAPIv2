@@ -7,7 +7,7 @@ const errorResponse = require('../utils/errorResponse');
 // token moze biti smesten na dva mesta ili u cookie ili u headers.authorization (string pocinje sa Bearer pa razmak pa token) 
 exports.protect = asyncHandler(async (req, res, next) => {
     let token;
-    console.log('poziva se protect, provera cookie');
+    console.log('poziva se protect, provera cookie / bearer');
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         token = req.headers.authorization.split(' ')[1];
         console.log('token je prosao preko bearer');

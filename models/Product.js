@@ -63,7 +63,7 @@ const outdiametarValidation = function() {
     const min = mongoose.Types.Decimal128.fromString('2');
     const max = mongoose.Types.Decimal128.fromString('70');
     const spPrecnik = this.spPrecnik || this.getUpdate().$set.spPrecnik;
-    return (spPrecnik >= min && spPrecnik <= max);
+    return (+spPrecnik >= min && +spPrecnik <= max);
 };
 
 const ProductSchema = new mongoose.Schema({
