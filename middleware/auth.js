@@ -11,8 +11,9 @@ exports.protect = asyncHandler(async (req, res, next) => {
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         token = req.headers.authorization.split(' ')[1];
         console.log('token je prosao preko bearer');
-    } else if (req.cookie.token) {
-        token = req.cookie.token;
+    } 
+    else if (req.cookies.token) {
+        token = req.cookies.token;
         console.log('token je prosao preko cookie');
     }
     // ako token ne postoji znaci da korisnik nije logovan
