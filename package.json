@@ -29,6 +29,7 @@
     "express-mongo-sanitize": "^2.0.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.12",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "pug": "^3.0.0"
   }
 }

@@ -1,6 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const colors = require('colors');
+const path = require('path');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const formidableMiddleware = require('express-formidable');
@@ -14,6 +15,7 @@ const connectDB = require('./config/db');
 // import routa
 const products = require('./routes/products');
 const users = require('./routes/auth');
+const userHTML = require('./routes/userHTML');
 
 // ENV fajl nije u root folderu zato mora da se navede putanja
 dotenv.config({
@@ -25,6 +27,11 @@ connectDB();
 
 // kreiranje aplikacije
 const app = express();
+
+// setovanje template engine - pug
+app.set('view engine', 'pug');
+// opciono - po defaultu pug fajlovi su u views, ovo je višak 
+app.set('views', 'views');
 
 // pozivanje defaultnog body parsera za dobijanje req.body
 // ako je req.body u vidu objects ili arrays
@@ -39,6 +46,7 @@ app.use(formidableMiddleware());
 // pozivanje cookie parsera da bi u cookie mogao sa se ubaci token
 app.use(cookieParser());
 
+
 // pozivanje morgan loggera
 if (process.env.NODE_ENV = 'development') {
     app.use(morgan('dev'));
@@ -50,9 +58,13 @@ app.use(mongoSanitize());
 // CORS
 app.use(cors());
 
+// pravljenje static foldera
+app.use(express.static(path.join(__dirname, 'public')));
+
 // postavljanje routa
 app.use('/api/v1/products', products);
 app.use('/api/v1/auth', users);
+app.use('/api/v1/users', userHTML);
 // pozivanje custom errorHandlera koji se inicijalizira preko next iz controllera
 app.use(errorHandler);
 
