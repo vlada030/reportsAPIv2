@@ -16,6 +16,8 @@ const connectDB = require('./config/db');
 const products = require('./routes/products');
 const users = require('./routes/auth');
 const userHTML = require('./routes/userHTML');
+// import 404 controlera
+const pageNotFound = require('./controllers/404');
 
 // ENV fajl nije u root folderu zato mora da se navede putanja
 dotenv.config({
@@ -65,6 +67,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/v1/products', products);
 app.use('/api/v1/auth', users);
 app.use('/api/v1/users', userHTML);
+// ukoliko strana ne postoji
+app.use(pageNotFound);
+
 // pozivanje custom errorHandlera koji se inicijalizira preko next iz controllera
 app.use(errorHandler);
 
