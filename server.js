@@ -13,9 +13,10 @@ const errorHandler = require('./middleware/errorHandler');
 // import MONGO konekcije 
 const connectDB = require('./config/db');
 // import routa
-const products = require('./routes/products');
-const users = require('./routes/auth');
-const userHTML = require('./routes/userHTML');
+const reports = require('./routes/reports');
+//const products = require('./routes/products');
+//const users = require('./routes/auth');
+//const userHTML = require('./routes/userHTML');
 // import 404 controlera
 const pageNotFound = require('./controllers/404');
 
@@ -37,13 +38,13 @@ app.set('views', 'views');
 
 // pozivanje defaultnog body parsera za dobijanje req.body
 // ako je req.body u vidu objects ili arrays
-// app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({extended: false}));
 // ako je req.body JSON format
 //app.use(express.json());
 
 // kada se podaci salju preko formData, formData automatski setuje 'content-type': 'multipart/form-data' koji bodyparser iznad ne moze da iscita
 // formidable moze da iscita i json type tako da body parser ne treba
-app.use(formidableMiddleware());
+//app.use(formidableMiddleware());
 
 // pozivanje cookie parsera da bi u cookie mogao sa se ubaci token
 app.use(cookieParser());
@@ -64,9 +65,10 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // postavljanje routa
-app.use('/api/v1/products', products);
-app.use('/api/v1/auth', users);
-app.use('/api/v1/users', userHTML);
+app.use('/api/v2/reports', reports);
+//app.use('/api/v1/products', products);
+//app.use('/api/v1/auth', users);
+//app.use('/api/v1/users', userHTML);
 // ukoliko strana ne postoji
 app.use(pageNotFound);
 

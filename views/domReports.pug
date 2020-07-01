@@ -1,0 +1,235 @@
+extends layouts/main-layout.pug
+
+mixin captions(value1, value2)
+    if lang === 'eng'
+        //var captions = {tipKabla: 'Cable Type', nazivniNapon: "Rated Voltage"} 
+        |  #{value1}
+    else 
+        |  #{value2} 
+        //var  captions = {tipKabla: 'Tip Kabla', nazivniNapon: "Nazivni Napon"}
+
+block user
+    ul.navbar-nav.ml-auto#userNav
+        li.nav-item.mr-2.mb-2.mb-lg-0
+            a.btn.btn-outline-info(href="login.html") Prijava
+        li.nav-item
+            a.btn.btn-outline-info(href="login.html") Registracija 
+
+block content
+    section#report.my-2
+        .container.bg-light
+            .row.align-items-center.py-3.footer
+                .col-3.text-center KONTROLA KVALITETA
+                    p QS 06.10.03.00/03
+                .col-6.text-center.lead.font-weight-normal TF Kable Fabrika kablova Zaječar D.O.O.
+                .col-3.text-center Datum: 
+                    span#date 
+
+            hr.mb-5
+
+            .row.mb-5.pb-5
+                .col.d-flex.wrap-nowrap.align-items-center.justify-content-center
+                    if lang === 'eng'
+                        h2.text-center.mr-4 Routine&nbsp;Test&nbsp;Report
+                    else
+                        h2.text-center.mr-4 Izveštaj o rutinskom ispitivanju
+
+                    input(type='text', style="width:3rem", value='1').form-control#ordinalNumber
+                    p.m-0 
+                        | &nbsp;/&nbsp;
+                        span.year 
+
+            .row
+                .col-10.mx-auto
+                    form.border.border-dark.p-3#domesticForm 
+                        //- treci red   
+                        .row.font-weight-bold.mb-3.d-print-none     
+                            .col-lg-6
+                                .row.align-items-center
+                                    .col-4 Šifra proizvoda:
+                                    .col-8
+                                        input(type="number", placeholder="Unesi 7-cifreni broj").form-control.font-weight-bold#productCode
+                                        small Error message 
+                        //- cetvrti red
+                        .row.font-weight-bold.mb-2
+                            .col-lg-6
+                                .row
+                                    if lang === 'eng'
+                                        .col-4 Cable Type
+                                    else   
+                                        .col-4 Tip Kabla 
+                                    .col-7
+                                        p#cableType.ml-2 /
+                                    
+                            .col-lg-6
+                                .row
+                                    if lang === 'eng'
+                                        .col-4 Rated Voltage
+                                    else   
+                                        .col-4 Nazivni Napon
+                                    
+                                    .col-4
+                                        p#ratedVoltage.ml-1 /
+
+                        //- peti red 
+                        .row.font-weight-bold.mb-2.stampa
+                            .col-lg-6
+                                .form-group.row.align-items-center
+                                    .col-4
+                                        if lang === 'eng'
+                                            label(for="workOrder") Work Order:
+                                        else   
+                                            label(for="workOrder") Radni nalog:
+                                         
+                                    .col-8
+                                        input(type="number", placeholder="Unesi 8-cifreni broj").form-control.font-weight-bold#workOrder
+                                        small Error message
+                                    
+                            .col-lg-6
+                                .form-group.row.align-items-center
+                                    .col-4
+                                        if lang === 'eng'
+                                            label(for="num") Drum Number:
+                                        else   
+                                            label(for="num") Broj kalema:
+                                        
+                                    .col-4
+                                        input(type="text", placeholder="7-cifreni broj").form-control.font-weight-bold#misNumber
+                                        small Error message
+                                    .col-4
+                                        select.form-control.font-weight-bold#drumSize
+                                            option(value="TK06T") TK06T
+                                            option(value="TK07T") TK07T
+                                            option(value="TK08T") TK08T
+                                            option(value="TK08AT") TK08AT
+                                            option(value="TK090T") TK090T
+                                            option(value="TK100T") TK100T
+                                            option(value="TK10AT" selected) TK10AT
+                                            option(value="TK120T") TK120T
+                                            option(value="TK140T") TK140T
+                                            option(value="TK160T") TK160T
+                                            option(value="TK180T") TK180T
+                                            option(value="TK200T") TK200T
+                                            option(value="TK20AT") TK20AT
+                                            option(value="TK210T") TK210T
+                                            option(value="TK220T") TK220T
+                                            option(value="TK240T") TK240T
+                                            option(value="pallet") Pallet
+                        //- sesti red
+                        .row.font-weight-bold.mb-2.stampa
+                            .col-lg-6
+                                .form-group.row.align-items-center
+                                    .col-4
+                                        if lang === 'eng'
+                                            label(for="length") Cable Length:
+                                        else   
+                                            label(for="length") Dužina:                                        
+
+                                    .input-group.col-5
+                                        input(type="number").form-control.text-right.font-weight-bold#length
+                                        .input-group-append
+                                            span.input-group-text m
+                                        small Error message
+                            .col-lg-6
+                                .form-group.row.align-items-center
+                                    .col-4
+                                        if lang === 'eng'
+                                            label(for="weight") Weight (bruto/neto):
+                                        else   
+                                            label(for="weight") Težina (bruto/neto):                                       
+
+                                    .input-group.col-4
+                                        input(type="number").form-control.text-right.font-weight-bold.pr-2#bruto
+                                        .input-group-append
+                                            span.input-group-text kg
+                                        small Error message
+
+                                    .input-group.col-4
+                                        input(type="number").form-control.text-right.font-weight-bold.pr-2#neto
+                                        .input-group-append
+                                            span.input-group-text kg
+                                        small Error message
+                        //- sedmi red
+                        .row.font-weight-bold
+                            .col-6
+                                .row
+                                    if lang === 'eng'
+                                        .col-4 Norm:
+                                    else   
+                                        .col-4 Standard:  
+                                                             
+                                    .col-8
+                                        p.ml-2#standard /
+
+                            .col-6
+                                .row
+                                    if lang === 'eng'
+                                        .col-4 Color:
+                                    else   
+                                        .col-4 Boja: 
+                                    .col-8
+                                        p.ml-2#productColor /
+                        //- osmi red
+                        .text-center.py-2.d-print-none
+                            button(type="submit").btn.btn-warning.btn-lg.m-0.mr-sm-4#saveAsPDF Sačuvaj PDF
+                            input(type="reset", value="Obriši sva polja").btn.btn-warning.btn-lg 
+
+            .row
+                .col-10.mx-auto
+                    table.table.table-bordered.table-hover.mt-4
+                        thead.thead-dark
+                            tr
+                                th(scope="col").cool-5 Vrsta ispitivanja
+                                th(scope="col").cool-2 Jedinica
+                                th(scope="col").cool-5 Izmereno
+                        tbody
+                            tr
+                                td Broj žica
+                                td kom
+                                td#wiresNumber /
+                            tr
+                                td Prečnik žice
+                                td mm
+                                td#wireDiametar /
+                            tr
+                                td Maksimalni dozvoljeni otpor provodnika
+                                td ohm/km
+                                td#resistance /
+                            tr
+                                td Debljina prvog poluprovodnog sloja
+                                td mm
+                                td#semiFirst /
+                            tr
+                                td Debljina izolacije
+                                td mm
+                                td#thickInsulation /
+                            tr
+                                td Debljina drugog poluprovodnog sloja
+                                td mm
+                                td#semiSecond /
+                            tr
+                                td Debljina plašta
+                                td mm
+                                td#thickSheath /
+                            tr
+                                td Spoljni prečnik
+                                td mm
+                                td#outerDiametar /
+                            
+                            tr
+                                td Ispitni napon / 5 minuta
+                                td kV (AC)
+                                td#testVoltage /
+                            tr
+                                td Maksimalno dozvoljena parcijalna pražnjenja, 2Uo
+                                td pC
+                                td#pDischarge /                                              
+                            
+                    p.text-center.font-weight-bold Ovim se potvrđuje da je kabl ispitan u skladu sa standardom i da u potpunosti zadovoljava tražene zahteve.
+
+            .row.mt-4.sign
+                .col-4.ml-auto
+                    .row
+                        p.m-0 Šef Kontrole kvaliteta i Laboratorije
+                        p dipl ing el Slaviša Marković
+                        img(src="/img/Potpis Sasa.jpg", alt="potpis").img.mb-5
