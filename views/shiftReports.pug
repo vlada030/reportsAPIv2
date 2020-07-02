@@ -1,0 +1,23 @@
+extends layouts/main-layout.pug
+
+block user
+    ul.navbar-nav.ml-auto#userNav
+        li.nav-item.mr-2.mb-2.mb-lg-0
+            a.btn.btn-outline-info(href="login.html") Prijava
+        li.nav-item
+            a.btn.btn-outline-info(href="login.html") Registracija 
+
+block secondaryMenu
+    ul.navbar-nav.mr-auto#optionsNav
+        li.nav-item.mr-2.mb-2.mb-lg-0(data-toggle="tooltip", title="Morate prvo da se ulogujete!", data-placement="bottom")
+            a(href="#").btn.btn-secondary.disabled Svi izveštaji
+
+        li.nav-item.mr-2.mb-2.mb-lg-0(data-toggle="tooltip", title="Morate prvo da se ulogujete!", data-placement="bottom")
+            a(href="#").btn.btn-secondary.disabled Izmeni / Obriši izveštaj
+        li.nav-item.mb-2.mb-lg-0(data-toggle="tooltip", title="Morate prvo da se ulogujete!", data-placement="bottom")
+            a(href="#").btn.btn-secondary.disabled Kreiraj mesečni izveštaj
+block content
+    
+
+block footer
+    include layouts/footer.pug

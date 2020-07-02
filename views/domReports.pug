@@ -1,13 +1,5 @@
 extends layouts/main-layout.pug
 
-mixin captions(value1, value2)
-    if lang === 'eng'
-        //var captions = {tipKabla: 'Cable Type', nazivniNapon: "Rated Voltage"} 
-        |  #{value1}
-    else 
-        |  #{value2} 
-        //var  captions = {tipKabla: 'Tip Kabla', nazivniNapon: "Nazivni Napon"}
-
 block user
     ul.navbar-nav.ml-auto#userNav
         li.nav-item.mr-2.mb-2.mb-lg-0
@@ -15,9 +7,21 @@ block user
         li.nav-item
             a.btn.btn-outline-info(href="login.html") Registracija 
 
+block secondaryMenu
+    include layouts/secondaryMenuProduct.pug
+
+block language 
+    if lang === 'eng'
+        a(href="/api/v2/reports/dom?lang=ser").btn.btn-outline-info Promeni jezik 
+            img(src="/img/sr.png", alt="sr").icon
+    else
+       a(href="/api/v2/reports/dom?lang=eng").btn.btn-outline-info Promeni jezik 
+            img(src="/img/en.png", alt="en").icon 
+
 block content
-    section#report.my-2
+    section#report.mt-2.mb-4
         .container.bg-light
+            //- prvi red
             .row.align-items-center.py-3.footer
                 .col-3.text-center KONTROLA KVALITETA
                     p QS 06.10.03.00/03
@@ -26,7 +30,7 @@ block content
                     span#date 
 
             hr.mb-5
-
+            //- drugi red
             .row.mb-5.pb-5
                 .col.d-flex.wrap-nowrap.align-items-center.justify-content-center
                     if lang === 'eng'
@@ -156,7 +160,7 @@ block content
                                     if lang === 'eng'
                                         .col-4 Norm:
                                     else   
-                                        .col-4 Standard:  
+                                        .col-4 Standard: 
                                                              
                                     .col-8
                                         p.ml-2#standard /
@@ -174,62 +178,11 @@ block content
                             button(type="submit").btn.btn-warning.btn-lg.m-0.mr-sm-4#saveAsPDF Sačuvaj PDF
                             input(type="reset", value="Obriši sva polja").btn.btn-warning.btn-lg 
 
-            .row
-                .col-10.mx-auto
-                    table.table.table-bordered.table-hover.mt-4
-                        thead.thead-dark
-                            tr
-                                th(scope="col").cool-5 Vrsta ispitivanja
-                                th(scope="col").cool-2 Jedinica
-                                th(scope="col").cool-5 Izmereno
-                        tbody
-                            tr
-                                td Broj žica
-                                td kom
-                                td#wiresNumber /
-                            tr
-                                td Prečnik žice
-                                td mm
-                                td#wireDiametar /
-                            tr
-                                td Maksimalni dozvoljeni otpor provodnika
-                                td ohm/km
-                                td#resistance /
-                            tr
-                                td Debljina prvog poluprovodnog sloja
-                                td mm
-                                td#semiFirst /
-                            tr
-                                td Debljina izolacije
-                                td mm
-                                td#thickInsulation /
-                            tr
-                                td Debljina drugog poluprovodnog sloja
-                                td mm
-                                td#semiSecond /
-                            tr
-                                td Debljina plašta
-                                td mm
-                                td#thickSheath /
-                            tr
-                                td Spoljni prečnik
-                                td mm
-                                td#outerDiametar /
-                            
-                            tr
-                                td Ispitni napon / 5 minuta
-                                td kV (AC)
-                                td#testVoltage /
-                            tr
-                                td Maksimalno dozvoljena parcijalna pražnjenja, 2Uo
-                                td pC
-                                td#pDischarge /                                              
-                            
-                    p.text-center.font-weight-bold Ovim se potvrđuje da je kabl ispitan u skladu sa standardom i da u potpunosti zadovoljava tražene zahteve.
+            include layouts/testsTable.pug
 
             .row.mt-4.sign
                 .col-4.ml-auto
                     .row
-                        p.m-0 Šef Kontrole kvaliteta i Laboratorije
-                        p dipl ing el Slaviša Marković
-                        img(src="/img/Potpis Sasa.jpg", alt="potpis").img.mb-5
+                        include layouts/documentSign.pug
+block footer
+    include layouts/footer.pug

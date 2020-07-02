@@ -1,0 +1,99 @@
+.row
+    .col-10.mx-auto
+        table.table.table-bordered.table-hover.mt-4
+            thead.thead-dark
+                tr
+                    if lang === 'eng'
+                        th(scope="col") Test
+                    else   
+                        th(scope="col") Vrsta ispitivanja
+
+                    if lang === 'eng'
+                        th(scope="col") Unit
+                    else   
+                        th(scope="col") Jedinica
+
+                    if lang === 'eng'
+                        th(scope="col") Result
+                    else   
+                        th(scope="col") Izmereno
+                    
+            tbody
+                tr
+                    if lang === 'eng'
+                        td Number of Wires
+                    else
+                        td Broj žica   
+                    if lang === 'eng'
+                        td pieces
+                    else
+                        td komada   
+                    td#wiresNumber /
+                tr
+                    if lang === 'eng'
+                        td Component Wire Diametar
+                    else
+                        td Prečnik žice
+                    td mm
+                    td#wireDiametar /
+                tr
+                    if lang === 'eng'
+                        td Maximum Allowed Conductor Resistance
+                    else
+                        td Maksimalni dozvoljeni otpor provodnika                                
+                    td ohm/km
+                    td#resistance /
+                tr
+                    if lang === 'eng'
+                        td First Semi-Conductive Layer Thickness
+                    else
+                        td Debljina prvog poluprovodnog sloja
+                    td mm
+                    td#semiFirst /
+                tr
+                    if lang === 'eng'
+                        td Insulation Thickness
+                    else
+                        td Debljina izolacije
+                    td mm
+                    td#thickInsulation /
+                tr
+                    if lang === 'eng'
+                        td Second Semi-Conductive Layer Thickness
+                    else
+                        td Debljina drugog poluprovodnog sloja
+                    td mm
+                    td#semiSecond /
+                tr
+                    if lang === 'eng'
+                        td Sheath Thickness
+                    else
+                        td Debljina plašta
+                    td mm
+                    td#thickSheath /
+                tr
+                    if lang === 'eng'
+                        td Overall Diametar
+                    else	
+                        td Spoljni prečnik
+                    td mm
+                    td#outerDiametar /
+                
+                tr
+                    if lang === 'eng'
+                        td Testing Voltage / 5 min
+                    else
+                        td Ispitni napon / 5 minuta
+                    td kV (AC)
+                    td#testVoltage /
+                tr
+                    if lang === 'eng'
+                        td Maximum allowed partial discharges, 2Uo	
+                    else
+                        td Maksimalno dozvoljena parcijalna pražnjenja, 2Uo
+                    td pC
+                    td#pDischarge /                                              
+        if lang === 'eng'
+            p.text-center.font-weight-bold This confirms that the cable has been tested in accordance with the given norm and fully meets the requirements.
+        else        
+            p.text-center.font-weight-bold Ovim se potvrđuje da je kabl ispitan u skladu sa standardom i da u potpunosti zadovoljava tražene zahteve.

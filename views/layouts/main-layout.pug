@@ -12,7 +12,7 @@ html(lang="en")
     body.bg-info
         nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.py-2
             .container
-                a.navbar-brand(href="index.html")
+                a.navbar-brand(href="/api/v2/reports/dom")
                     h3
                         i.fa.fa-files-o
                         |   REPORTS
@@ -27,33 +27,27 @@ html(lang="en")
                 #myCollapse.collapse.navbar-collapse
                     ul.navbar-nav.ml-auto
                         li.nav-item
-                            a.nav-link(href="/api/v2/dom_reports", class=(path === 'dom' ? 'active' :'')) Domaći Izveštaji
+                            a.nav-link(href="/api/v2/reports/dom", class=(path === 'dom' ? 'active' :'')) Domaći Izveštaji
                         li.nav-item
-                            a.nav-link(href="/api/v2/exp_reports", class=(path === 'ino' ? 'active' : '')) Ino Izveštaji
+                            a.nav-link(href="/api/v2/reports/exp", class=(path === 'ino' ? 'active' : '')) Ino Izveštaji
                         li.nav-item
-                            a.nav-link(href="/api/v2/shift_reports", class=(path === 'smenski' ? 'active' : '')) Smenski Izveštaji
+                            a.nav-link(href="/api/v2/reports/shift", class=(path === 'shift' ? 'active' : '')) Smenski Izveštaji
                                                
                     block user
-
+    
         nav.navbar.navbar-expand-lg.bg-warning.pb-1.sticky-top
             .container
                 .collapse.navbar-collapse#myCollapse
-                    ul.navbar-nav.mr-auto#optionsNav
-                        li.nav-item.mr-2.mb-2.mb-lg-0(data-toggle="tooltip", title="Morate prvo da se ulogujete!", data-placement="bottom")
-                            a(href="product-create.html").btn.btn-secondary.disabled Dodaj novi proizvod
-
-                        li.nav-item.mb-2.mb-lg-0(data-toggle="tooltip", title="Morate prvo da se ulogujete!", data-placement="bottom")
-                            a(href="product-update.html").btn.btn-secondary.disabled Izmeni / Obriši proizvod
+                    block secondaryMenu
 
                     ul.navbar-nav.ml-auto
                         li.nav-item.mr-2
-                            a(href="index.html").btn.btn-outline-info Promeni jezik 
-                                img(src="/img/en.png", alt="en").icon
-
+                            block language
+                            
         block content                  
-        footer#main-footer.bg-dark.text-light.text-center.fixed-bottom Reports &copy;
-            span.year
-        
+
+        block footer
+
         script(src="https://code.jquery.com/jquery-3.5.1.slim.min.js", integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj", crossorigin="anonymous")
         script(src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js", integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo", crossorigin="anonymous")
         script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js", integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI", crossorigin="anonymous")
