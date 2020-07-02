@@ -1,11 +1,7 @@
 extends layouts/main-layout.pug
 
 block user
-    ul.navbar-nav.ml-auto#userNav
-        li.nav-item.mr-2.mb-2.mb-lg-0
-            a.btn.btn-outline-info(href="login.html") Prijava
-        li.nav-item
-            a.btn.btn-outline-info(href="login.html") Registracija 
+    include layouts/userNotLogedIn.pug
 
 block secondaryMenu
     include layouts/secondaryMenuProduct.pug

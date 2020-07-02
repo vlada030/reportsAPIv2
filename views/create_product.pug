@@ -1,0 +1,129 @@
+extends layouts/main-layout.pug
+
+block user
+    include layouts/userNotLogedIn.pug
+
+block content
+    .container.mb-4.p-2
+        h2.text-center.mb-4.pb-4 Dodaj novi proizvod
+        .row
+            .col-lg-8.bg-warning.rounded.mx-auto
+                form#productCreateForm.p-4
+                    .form-group.row.align-items-center.pb-4
+                        label.col-md-4(for='productCode') Šifra proizvoda:
+                        .col-md-8
+                            input#productCode.form-control(type='number', name='sifra', placeholder='Unesi 7-cifreni broj')
+                            small Error message
+                    .form-group.row.align-items-center.pb-4
+                        label.col-md-4(for='cableType') Naziv proizvoda:
+                        .col-md-8
+                            input#cableType.form-control(type='text', name='proizvod', placeholder='Obavezno polje')
+                            small Error message
+                    .form-group.row.align-items-center.pb-4
+                        label.col-md-4(for='ratedVoltage') Nazivni napon:
+                        .col-md-8
+                            select#ratedVoltage.form-control(name='ratedVoltage')
+                                option(value='100V') 100V
+                                option(value='380V') 380V
+                                option(value='300/300V') 300/300V
+                                option(value='300/500V') 300/500V
+                                option(value='450/750V') 450/750V
+                                option(value='0.6/1kV', selected='') 0.6/1kV
+                                option(value='3.6/6kV') 3.6/6kV
+                                option(value='6/10kV') 6/10kV
+                                option(value='12/20kV') 12/20kV
+                                option(value='18/30kV') 18/30kV
+                                option(value='20/35kV') 20/35kV
+                                option(value='N/A') N/A
+                    .form-group.row.align-items-center.pb-4
+                        label.col-md-4(for='standard') Standard:
+                        .col-md-8
+                            input#standard.form-control(placeholder='Obavezno polje', type='text', name='propis')
+                            small Error message
+                    .form-group.row.align-items-center.pb-4
+                        label.col-md-4(for='productColor') Boja:
+                        .col-md-8
+                            select#productColor.form-control(name='productColor')
+                                option(value='crna', selected='') Crna
+                                option(value='siva') Siva
+                                option(value='bela') Bela
+                                option(value='crvena') Crvena
+                                option(value='narandžasta') Narandžasta
+                                option(value='žuto-zelena') Žuto-zelena
+                                option(value='plava') Plava
+                                option(value='braon') Braon
+                                option(value='zelena') Zelena
+                                option(value='žuta') Žuta
+                                option(value='bezbojna') Bezbojna
+                                option(value='N/A') N/A
+                    .form-group.row.align-items-center.pb-4
+                        label.col-md-4(for='wiresNumber') Broj žica:
+                        .col-md-8
+                            input#wiresNumber.form-control(placeholder='Obavezno polje', type='number', name='brojZica')
+                            small Error message
+                    .form-group.row.align-items-center.pb-4
+                        label.col-md-4(for='wireDiametar') Prečnik žice:
+                        .col-md-8
+                            input#wireDiametar.form-control(placeholder='Obavezno polje', type='text', name='precnikZice')
+                            small Error message
+                    .form-group.row.align-items-center.pb-4
+                        label.col-md-4(for='resistance') Električni otpor:
+                        .col-md-8
+                            input#resistance.form-control(placeholder='Obavezno polje', type='text', name='otpor')
+                            small Error message
+                    .form-group.row.align-items-center.pb-4
+                        label.col-md-4(for='semiFirst') Prvi poluprovodni sloj:
+                        .col-md-8
+                            input#semiFirst.form-control(type='text', placeholder='/', name='debPPS1')
+                            small Error message
+                    .form-group.row.align-items-center.pb-4
+                        label.col-md-4(for='thickInsulation') Debljina izolacije:
+                        .col-md-8
+                            input#thickInsulation.form-control(placeholder='Obavezno polje', type='text', name='debIzolacije')
+                            small Error message
+                    .form-group.row.align-items-center.pb-4
+                        label.col-md-4(for='semiSecond') Drugi poluprovodni sloj:
+                        .col-md-8
+                            input#semiSecond.form-control(placeholder='/', type='text', name='debPPS2')
+                            small Error message
+                    .form-group.row.align-items-center.pb-4
+                        label.col-md-4(for='thickSheath') Debljina plašta:
+                        .col-md-8
+                            input#thickSheath.form-control(placeholder='Ako ne postoji, unesi 0', type='text', name='debPlasta', value='0')
+                            small Error message
+                    .form-group.row.align-items-center.pb-4
+                        label.col-md-4(for='outerDiametar') Spoljni prečnik:
+                        .col-md-8
+                            input#outerDiametar.form-control(placeholder='Obavezno polje', type='text', name='spPrecnik')
+                            small Error message
+                    .form-group.row.align-items-center.pb-4
+                        label.col-md-4(for='testVoltage') Ispitni napon:
+                        .col-md-8
+                            select#testVoltage.form-control(name='testVoltage')
+                                option(value='2') 2kV
+                                option(value='2.5') 2.5kV
+                                option(value='3') 3kV
+                                option(value='3.5', selected='') 3.5kV
+                                option(value='4') 4kV
+                                option(value='15') 15kV
+                                option(value='21') 21kV
+                                option(value='30') 30kV
+                                option(value='42') 42kV
+                                option(value='50') 50kV
+                                option(value='83.2') 83.2kV
+                    .form-group.row.align-items-center.pb-4
+                        label.col-md-4(for='pDischarge') Parcijalna pražnjenja:
+                        .col-md-8
+                            select#pDischarge.form-control(name='pDischarge')
+                                option(value='/') /
+                                option(value='<2') <2pC
+                                option(value='<20') <20pC
+                    hr.w-75.mb-4
+                    .row.mb-4
+                        .col-md-6.mx-auto.row.justify-content-center
+                            button#proba.text-center.btn.btn-info.w-50.mb-2(type='submit') Zapamti
+                        .col-md-6.mx-auto.row.justify-content-center
+                            input.btn.btn-info.w-50.mb-2(type='reset', value='Obriši polja')
+
+block footer
+    include layouts/footer.pug
