@@ -14,8 +14,8 @@ const errorHandler = require('./middleware/errorHandler');
 const connectDB = require('./config/db');
 // import routa
 const reports = require('./routes/reports');
-//const products = require('./routes/products');
-//const users = require('./routes/auth');
+const products = require('./routes/products');
+const users = require('./routes/auth');
 //const userHTML = require('./routes/userHTML');
 // import 404 controlera
 const pageNotFound = require('./controllers/404');
@@ -26,7 +26,7 @@ dotenv.config({
 });
 
 // pozivanje konekcije nakon .env, a pre app
-connectDB();
+//connectDB();
 
 // kreiranje aplikacije
 const app = express();
@@ -66,9 +66,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // postavljanje routa
 app.use('/api/v2/reports', reports);
-//app.use('/api/v1/products', products);
-//app.use('/api/v1/auth', users);
-//app.use('/api/v1/users', userHTML);
+app.use('/api/v2/products', products);
+app.use('/api/v2/auth', users);
 // ukoliko strana ne postoji
 app.use(pageNotFound);
 

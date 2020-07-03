@@ -2,6 +2,24 @@ const Product = require('../models/Product');
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/asyncHandler');
 
+// @desc   Get HTML for product creeate
+// @route  GET /api/v2/products/create
+// @access Private
+
+exports.getCreateProductHTML = (req, res, next) => {
+
+    res.status(200).render('create_product', {title: 'Dodaj novi proizvod', path: 'none', lang: 'none'});
+};
+
+// @desc   Get HTML for product update
+// @route  GET /api/v2/products/update
+// @access Private
+
+exports.getUpdateProductHTML = (req, res, next) => {
+
+    res.status(200).render('update_product', {title: 'Izmeni postojeći proizvod', path: 'none', lang: 'none'});
+};
+
 // @desc   Get all products
 // @route  GET /api/v1/products
 // @access Private

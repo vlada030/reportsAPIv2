@@ -1,0 +1,29 @@
+extends layouts/auth_layout.pug
+
+block link
+    a.nav-link(href="../auth/register") REGISTRACIJA
+
+block content
+    section#login.my-5
+        .container
+            .row
+                .col-md-6.m-auto
+                    .card
+                        .card-header
+                            h4
+                                i.far.fa-user.mr-2
+                                | Prijava
+                        .card-body
+                            form#authForm
+                                .form-group
+                                    label(for='email') Email
+                                    input#email.form-control(type='email', name='email')
+                                .form-group
+                                    label(for='password') Šifra
+                                    input#password.form-control(type='password', name='password')
+                                a.text-muted(href='#')
+                                    p Zaboravili ste šifru?
+                                button.btn.btn-info.btn-block.mt-3(type='submit') Pošalji
+
+block footer
+    include layouts/fixed_footer.pug

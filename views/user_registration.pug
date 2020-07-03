@@ -1,11 +1,7 @@
-extends layouts/main-layout.pug
+extends layouts/auth_layout.pug
 
-block user
-    ul.navbar-nav.ml-auto#userNav
-        li.nav-item.mr-2.mb-2.mb-lg-0
-            a.btn.btn-outline-info(href="login.html") Prijava
-        li.nav-item
-            a.btn.btn-outline-info(href="login.html") Registracija
+block link
+    a.nav-link(href="../auth/login") PRIJAVA
 
 block content
     section.my-5
@@ -39,3 +35,6 @@ block content
                                         label.custom-file-label(for="customFile") Opciono polje &#42;
     
                                 button.btn.btn-info.btn-block.mt-3(type="submit")  Pošalji
+
+block footer
+    include layouts/fixed_footer.pug
