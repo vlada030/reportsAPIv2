@@ -62,7 +62,13 @@ exports.getProducts = asyncHandler(async (req, res, next) => {
 // @access Public
 
 exports.getProduct = asyncHandler(async (req, res, next) => {
-    const product = await Product.find({sifra: req.params.id});
+    const product = await Product.find({sifra: req.params.id}).populate({
+        path: 'createdByUser',
+        select: 'name email'
+    }).populate({
+        path: 'modifiedByUser',
+        select: 'name email'
+    });
     
     // u slucaju da u ObjectId promenimo jedno slovo, a ukupan broj/format
     // id ostane isti izbacuje success: true, DATA: NULL
@@ -77,17 +83,17 @@ exports.getProduct = asyncHandler(async (req, res, next) => {
     
     
     // poziva fju za pretvaranje Decimal128 u String
-    const newProduct = decimal128ToStringOutput(product);
+    const convertedProduct = decimal128ToStringOutput(product);
 
     res.status(200).json({
         success: true,
-        data: newProduct
+        data: convertedProduct
     }); 
 });
 
 
 // @desc   Create product
-// @route  POST /api/v1/products
+// @route  POST /api/v2/products
 // @access Private
 
 exports.createProduct = asyncHandler(
@@ -122,7 +128,7 @@ exports.updateProduct = asyncHandler(async (req, res, next) => {
     // req.body.modifiedByUser = req.user.id;
     // req.body.modifiedAt = Date.now();
     req.fields.modifiedByUser = req.user.id;
-    req.fields.modifiedAt = Date.now();
+    //req.fields.modifiedAt = Date.now();
 
 
 
@@ -160,8 +166,8 @@ exports.deleteProduct = asyncHandler(async (req, res, next) => {
 
 // helper fja za prebacivanje Decimal128 u String
 
-const decimal128ToStringOutput = (arrOfProducts) => {
-    return arrOfProducts.map( product => {
+const decimal128ToStringOutput = (arrOfProductProperties) => {
+    return arrOfProductProperties.map( product => {
         try {
             let precnikZice = void 0;
             let otpor = void 0;
@@ -169,6 +175,7 @@ const decimal128ToStringOutput = (arrOfProducts) => {
             let debPlasta = void 0;
             let spPrecnik = void 0;
             let createdAt = void 0;
+            let updatedAt = void 0;
 
             if (product.precnikZice) {
                 precnikZice =  product.precnikZice.toString();
@@ -189,6 +196,9 @@ const decimal128ToStringOutput = (arrOfProducts) => {
             if (product.createdAt) {
                 createdAt =  product.createdAt.toUTCString();
             } 
+            if (product.updatedAt) {
+                updatedAt =  product.updatedAt.toUTCString();
+            } 
 
             return {
                 _id: product._id,
@@ -207,7 +217,9 @@ const decimal128ToStringOutput = (arrOfProducts) => {
                 debPlasta: debPlasta,
                 spPrecnik: spPrecnik,
                 ispitniNapon: product.ispitniNapon,
-                createdAt: createdAt
+                createdAt,
+                updatedAt,
+                createdByUser: product.createdByUser
             };
 
         } catch (error) {

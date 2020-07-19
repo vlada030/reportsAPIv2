@@ -18,7 +18,7 @@ exports.getRegisterUserHTML = (req, res, next) => {
 
 exports.register = asyncHandler(async (req, res, next) => {
     
-    const {name, email, password, role} = req.body;
+    const {name, email, password, role} = req.fields;
     
     const user = await User.create({
         name,
@@ -48,7 +48,7 @@ exports.getLoginUserHTML = (req, res, next) => {
 };
     
 // @desc   Login User
-// @route  POST /api/v1/auth/login
+// @route  POST /api/v2/auth/login
 // @access Public
 
 exports.login = asyncHandler(async (req, res, next) => {
@@ -89,6 +89,59 @@ exports.login = asyncHandler(async (req, res, next) => {
     // });
 }); 
 
+
+// @desc   Get loged user
+// @route  GET /api/v2/auth/me
+// @access Private
+
+exports.getMe = asyncHandler(async (req, res) => {
+
+    const user = await User.findById(req.user.id).populate({
+        path: 'products',
+        select:'proizvod sifra'
+    });
+    res.status(200).json({
+        success: true,
+        data: user
+    });
+});
+
+// @desc    Update loged user info 
+// @route   GET /api/v2/auth/updateDetails
+// @access  Private
+
+exports.updateDetails = asyncHandler(async (req, res, next) => {
+    const { name, email } = req.fields;
+    
+    const user = await User.findByIdAndUpdate(req.user.id, {name, email}, {
+        new: true,
+        runValidators: true
+    });  
+    
+    res.status(200).json({
+        success: true,
+        data: user
+    });    
+    
+}); 
+
+// @desc    Log user out & clear cookie 
+// @route   GET /api/v2/auth/logout
+// @access  Private
+exports.logout = asyncHandler(async (req, res, next) => {
+    // postavljanje cookija na vrednost none
+    res.cookie('token', 'none', {
+        expires: new Date(Date.now() + 10 * 1000),
+        httpOnly: true
+    });
+    
+    res.status(200).json({
+        success: true,
+        data: "user logged out"
+    });
+
+}); 
+
 // kreiranje tokena, cookie i generisanje responsa
 // tokenu na FE se može pristupiti preko local Storage ili preko cookie što je sigurnije 
 const sendTokenResponse = (user, statusCode, res) => {
@@ -115,33 +168,3 @@ const sendTokenResponse = (user, statusCode, res) => {
         token
     })
 };
-
-// @desc   Get loged user
-// @route  GET /api/v1/auth/me
-// @access Private
-
-exports.getMe = asyncHandler(async (req, res) => {
-    const user = await User.findById(req.user.id);
-    
-    res.status(200).json({
-        success: true,
-        data: user
-        //prtData: req.user
-    });
-});
-
-// @desc    Log user out & clear cookie 
-// @route   GET /api/v1/auth/logout
-// @access  Private
-exports.logout = asyncHandler(async (req, res, next) => {
-    // postavljanje cookija na vrednost none
-    res.cookie('token', 'none', {
-        expires: new Date(Date.now() + 10 * 1000),
-        httpOnly: true
-    });
-    
-    res.status(200).json({
-        success: true,
-        data: "user logged out"
-    });
-}); 

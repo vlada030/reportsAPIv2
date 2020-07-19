@@ -8,7 +8,7 @@ block content
         h2.text-center.mb-4.pb-4 Dodaj novi proizvod
         .row
             .col-lg-8.bg-warning.rounded.mx-auto
-                form#productCreateForm.p-4
+                form#productCreateForm.p-4(action="/api/v2/products", method="POST")
                     .form-group.row.align-items-center.pb-4
                         label.col-md-4(for='productCode') Šifra proizvoda:
                         .col-md-8

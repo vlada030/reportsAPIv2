@@ -75,14 +75,7 @@ const ProductSchema = new mongoose.Schema({
         unique: true        
     },
 
-    // proizvod: {
-    //     type: String,
-    //     required: [true, 'Please add a product name'],
-    //     trim: true,
-    //     minlength: [2, 'Name can not be less than 2 characters'],
-    //     maxlength: [45, 'Name can not be more than 45 characters']
-    // },
-    proizvod: {
+        proizvod: {
         type: String,
         required: [true, 'Unesite naziv proizvoda'],
         trim: true,
@@ -104,14 +97,7 @@ const ProductSchema = new mongoose.Schema({
         
     },
 
-    // propis: {
-    //     type: String,
-    //     required: [true, 'Please add a product standard'],
-    //     trim: true,
-    //     maxlength: [40, 'Max length for standard name is 40 characters'],
-    //     uppercase: true
-    // },
-    propis: {
+        propis: {
         type: String,
         required: [true, 'Unesite standard za izradu proizvoda.'],
         trim: true,
@@ -119,38 +105,20 @@ const ProductSchema = new mongoose.Schema({
         uppercase: true
     },
 
-    // brojZica: {
-    //     type: Number,
-    //     required: [true, 'Please add a number of component wires'],
-    //     min: [1, 'Min number of component wires is 1']
-    //     max: [2500, 'Max number of component wires is 2500']
-    // },
-    brojZica: {
+        brojZica: {
         type: Number,
         required: [true, 'Unesi ukupan broj komponenti žica'],
         min: [1, 'Najmanji broj komponenti je 1 žica'],
         max: [2500, 'Najveći broj komponenti je 2500 žica']
     },
 
-    // precnikZice: {
-    //     type: mongoose.Types.Decimal128,
-    //     required: [true, 'Please add a diametar of component wires'],
-    //     min: [0.2, 'Min diametar of component wire is 0.2'],
-    //     max: [3.6, 'Max diametar of component wire is 3.6']
-    // },
-    precnikZice: {
+        precnikZice: {
         type: mongoose.Schema.Types.Decimal128,
         required: [true, 'Unesi prečnik jedne žice'],
         validate: manyValidators
     },
 
-    // otpor: {
-    //     type: mongoose.Types.Decimal128,
-    //     required: [true, 'Please add a resistance'],
-    //     min: [0.01, 'Min resistance is 0.1'],
-    //     max: [24, 'Max resistance is 24']
-    // },
-    otpor: {
+        otpor: {
         type: mongoose.Schema.Types.Decimal128,
         required: [true, 'Unesi otpor provodnika'],
         validate: {
@@ -159,13 +127,7 @@ const ProductSchema = new mongoose.Schema({
         }
     },
 
-    // debIzolacije: {
-    //     type: mongoose.Types.Decimal128,
-    //     required: [true, 'Please add a insulation thickness'],
-    //     //min: [0.3, 'Min insulation thickness is 0.3'],
-    //     max: [9, 'Max insulation thickness is 9']
-    // },
-    debIzolacije: {
+        debIzolacije: {
         type: mongoose.Schema.Types.Decimal128,
         required: [true, 'Unesi debljinu izolacije'],
         validate: [insulationValidation, 'Debljina izolacije mora da bude manja od 9']
@@ -183,12 +145,6 @@ const ProductSchema = new mongoose.Schema({
         default: "/"
     },
 
-    // debPlasta: {
-    //     type: mongoose.Types.Decimal128,
-    //     required: [true, 'Please add a sheath thickness'],
-    //     min: [0.3, 'Min sheath thickness is 0.3'],
-    //     max: [4, 'Max sheath thickness is 4']
-    // },
     debPlasta: {
         type: mongoose.Schema.Types.Decimal128,
         required: [true, 'Unesi debljinu plašta.'],
@@ -197,12 +153,6 @@ const ProductSchema = new mongoose.Schema({
         }       
     },
 
-    // spPrecnik: {
-    //     type: mongoose.Types.Decimal128,
-    //     required: [true, 'Please add a overall diametar'],
-    //     min: [2, 'Min overall diametar is 2'],
-    //     max: [70, 'Max overall diametar is 70']
-    // },
     spPrecnik: {
         type: mongoose.Schema.Types.Decimal128,
         required: [true, 'Unesi spoljnji prečnik kabla'],
@@ -223,24 +173,19 @@ const ProductSchema = new mongoose.Schema({
     },
 
     createdByUser: {
-        type: mongoose.Schema.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true
     },
 
     modifiedByUser: {
-        type: mongoose.Schema.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "User"
-    },
-
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
-
-    modifiedAt: {
-        type: Date
     }
+}, 
+{   
+    // sa ovim automatski dodaje polje u Mongo createdAt / updatedAt
+    timestamps: true
 });
 
 // primer pozivanja validacije pre izvršenja update

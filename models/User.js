@@ -30,12 +30,27 @@ const UserSchema = new mongoose.Schema({
 
     resetPasswordToken: String,
 
-    resetPasswordExpire: Date,
+    resetPasswordExpire: Date
 
-    createdAt: {
-        type: Date,
-        default: Date.now
-    }
+    // createdAt: {
+    //     type: Date,
+    //     default: Date.now
+    // }
+},
+{
+    timestamps: true,
+    // ubacivanje virtuals tj properties koje ne postoje u mongo bazi
+    // da bi se videle u res.json ovo se dodaje
+    toJSON: {virtuals: true},
+    toObject: {virtuals: true}
+
+});
+
+UserSchema.virtual('products', {
+    ref: 'Product',
+    localField: '_id',
+    foreignField: 'createdByUser',
+    justOne: false
 });
 
 // encripcija passworda sa bcryptom, dodato je kao middleware ovde da se nebi komplikovao controller

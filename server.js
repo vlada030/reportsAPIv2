@@ -12,11 +12,11 @@ const cors = require('cors');
 const errorHandler = require('./middleware/errorHandler');
 // import MONGO konekcije 
 const connectDB = require('./config/db');
+
 // import routa
 const reports = require('./routes/reports');
 const products = require('./routes/products');
 const users = require('./routes/auth');
-//const userHTML = require('./routes/userHTML');
 // import 404 controlera
 const pageNotFound = require('./controllers/404');
 
@@ -26,7 +26,7 @@ dotenv.config({
 });
 
 // pozivanje konekcije nakon .env, a pre app
-//connectDB();
+connectDB();
 
 // kreiranje aplikacije
 const app = express();
@@ -44,14 +44,15 @@ app.use(express.urlencoded({extended: false}));
 
 // kada se podaci salju preko formData, formData automatski setuje 'content-type': 'multipart/form-data' koji bodyparser iznad ne moze da iscita
 // formidable moze da iscita i json type tako da body parser ne treba
-//app.use(formidableMiddleware());
+app.use(formidableMiddleware());
 
 // pozivanje cookie parsera da bi u cookie mogao sa se ubaci token
 app.use(cookieParser());
 
 
+
 // pozivanje morgan loggera
-if (process.env.NODE_ENV = 'development') {
+if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
 
