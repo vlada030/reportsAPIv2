@@ -69,13 +69,13 @@ const outdiametarValidation = function() {
 const ProductSchema = new mongoose.Schema({
     sifra: {
         type: Number,
-        required: [true, 'Please add a product code'],
+        required: [true, 'Unesite šifru proizvoda'],
         validate: { validator: productCodeLength, msg:'Sifra mora da sadrzi 7 broja'},
         //validate: [function() {return this.sifra.toString().length == 7}, 'Sifra mora da sadrzi 7 broja'],
         unique: true        
     },
 
-        proizvod: {
+    proizvod: {
         type: String,
         required: [true, 'Unesite naziv proizvoda'],
         trim: true,
@@ -97,7 +97,7 @@ const ProductSchema = new mongoose.Schema({
         
     },
 
-        propis: {
+    propis: {
         type: String,
         required: [true, 'Unesite standard za izradu proizvoda.'],
         trim: true,
@@ -105,20 +105,20 @@ const ProductSchema = new mongoose.Schema({
         uppercase: true
     },
 
-        brojZica: {
+    brojZica: {
         type: Number,
         required: [true, 'Unesi ukupan broj komponenti žica'],
         min: [1, 'Najmanji broj komponenti je 1 žica'],
         max: [2500, 'Najveći broj komponenti je 2500 žica']
     },
 
-        precnikZice: {
+    precnikZice: {
         type: mongoose.Schema.Types.Decimal128,
         required: [true, 'Unesi prečnik jedne žice'],
         validate: manyValidators
     },
 
-        otpor: {
+    otpor: {
         type: mongoose.Schema.Types.Decimal128,
         required: [true, 'Unesi otpor provodnika'],
         validate: {
@@ -127,7 +127,7 @@ const ProductSchema = new mongoose.Schema({
         }
     },
 
-        debIzolacije: {
+    debIzolacije: {
         type: mongoose.Schema.Types.Decimal128,
         required: [true, 'Unesi debljinu izolacije'],
         validate: [insulationValidation, 'Debljina izolacije mora da bude manja od 9']

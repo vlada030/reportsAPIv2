@@ -1,11 +1,4 @@
-// @desc   Domestic Reports
-// @route  GET /api/v2/reports/dom
-// @access Private
 
-exports.getDomReportsHTML = (req, res, next) => {
-    const lang = req.query.lang;
-    res.status(200).render('domReports', {title: 'Izveštaji za domaće tržište', path: 'dom', lang: lang});
-};
 
 // @desc   Export Reports
 // @route  GET /api/v2/reports/exp
