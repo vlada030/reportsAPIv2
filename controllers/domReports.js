@@ -17,14 +17,14 @@ exports.getDomReportsHTML = asyncHandler((req, res) => {
 // @access Public
 
 exports.createDomReport = asyncHandler( async(req, res, next) => {
-    req.fields.createdByUser = req.user.id;
-    const bruto = req.fields.bruto;
-    const neto = req.fields.neto;
+    req.body.createdByUser = req.user.id;
+    const bruto = req.body.bruto;
+    const neto = req.body.neto;
 
     if (neto > bruto) {
         return next(new ErrorResponse('Bruto mora biti veće od neto', 400));
     }
-   const report = await DomReport.create(req.fields);
+   const report = await DomReport.create(req.body);
 
    res.status(201).json({
        success: true,

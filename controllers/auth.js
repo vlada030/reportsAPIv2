@@ -6,7 +6,7 @@ const errorResponse = require('../utils/errorResponse');
 // @route  GET /api/v2/auth/register
 // @access Public
 
-exports.getRegisterUserHTML = (req, res, next) => {
+exports.getRegisterUserHTML = (req, res) => {
 
     res.status(200).render('user_registration', {title: 'Registracija novog korisnika', path: 'none', lang: 'none'});
 };
@@ -18,7 +18,7 @@ exports.getRegisterUserHTML = (req, res, next) => {
 
 exports.register = asyncHandler(async (req, res, next) => {
     
-    const {name, email, password, role} = req.fields;
+    const {name, email, password, role} = req.body;
     
     const user = await User.create({
         name,
@@ -42,7 +42,7 @@ exports.register = asyncHandler(async (req, res, next) => {
 // @route  GET /api/v2/auth/login
 // @access Public
 
-exports.getLoginUserHTML = (req, res, next) => {
+exports.getLoginUserHTML = (req, res) => {
 
     res.status(200).render('user_login', {title: 'Prijava korisnika', path: 'none', lang: 'none'});
 };
@@ -54,11 +54,11 @@ exports.getLoginUserHTML = (req, res, next) => {
 exports.login = asyncHandler(async (req, res, next) => {
     
     // ako se podaci salju kao json, bodyparser ih ubacuje u req.body
-    // var {email, password} = req.body;
+    var {email, password} = req.body;
 
     // formidable pored podataka iz formData moze da prihvata i json , u tom slucaju ne treba bodyparser
     // ubacuje ih u body.fields
-    const {email, password} = req.fields;
+    //const {email, password} = req.fields;
     
     // validacija da li su polja prazna
     if (!email || !password) {
@@ -111,7 +111,7 @@ exports.getMe = asyncHandler(async (req, res) => {
 // @access  Private
 
 exports.updateDetails = asyncHandler(async (req, res, next) => {
-    const { name, email } = req.fields;
+    const { name, email } = req.body;
     
     const user = await User.findByIdAndUpdate(req.user.id, {name, email}, {
         new: true,
@@ -125,9 +125,24 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
     
 }); 
 
+// @desc    Update user avatar
+// @route   GET /api/v2/auth/me/avatar
+// @access  Private
+
+exports.updateAvatar = asyncHandler(async (req, res) => {
+    
+    
+    
+    res.status(200).json({
+        success: true
+    });    
+    
+}); 
+
 // @desc    Log user out & clear cookie 
 // @route   GET /api/v2/auth/logout
 // @access  Private
+
 exports.logout = asyncHandler(async (req, res, next) => {
     // postavljanje cookija na vrednost none
     res.cookie('token', 'none', {
