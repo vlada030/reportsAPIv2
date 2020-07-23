@@ -129,12 +129,22 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
 // @route   GET /api/v2/auth/me/avatar
 // @access  Private
 
-exports.updateAvatar = asyncHandler(async (req, res) => {
+exports.updateAvatar = asyncHandler(async (req, res, next) => {
+    // samo ako u multer.options nemamo dest onda ovde preko req.file mozemo da mu pristupimo
+    if (!req.file) {
+        return next(new errorResponse('Niste izabrali avatar sliku', 400));
+    }
     
-    
-    
+    req.user.avatar = req.file.buffer;
+
+    //const user = await req.user.save();
+    const user = await User.findByIdAndUpdate(req.user.id, {avatar: req.user.avatar}, {
+        new: true
+    });
+
     res.status(200).json({
-        success: true
+        success: true,
+        data: user
     });    
     
 }); 
