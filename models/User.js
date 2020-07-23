@@ -29,7 +29,8 @@ const UserSchema = new mongoose.Schema({
     },
 
     avatar: {
-        type: Buffer
+        type: Buffer,
+        select: false
     },
 
     resetPasswordToken: String,

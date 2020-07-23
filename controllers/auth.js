@@ -125,8 +125,8 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
     
 }); 
 
-// @desc    Update user avatar
-// @route   GET /api/v2/auth/me/avatar
+// @desc    Create / Update user avatar
+// @route   POST /api/v2/auth/me/avatar
 // @access  Private
 
 exports.updateAvatar = asyncHandler(async (req, res, next) => {
@@ -148,6 +148,27 @@ exports.updateAvatar = asyncHandler(async (req, res, next) => {
     });    
     
 }); 
+
+// @desc    Delete user avatar
+// @route   DELETE /api/v2/auth/me/avatar
+// @access  Private
+
+exports.deleteAvatar = asyncHandler(async (req, res, next) => {
+        
+   req.user.avatar = void 0;
+
+    //const user = await req.user.save();
+    const user = await User.findByIdAndUpdate(req.user.id, {avatar: req.user.avatar}, {
+        new: true
+    });
+
+    res.status(200).json({
+        success: true,
+        data: user
+    });    
+    
+}); 
+
 
 // @desc    Log user out & clear cookie 
 // @route   GET /api/v2/auth/logout

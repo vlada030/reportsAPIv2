@@ -16,7 +16,9 @@ const connectDB = require('./config/db');
 // import routa
 const reports = require('./routes/reports');
 const products = require('./routes/products');
-const users = require('./routes/auth');
+const auth = require('./routes/auth');
+const users = require('./routes/users');
+
 // import 404 controlera
 const pageNotFound = require('./controllers/404');
 
@@ -68,7 +70,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 // postavljanje routa
 app.use('/api/v2/reports', reports);
 app.use('/api/v2/products', products);
-app.use('/api/v2/auth', users);
+app.use('/api/v2/auth', auth);
+app.use('/api/v2/users', users);
+
 // ukoliko strana ne postoji
 app.use(pageNotFound);
 
