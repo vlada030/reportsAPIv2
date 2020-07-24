@@ -32,7 +32,7 @@ exports.getAvatar = asyncHandler(async (req, res, next) => {
         return next(new errorResponse(`Korisnik sa trazenim id ${req.params.id} ne postoji`, 400));
     }
     // nije bitna originalna extenzija slike bmp/jpg/jpeg/png
-    res.set('Content-Type', 'image/jpeg');
+    res.set('Content-Type', 'image/png');
  
     res.status(200).send(user.avatar);         
  }); 

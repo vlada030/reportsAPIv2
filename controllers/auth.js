@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const asyncHandler = require('../middleware/asyncHandler');
 const errorResponse = require('../utils/errorResponse');
+const sharp = require('sharp');
 
 // @desc   Get HTML for User register
 // @route  GET /api/v2/auth/register
@@ -135,10 +136,12 @@ exports.updateAvatar = asyncHandler(async (req, res, next) => {
         return next(new errorResponse('Niste izabrali avatar sliku', 400));
     }
     
-    req.user.avatar = req.file.buffer;
+    //req.user.avatar = req.file.buffer;
+    // dodavanje sharp modula za narmalizaciju slike resize / png i vracanje u buffer format zbog snimanja u db
+    const buffer = await sharp(req.file.buffer).resize({width: 250, height: 250}).png().toBuffer();
 
     //const user = await req.user.save();
-    const user = await User.findByIdAndUpdate(req.user.id, {avatar: req.user.avatar}, {
+    const user = await User.findByIdAndUpdate(req.user.id, {avatar: buffer}, {
         new: true
     });
 

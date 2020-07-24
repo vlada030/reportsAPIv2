@@ -13,7 +13,7 @@ const upload = multer({
     // kada je ovo podeseno ONDA SE NE VIDI FAJL u req.file i plus posto se ceo kod aploaduje na heroku, AWS, prilikom svakog pokretanja app ceo file sistem SE BRISE zato moraju slike da se sacuvaju u db    
     //dest: 'avatar/'
     limits: {
-        fileSize: 3*1024*1024
+        fileSize: 10*1024*1024
     },
     fileFilter(req, file, cb) {
 
