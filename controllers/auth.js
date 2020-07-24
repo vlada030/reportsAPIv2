@@ -28,7 +28,7 @@ exports.register = asyncHandler(async (req, res, next) => {
         role
     });
     // umesto ovoga ispod stavlja se response koji u sebi ukljucuju cookie
-    sendTokenResponse(user, 200, res);
+    await sendTokenResponse(user, 200, res);
     
     // // nakon sto je iznad sve prošlo kreiraj token i uključi ga u response
     // const token = user.getSignedJwtToken();
@@ -79,7 +79,7 @@ exports.login = asyncHandler(async (req, res, next) => {
     }
 
     // umesto ovoga ispod stavlja se response koji u sebi ukljucuju cookie
-    sendTokenResponse(user, 200, res);
+    await sendTokenResponse(user, 200, res);
 
     // // nakon sto je iznad sve prošlo kreiraj token i uključi ga u response
     // const token = user.getSignedJwtToken();
@@ -178,6 +178,11 @@ exports.deleteAvatar = asyncHandler(async (req, res, next) => {
 // @access  Private
 
 exports.logout = asyncHandler(async (req, res, next) => {
+
+    // brisanje tokena iz kog hocemo da se izlogujemo, ostali ostaju
+    req.user.tokens = req.user.tokens.filter(token => token.token !== req.cookies.token );    
+    await req.user.save();
+
     // postavljanje cookija na vrednost none
     res.cookie('token', 'none', {
         expires: new Date(Date.now() + 10 * 1000),
@@ -186,14 +191,37 @@ exports.logout = asyncHandler(async (req, res, next) => {
     
     res.status(200).json({
         success: true,
-        data: "user logged out"
+        data: "Current user session logged out"
+    });
+
+}); 
+
+// @desc    Log user out & clear cookie 
+// @route   GET /api/v2/auth/logoutAll
+// @access  Private
+
+exports.logoutAll = asyncHandler(async (req, res, next) => {
+    
+    // brisanje svih tokena tj brisanje svoh sessions, izlogujemo se iz svih uređaja
+    req.user.tokens = [];
+    await req.user.save();
+
+    // postavljanje cookija na vrednost none
+    res.cookie('token', 'none', {
+        expires: new Date(Date.now() + 10 * 1000),
+        httpOnly: true
+    });
+    
+    res.status(200).json({
+        success: true,
+        data: "All user's sessions logged out"
     });
 
 }); 
 
 // kreiranje tokena, cookie i generisanje responsa
 // tokenu na FE se može pristupiti preko local Storage ili preko cookie što je sigurnije 
-const sendTokenResponse = (user, statusCode, res) => {
+const sendTokenResponse = async (user, statusCode, res) => {
     const token = user.getSignedJwtToken();
     const options = {
         expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRE*24*60*60*1000),
@@ -208,6 +236,12 @@ const sendTokenResponse = (user, statusCode, res) => {
         // ovim se to postize
         options.secure = true;
     }
+
+    // ubačeno snimanje tokena u model tj bazu kako bi se moglo napraviti "pravo" logovanje sa vise uređaja i odjavljivanje sa pojedinih dok ostali ostaju ulogovani
+    // isto generisani token ostaje i dalje validan i nakon odjavljivanja pa to neko moze da zloupotrebi, ovim se to izbegava
+
+    user.tokens = user.tokens.concat({token});
+    await user.save();
 
     res
     .status(statusCode)

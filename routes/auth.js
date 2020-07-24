@@ -1,5 +1,5 @@
 const express = require('express');
-const {register, login, getMe, logout, getRegisterUserHTML, getLoginUserHTML, updateDetails, updateAvatar, deleteAvatar} = require('../controllers/auth');
+const {register, login, getMe, logout, logoutAll, getRegisterUserHTML, getLoginUserHTML, updateDetails, updateAvatar, deleteAvatar} = require('../controllers/auth');
 
 
 const router = express.Router();
@@ -31,6 +31,7 @@ router.get('/me', protect, getMe);
 router.post('/me/avatar', protect, upload.single('avatar'), updateAvatar);
 router.delete('/me/avatar', protect, deleteAvatar);
 router.get('/logout', protect, logout);
+router.get('/logoutAll', protect, logoutAll);
 router.put('/update', protect, updateDetails);
 
 module.exports = router;

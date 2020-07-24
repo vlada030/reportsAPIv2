@@ -28,6 +28,13 @@ const UserSchema = new mongoose.Schema({
         default: 'user'
     },
 
+    tokens: [{
+        token: {
+            type: String,
+            required: true
+        }
+    }],
+
     avatar: {
         type: Buffer,
         select: false
@@ -60,7 +67,13 @@ UserSchema.virtual('products', {
 
 // encripcija passworda sa bcryptom, dodato je kao middleware ovde da se nebi komplikovao controller
 // ako middleware sadrzi async fju onda ne mora (a moze!) da se stavlja next
-UserSchema.pre('save', async function() {
+UserSchema.pre('save', async function(next) {
+    // prilikom snimanja u bazu generisanog tokena u tokens ili generisanog reset tokena i vremena isteka u controlleru
+    // ovo polje se ne unosi ponovo nigde, izbacuje gresku
+    // ovako se to izbegava
+    if (!this.isModified('password')) {
+        next();
+    }
     // pozivanje bcrypta - async fja
     // sto je veći broj u zagradi veca je sigurnost, ali usporava sistem
     const salt = await bcrypt.genSalt(10);
@@ -79,8 +92,8 @@ UserSchema.methods.getSignedJwtToken = function() {
 };
 
 // methods za proveru unesene sifre i one bcryptovane u bazu
-UserSchema.methods.passwordMatchCheck = async function (enteredPass) {
-    return await bcrypt.compare(enteredPass, this.password);
+UserSchema.methods.passwordMatchCheck = function(enteredPass) {
+    return bcrypt.compare(enteredPass, this.password);
 };
 
 module.exports = mongoose.model('User', UserSchema);
