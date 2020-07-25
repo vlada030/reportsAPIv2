@@ -1,7 +1,28 @@
 const User = require('../models/User');
 const asyncHandler = require('../middleware/asyncHandler');
-const errorResponse = require('../utils/errorResponse');
+const ErrorResponse = require('../utils/errorResponse');
 const sharp = require('sharp');
+const multer = require('multer');
+
+const upload = multer({
+    // kada je ovo podeseno ONDA SE NE VIDI FAJL u req.file i plus posto se ceo kod aploaduje na heroku, AWS, prilikom svakog pokretanja app ceo file sistem SE BRISE zato moraju slike da se sacuvaju u db    
+    //dest: 'avatar/'
+    limits: {
+        fileSize: 10*1024*1024
+    },
+    fileFilter(req, file, cb) {
+
+        if (!file.originalname.toLowerCase().match(/\.(png|jpg|jpeg|bmp)$/)) {
+            return cb(new ErrorResponse('Izabrani fajl nije slika, ponovite unos i izaberite sliku', 400))
+        }
+        // ovo je default ako je validacija true
+        cb(undefined, true);
+    }        
+});
+
+// middleware za upload avatar slike
+exports.uploadUserPhoto = upload.single('avatar');
+
 
 // @desc   Get HTML for User register
 // @route  GET /api/v2/auth/register
@@ -63,19 +84,19 @@ exports.login = asyncHandler(async (req, res, next) => {
     
     // validacija da li su polja prazna
     if (!email || !password) {
-        return next(new errorResponse('Unesite email i šifru', 400));
+        return next(new ErrorResponse('Unesite email i šifru', 400));
     }
     // gore iznad select: false znaci da nam ne vraca sifru, ali ovde nam je potrebna da bi mogli da uporedimo sifre i dodajemo select(+password)
     const user = await User.findOne({email}).select('+password');
 
     if (!user) {
-        return next(new errorResponse('Pogrešno uneti podaci. Invalid credentials.', 401));
+        return next(new ErrorResponse('Pogrešno uneti podaci. Invalid credentials.', 401));
     }
     // pozivanje methods iz User modela za proveru sifre
     const isMatch = await user.passwordMatchCheck(password);
 
     if (!isMatch) {
-        return next(new errorResponse('Pogrešno uneti podaci. Invalid credentials.', 401));
+        return next(new ErrorResponse('Pogrešno uneti podaci. Invalid credentials.', 401));
     }
 
     // umesto ovoga ispod stavlja se response koji u sebi ukljucuju cookie
@@ -108,7 +129,7 @@ exports.getMe = asyncHandler(async (req, res) => {
 });
 
 // @desc    Update loged user info 
-// @route   GET /api/v2/auth/updateDetails
+// @route   PUT /api/v2/auth/updateDetails
 // @access  Private
 
 exports.updateDetails = asyncHandler(async (req, res, next) => {
@@ -126,6 +147,31 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
     
 }); 
 
+// @desc    Update loged user password 
+// @route   PUT /api/v2/auth/updatePassword
+// @access  Private
+
+exports.updatePassword = asyncHandler(async (req, res, next) => {
+        
+    const user = await User.findById(req.user.id).select('+password');
+
+    // pozivamo methods iz User modela
+    if (!(await user.passwordMatchCheck(req.body.currentPassword))) {
+        return next(new ErrorResponse('Postojeca sifra neispravna', 401));
+    }
+
+    user.password = req.body.newPassword;
+    // snimamo sa validateBeforeSave: true
+
+    // izbrisi postojeci token iz tokens array
+    user.tokens = user.tokens.filter(token => token.token !== req.cookies.token);
+
+    await user.save();
+    // prilikom promene ili resetovanja sifre VRACA SE TOKEN - pravilo
+    // jer je sada korisnik sa drugom sifrom
+    await sendTokenResponse(user, 200, res);        
+}); 
+
 // @desc    Create / Update user avatar
 // @route   POST /api/v2/auth/me/avatar
 // @access  Private
@@ -133,7 +179,7 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
 exports.updateAvatar = asyncHandler(async (req, res, next) => {
     // samo ako u multer.options nemamo dest onda ovde preko req.file mozemo da mu pristupimo
     if (!req.file) {
-        return next(new errorResponse('Niste izabrali avatar sliku', 400));
+        return next(new ErrorResponse('Niste izabrali avatar sliku', 400));
     }
     
     //req.user.avatar = req.file.buffer;

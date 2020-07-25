@@ -14,13 +14,13 @@ const errorHandler = require('./middleware/errorHandler');
 const connectDB = require('./config/db');
 
 // import routa
-const reports = require('./routes/reports');
-const products = require('./routes/products');
-const auth = require('./routes/auth');
-const users = require('./routes/users');
+const reportsRoute = require('./routes/reportsRoute');
+const productsRoute = require('./routes/productsRoute');
+const authRoute = require('./routes/authRoute');
+const usersRoute = require('./routes/usersRoute');
 
 // import 404 controlera
-const pageNotFound = require('./controllers/404');
+const pageNotFound = require('./controllers/404Controller');
 
 // ENV fajl nije u root folderu zato mora da se navede putanja
 dotenv.config({
@@ -68,10 +68,10 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // postavljanje routa
-app.use('/api/v2/reports', reports);
-app.use('/api/v2/products', products);
-app.use('/api/v2/auth', auth);
-app.use('/api/v2/users', users);
+app.use('/api/v2/reports', reportsRoute);
+app.use('/api/v2/products', productsRoute);
+app.use('/api/v2/auth', authRoute);
+app.use('/api/v2/users', usersRoute);
 
 // ukoliko strana ne postoji
 app.use(pageNotFound);

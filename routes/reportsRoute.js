@@ -1,6 +1,6 @@
 const express = require('express');
-const {getExpReportsHTML, getShiftReportsHTML} = require('../controllers/reports');
-const {getDomReportsHTML, createDomReport, getDomReport} = require('../controllers/domReports');
+const {getExpReportsHTML, getShiftReportsHTML} = require('../controllers/reportsController');
+const {getDomReportsHTML, createDomReport, getDomReport} = require('../controllers/domReportsController');
 const {protect} = require('../middleware/auth');
 
 const router = express.Router();

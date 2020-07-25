@@ -1,5 +1,5 @@
 const express = require('express');
-const {getProducts, getProduct, getCreateProductHTML, getUpdateProductHTML, createProduct, updateProduct, deleteProduct} = require('../controllers/products');
+const {getProducts, getProduct, getCreateProductHTML, getUpdateProductHTML, createProduct, updateProduct, deleteProduct} = require('../controllers/productsController');
 const advancedResults = require('../middleware/advancedResults');
 const Product = require('../models/Product');
 
