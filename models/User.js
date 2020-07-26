@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 
 const UserSchema = new mongoose.Schema({
     name: {
@@ -69,8 +70,7 @@ UserSchema.virtual('products', {
 // ako middleware sadrzi async fju onda ne mora (a moze!) da se stavlja next
 UserSchema.pre('save', async function(next) {
     // prilikom snimanja u bazu generisanog tokena u tokens ili generisanog reset tokena i vremena isteka u controlleru
-    // ovo polje se ne unosi ponovo nigde, izbacuje gresku
-    // ovako se to izbegava
+    // ukoliko sifra nije promenjena preskoci bcrypt
     if (!this.isModified('password')) {
         next();
     }
@@ -95,5 +95,21 @@ UserSchema.methods.getSignedJwtToken = function() {
 UserSchema.methods.passwordMatchCheck = function(enteredPass) {
     return bcrypt.compare(enteredPass, this.password);
 };
+
+// methods za generisanje reset tokena kad se zaboravi sifra
+UserSchema.methods.getResetPasswordToken = function() {
+
+    // core modul crypto za generisanje 20 bita
+    // metod vraca buffer pa se prebacuje u string
+    const resetToken = crypto.randomBytes(20).toString();
+
+    // hash tokena i dodeljivanje
+    this.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+
+    // trajanje tokena 10 min
+    this.resetPasswordExpire = Date.now() + 10 *60 *1000;
+
+    return resetToken;
+}
 
 module.exports = mongoose.model('User', UserSchema);

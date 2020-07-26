@@ -1,6 +1,8 @@
 const User = require('../models/User');
 const asyncHandler = require('../middleware/asyncHandler');
 const ErrorResponse = require('../utils/errorResponse');
+const { sendWelcomeEmail, sendCancelEmail, sendResetPasswordEmail } = require('../utils/sendEmail');
+
 const sharp = require('sharp');
 const multer = require('multer');
 
@@ -48,6 +50,10 @@ exports.register = asyncHandler(async (req, res, next) => {
         password,
         role
     });
+
+    // slanje welcome emaila nakon uspesnog snimanja 
+    //sendWelcomeEmail(user.name, user.email);
+
     // umesto ovoga ispod stavlja se response koji u sebi ukljucuju cookie
     await sendTokenResponse(user, 200, res);
     
@@ -172,6 +178,35 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
     await sendTokenResponse(user, 200, res);        
 }); 
 
+// @desc    Forgotten password
+// @route   POST /api/v2/auth/forgotpassword
+// @access  Public
+
+exports.forgotPassword = asyncHandler(async (req, res, next) => {
+    // nadji korisnika preko unetog emaila
+    const user = await User.findOne({email: req.body.email});
+
+    if (!user) {
+        return next(new ErrorResponse('Ne postoji korisnik sa tom e-mail adresom!', 404));
+    }
+    //generisi reset token
+    const resetToken = user.getResetPasswordToken();
+
+    // snimanje hashovanog tokena i vremena isteka
+    await user.save();
+
+    // slanje email sa linkom za reset
+    // sendResetPasswordEmail(
+    //     user.name, 
+    //     user.email, 
+    //     ``);
+
+    res.status(200).json({
+        success: true,
+        data: user
+    });
+});
+
 // @desc    Create / Update user avatar
 // @route   POST /api/v2/auth/me/avatar
 // @access  Private
@@ -218,7 +253,6 @@ exports.deleteAvatar = asyncHandler(async (req, res, next) => {
     
 }); 
 
-
 // @desc    Log user out & clear cookie 
 // @route   GET /api/v2/auth/logout
 // @access  Private
@@ -261,6 +295,21 @@ exports.logoutAll = asyncHandler(async (req, res, next) => {
     res.status(200).json({
         success: true,
         data: "All user's sessions logged out"
+    });
+
+});
+
+// @desc    Delete Logged user 
+// @route   DELETE /api/v2/auth/me
+// @access  Private
+
+exports.deleteMe = asyncHandler(async (req, res, next) => {
+    
+    await User.findByIdAndDelete(req.user.id);
+
+    res.status(200).json({
+        success: true,
+        data: {}
     });
 
 }); 
