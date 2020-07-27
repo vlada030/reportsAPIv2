@@ -101,7 +101,7 @@ UserSchema.methods.getResetPasswordToken = function() {
 
     // core modul crypto za generisanje 20 bita
     // metod vraca buffer pa se prebacuje u string
-    const resetToken = crypto.randomBytes(20).toString();
+    const resetToken = crypto.randomBytes(20).toString('hex');
 
     // hash tokena i dodeljivanje
     this.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');

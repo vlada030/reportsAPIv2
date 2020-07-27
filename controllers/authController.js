@@ -231,7 +231,7 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
 exports.resetPassword = asyncHandler(async (req, res, next) => {
     const resetPasswordToken = crypto.createHash('sha256').update(req.params.resettoken).digest('hex');
 
-    const user = await User.find({
+    const user = await User.findOne({
         resetPasswordToken,
         resetPasswordExpire: {$gt: Date.now()} 
     });
@@ -239,14 +239,14 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
     if (!user) {
         return next(new ErrorResponse('Neispravan token', 400));
     }
-
+    // da bi ovo radilo ovako MORA da se UPOTREBI findOne jer find vraca Array 
     user.password = req.body.password;
     user.resetPasswordToken = void 0;
     user.resetPasswordExpire = void 0;
 
     await user.save();
 
-    await sendTokenResponse();
+    await sendTokenResponse(user, 200, res);
 
 });
 
@@ -349,6 +349,12 @@ exports.logoutAll = asyncHandler(async (req, res, next) => {
 exports.deleteMe = asyncHandler(async (req, res, next) => {
     
     await User.findByIdAndDelete(req.user.id);
+
+    // postavljanje cookija na vrednost none
+    res.cookie('token', 'none', {
+        expires: new Date(Date.now() + 10 * 1000),
+        httpOnly: true
+    });
 
     // slanje emaila sa potvrdom brisanja svog accounta
     sendCancelEmail(req.user.name, req.user.email);
