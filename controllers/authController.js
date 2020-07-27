@@ -1,3 +1,5 @@
+
+const crypto = require('crypto');
 const User = require('../models/User');
 const asyncHandler = require('../middleware/asyncHandler');
 const ErrorResponse = require('../utils/errorResponse');
@@ -52,7 +54,7 @@ exports.register = asyncHandler(async (req, res, next) => {
     });
 
     // slanje welcome emaila nakon uspesnog snimanja 
-    //sendWelcomeEmail(user.name, user.email);
+    sendWelcomeEmail(user.name, user.email);
 
     // umesto ovoga ispod stavlja se response koji u sebi ukljucuju cookie
     await sendTokenResponse(user, 200, res);
@@ -178,8 +180,8 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
     await sendTokenResponse(user, 200, res);        
 }); 
 
-// @desc    Forgotten password
-// @route   POST /api/v2/auth/forgotpassword
+// @desc    Forgotten password link
+// @route   POST /api/v2/auth/resetpassword
 // @access  Public
 
 exports.forgotPassword = asyncHandler(async (req, res, next) => {
@@ -189,22 +191,63 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
     if (!user) {
         return next(new ErrorResponse('Ne postoji korisnik sa tom e-mail adresom!', 404));
     }
-    //generisi reset token
+    //generisi reset token i dodavanje useru token / vreme isteka
     const resetToken = user.getResetPasswordToken();
 
     // snimanje hashovanog tokena i vremena isteka
     await user.save();
 
-    // slanje email sa linkom za reset
-    // sendResetPasswordEmail(
-    //     user.name, 
-    //     user.email, 
-    //     ``);
+    const resetUrl = `${req.protocol}://${req.get('host')}/api/v2/auth/resetpassword/${resetToken}`;
 
-    res.status(200).json({
-        success: true,
-        data: user
+    //slanje emaila sa linkom za reset
+    try {
+        await sendResetPasswordEmail(
+            user.name, 
+            user.email, 
+            resetUrl);
+
+            console.log(`Uspešno poslata poruka na adresu ${user.email}`.green);
+
+            res.status(200).json({
+                success: true,
+                data: 'Email sent'
+            });
+        
+    } catch (error) {
+        console.log(`Poruka nije poslata na adresu ${user.email}. Error message: ${error}`.red);
+        // resetuj reset polja i snimi ih
+        user.resetPasswordToken = void 0;
+        user.resetPasswordExpire = void 0;
+        await user.save();
+
+        return next(new ErrorResponse('Došlo je do greške, poruka nije poslata'), 500);
+    }
+});
+
+// @desc    Reset password
+// @route   PUT /api/v2/auth/resetpassword/:resettoken
+// @access  Public
+
+exports.resetPassword = asyncHandler(async (req, res, next) => {
+    const resetPasswordToken = crypto.createHash('sha256').update(req.params.resettoken).digest('hex');
+
+    const user = await User.find({
+        resetPasswordToken,
+        resetPasswordExpire: {$gt: Date.now()} 
     });
+
+    if (!user) {
+        return next(new ErrorResponse('Neispravan token', 400));
+    }
+
+    user.password = req.body.password;
+    user.resetPasswordToken = void 0;
+    user.resetPasswordExpire = void 0;
+
+    await user.save();
+
+    await sendTokenResponse();
+
 });
 
 // @desc    Create / Update user avatar
@@ -306,6 +349,9 @@ exports.logoutAll = asyncHandler(async (req, res, next) => {
 exports.deleteMe = asyncHandler(async (req, res, next) => {
     
     await User.findByIdAndDelete(req.user.id);
+
+    // slanje emaila sa potvrdom brisanja svog accounta
+    sendCancelEmail(req.user.name, req.user.email);
 
     res.status(200).json({
         success: true,
