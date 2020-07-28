@@ -14,7 +14,7 @@ exports.getDomReportsHTML = asyncHandler((req, res) => {
 
 // @desc   Create Report
 // @route  POST /api/v2/reports/dom
-// @access Public
+// @access Private
 
 exports.createDomReport = asyncHandler( async(req, res, next) => {
     req.body.createdByUser = req.user.id;
@@ -34,7 +34,7 @@ exports.createDomReport = asyncHandler( async(req, res, next) => {
 
 // @desc   Get Report
 // @route  GET /api/v2/reports/dom/:id
-// @access Public
+// @access Private
 
 exports.getDomReport = asyncHandler( async(req, res, next) => {
     const MISBroj = req.params.id;

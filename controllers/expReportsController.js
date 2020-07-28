@@ -26,3 +26,81 @@ exports.createExpReport = asyncHandler( async(req, res, next) => {
        data: report
    });
 });
+
+// @desc   Get All Reports
+// @route  GET /api/v2/reports/exp/all
+// @access Private
+
+exports.getAllExpReports = asyncHandler( async(req, res, next) => {
+
+   const reports = await ExpReport.find().populate({
+       path: 'createdByUser',
+       select: 'name'
+   });
+
+   res.status(201).json({
+       success: true,
+       count: reports.length,
+       data: reports
+   });
+});
+
+// @desc   Get Report
+// @route  GET /api/v2/reports/exp/:id
+// @access Private
+
+exports.getExpReport = asyncHandler( async(req, res, next) => {
+
+   const report = await ExpReport.findById(req.params.id).populate({
+       path: 'createdByUser',
+       select: 'name'
+   });
+
+   if (!report) {
+       return next(new ErrorResponse(`Izabrani izvestaj ne postoji`, 400));
+   }
+
+   res.status(201).json({
+       success: true,
+       data: report
+   });
+});
+
+// @desc   Update Report
+// @route  PUT /api/v2/reports/exp/:id
+// @access Private
+
+exports.updateExpReport = asyncHandler( async(req, res, next) => {
+    
+    let report = await ExpReport.findById(req.params.id);
+
+    if (!report) {
+        return next(new ErrorResponse('Zahtevani izvestaj ne postoji', 400));
+    }
+   
+    req.body.updatedByUser = req.user.id;
+
+    report = await ExpReport.findByIdAndUpdate(req.params.id, req.body, {
+        runValidators: false,
+        new: true
+    });
+
+    res.status(201).json({
+       success: true,
+       data: report
+   });
+});
+
+// @desc   Delete Report
+// @route  DELETE /api/v2/reports/exp/:id
+// @access Private
+
+exports.deleteExpReport = asyncHandler( async(req, res, next) => {
+
+    await ExpReport.findByIdAndDelete(req.params.id);
+
+   res.status(201).json({
+       success: true,
+       data: {}
+   });
+});
