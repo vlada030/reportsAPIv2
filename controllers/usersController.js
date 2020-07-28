@@ -1,11 +1,11 @@
 const User = require('../models/User');
 const asyncHandler = require('../middleware/asyncHandler');
-const errorResponse = require('../utils/errorResponse');
+const ErrorResponse = require('../utils/errorResponse');
 const errorHandler = require('../middleware/errorHandler');
 
 // @desc    Get All Users
 // @route   GET /api/v2/users
-// @access  Private
+// @access  Private - ADMIN
 
 exports.getUsers = asyncHandler(async (req, res, next) => {
 
@@ -20,19 +20,37 @@ exports.getUsers = asyncHandler(async (req, res, next) => {
     });         
  }); 
 
-// @desc    Get Users avatar
-// @route   GET /api/v2/users/:id/avatar
-// @access  Private
+// @desc    Get User
+// @route   GET /api/v2/users/:id
+// @access  Private - ADMIN
 
-exports.getAvatar = asyncHandler(async (req, res, next) => {
+exports.getUser = asyncHandler(async (req, res, next) => {
 
-    const user = await User.findById(req.params.id).select('+avatar');
+    const user = await User.findOne({_id: req.params.id}).populate({
+        path: 'products',
+        select: 'sifra'
+    });
 
-    if (!user || !user.avatar) {
-        return next(new errorResponse(`Korisnik sa trazenim id ${req.params.id} ne postoji`, 400));
+    if (!user) {
+        return next(new ErrorResponse(`Korisnik sa šifrom ${req.params.id} ne postoji.`, 400));
     }
-    // nije bitna originalna extenzija slike bmp/jpg/jpeg/png
-    res.set('Content-Type', 'image/png');
  
-    res.status(200).send(user.avatar);         
+    res.status(200).json({
+        success: true,
+        data: user
+    });         
+ }); 
+
+// @desc    Delete User
+// @route   DELETE /api/v2/users/:id
+// @access  Private - ADMIN
+
+exports.deleteUser = asyncHandler(async (req, res, next) => {
+
+    await User.findByIdAndDelete(req.params.id);
+ 
+    res.status(200).json({
+        success: true,
+        data: {}
+    });         
  }); 

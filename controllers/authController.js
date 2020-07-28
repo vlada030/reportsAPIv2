@@ -276,6 +276,28 @@ exports.updateAvatar = asyncHandler(async (req, res, next) => {
     
 }); 
 
+// @desc    Get user avatar
+// @route   GET /api/v2/users/me/avatar
+// @access  Private
+
+exports.getAvatar = asyncHandler(async (req, res, next) => {
+
+    const user = await User.findById(req.user.id).select('+avatar');
+
+    if (!user) {
+        return next(new ErrorResponse(`Korisnik sa trazenim id ${req.user.id} ne postoji`, 400));
+    }
+
+    if (!user.avatar) {
+        return next(new ErrorResponse(`Korisnik sa trazenim id ${req.user.id} nema avatar sliku`, 400));
+    }
+    // nije bitna originalna extenzija slike bmp/jpg/jpeg/png
+    // u svakom slučaju preko sharp modula postavili smo da slika uvek bude png
+    res.set('Content-Type', 'image/png');
+ 
+    res.status(200).send(user.avatar);         
+ }); 
+
 // @desc    Delete user avatar
 // @route   DELETE /api/v2/auth/me/avatar
 // @access  Private

@@ -1,5 +1,5 @@
 const express = require('express');
-const {register, login, getMe, deleteMe, logout, logoutAll, getRegisterUserHTML, getLoginUserHTML, updateDetails, updatePassword, forgotPassword, updateAvatar, deleteAvatar, resetPassword, uploadUserPhoto} = require('../controllers/authController');
+const {register, login, getMe, deleteMe, logout, logoutAll, getRegisterUserHTML, getLoginUserHTML, updateDetails, updatePassword, forgotPassword, updateAvatar, deleteAvatar, resetPassword, uploadUserPhoto, getAvatar} = require('../controllers/authController');
 
 const router = express.Router();
 
@@ -9,7 +9,7 @@ const { protect } = require('../middleware/auth');
 router.route('/register').get(getRegisterUserHTML).post(register);
 router.route('/login').get(getLoginUserHTML).post(login);
 router.route('/me').get(protect, getMe).delete(protect, deleteMe);
-router.route('/me/avatar').post(protect, uploadUserPhoto, updateAvatar).delete(protect, deleteAvatar);
+router.route('/me/avatar').get(protect, getAvatar).post(protect, uploadUserPhoto, updateAvatar).delete(protect, deleteAvatar);
 router.get('/logout', protect, logout);
 router.get('/logoutAll', protect, logoutAll);
 router.put('/update', protect, updateDetails);
