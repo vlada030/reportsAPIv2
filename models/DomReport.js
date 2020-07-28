@@ -1,9 +1,5 @@
 const mongoose = require('mongoose');
 
-// const lengthValidation = function(prop, number) {
-//     return prop.toString().length !== number;
-// } 
-
 const DomReportSchema = new mongoose.Schema({
     rb: {
         type: Number,
