@@ -9,7 +9,7 @@ mixin list1(a)
 mixin list(a,b)
    -for (var x = 0; x <= b; x++)
     td.align-middle
-            input.form-control(name=a + '-' + x, type='text')
+            input.form-control(name=a + '_' + x, type='text')
 
 block user
     include layouts/userNotLogedIn.pug

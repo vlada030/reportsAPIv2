@@ -1,7 +1,5 @@
 
 
-
-
 // @desc   Shift Reports
 // @route  GET /api/v2/reports/shift
 // @access Private
