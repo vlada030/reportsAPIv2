@@ -298,7 +298,6 @@ const ExpReportSchema = new mongoose.Schema({
 
     updatedByUser: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true,
         ref: "User"
     }
 },{

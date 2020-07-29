@@ -9,6 +9,7 @@ const ErrorResponse = require('../utils/errorResponse');
 
 exports.getExpReportsHTML = (req, res, next) => {
     const lang = req.query.lang;
+
     res.status(200).render('expReports', {title: 'Izveštaji za inostrano tržište', path: 'ino', lang: lang});
 };
 
@@ -33,16 +34,12 @@ exports.createExpReport = asyncHandler( async(req, res, next) => {
 
 exports.getAllExpReports = asyncHandler( async(req, res, next) => {
 
-   const reports = await ExpReport.find().populate({
-       path: 'createdByUser',
-       select: 'name'
-   });
+//    const reports = await ExpReport.find().populate({
+//        path: 'createdByUser',
+//        select: 'name'
+//    });
 
-   res.status(201).json({
-       success: true,
-       count: reports.length,
-       data: reports
-   });
+   res.status(200).json(res.advancedResults);
 });
 
 // @desc   Get Report
@@ -60,7 +57,7 @@ exports.getExpReport = asyncHandler( async(req, res, next) => {
        return next(new ErrorResponse(`Izabrani izvestaj ne postoji`, 400));
    }
 
-   res.status(201).json({
+   res.status(200).json({
        success: true,
        data: report
    });
@@ -85,7 +82,7 @@ exports.updateExpReport = asyncHandler( async(req, res, next) => {
         new: true
     });
 
-    res.status(201).json({
+    res.status(200).json({
        success: true,
        data: report
    });
@@ -99,7 +96,7 @@ exports.deleteExpReport = asyncHandler( async(req, res, next) => {
 
     await ExpReport.findByIdAndDelete(req.params.id);
 
-   res.status(201).json({
+   res.status(200).json({
        success: true,
        data: {}
    });
