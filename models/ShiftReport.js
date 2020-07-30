@@ -565,7 +565,530 @@ const shiftReportsSchema = new mongoose.Schema({
         maxlength: [150, 'Napomena ne moze da bude duza od 150 karaktera']
     },
 
+    radnik3_ime : {
+        type: String
+    },
 
+    radnik3_k: {
+        type: Number,
+        min: [0, 'Broj ne moze biti negativan'],
+        max: [100, 'Najveca vrednost je 100']
+    },
+
+    radnik3_r: {
+        type: Number,
+        min: [0, 'Broj ne moze biti negativan'],
+        max: [100, 'Najveca vrednost je 100']
+    },
+
+    radnik3_d: {
+        type: Number,
+        min: [0, 'Broj ne moze biti negativan'],
+        max: [100, 'Najveca vrednost je 100']
+    },
+
+    radnik3_vreme: {
+        type: Number,
+        min: [0, 'Broj ne moze biti negativan'],
+        max: [12, 'Najveca vrednost je 12 sati']
+    },
+
+    radnik3_nap: {
+        type: String,
+        maxlength: [150, 'Napomena ne moze da bude duza od 150 karaktera']
+    },
+
+    radnik4_ime : {
+        type: String
+    },
+
+    radnik4_k: {
+        type: Number,
+        min: [0, 'Broj ne moze biti negativan'],
+        max: [100, 'Najveca vrednost je 100']
+    },
+
+    radnik4_r: {
+        type: Number,
+        min: [0, 'Broj ne moze biti negativan'],
+        max: [100, 'Najveca vrednost je 100']
+    },
+
+    radnik4_d: {
+        type: Number,
+        min: [0, 'Broj ne moze biti negativan'],
+        max: [100, 'Najveca vrednost je 100']
+    },
+
+    radnik4_vreme: {
+        type: Number,
+        min: [0, 'Broj ne moze biti negativan'],
+        max: [12, 'Najveca vrednost je 12 sati']
+    },
+
+    radnik4_nap: {
+        type: String,
+        maxlength: [150, 'Napomena ne moze da bude duza od 150 karaktera']
+    },
+
+    radnik5_ime : {
+        type: String
+    },
+
+    radnik5_k: {
+        type: Number,
+        min: [0, 'Broj ne moze biti negativan'],
+        max: [100, 'Najveca vrednost je 100']
+    },
+
+    radnik5_r: {
+        type: Number,
+        min: [0, 'Broj ne moze biti negativan'],
+        max: [100, 'Najveca vrednost je 100']
+    },
+
+    radnik5_d: {
+        type: Number,
+        min: [0, 'Broj ne moze biti negativan'],
+        max: [100, 'Najveca vrednost je 100']
+    },
+
+    radnik5_vreme: {
+        type: Number,
+        min: [0, 'Broj ne moze biti negativan'],
+        max: [12, 'Najveca vrednost je 12 sati']
+    },
+
+    radnik5_nap: {
+        type: String,
+        maxlength: [150, 'Napomena ne moze da bude duza od 150 karaktera']
+    },
+
+    radnik6_ime : {
+        type: String
+    },
+
+    radnik6_k: {
+        type: Number,
+        min: [0, 'Broj ne moze biti negativan'],
+        max: [100, 'Najveca vrednost je 100']
+    },
+
+    radnik6_r: {
+        type: Number,
+        min: [0, 'Broj ne moze biti negativan'],
+        max: [100, 'Najveca vrednost je 100']
+    },
+
+    radnik6_d: {
+        type: Number,
+        min: [0, 'Broj ne moze biti negativan'],
+        max: [100, 'Najveca vrednost je 100']
+    },
+
+    radnik6_vreme: {
+        type: Number,
+        min: [0, 'Broj ne moze biti negativan'],
+        max: [12, 'Najveca vrednost je 12 sati']
+    },
+
+    radnik6_nap: {
+        type: String,
+        maxlength: [150, 'Napomena ne moze da bude duza od 150 karaktera']
+    },
+
+    radnik7_ime : {
+        type: String
+    },
+
+    radnik7_k: {
+        type: Number,
+        min: [0, 'Broj ne moze biti negativan'],
+        max: [100, 'Najveca vrednost je 100']
+    },
+
+    radnik7_r: {
+        type: Number,
+        min: [0, 'Broj ne moze biti negativan'],
+        max: [100, 'Najveca vrednost je 100']
+    },
+
+    radnik7_d: {
+        type: Number,
+        min: [0, 'Broj ne moze biti negativan'],
+        max: [100, 'Najveca vrednost je 100']
+    },
+
+    radnik7_vreme: {
+        type: Number,
+        min: [0, 'Broj ne moze biti negativan'],
+        max: [12, 'Najveca vrednost je 12 sati']
+    },
+
+    radnik7_nap: {
+        type: String,
+        maxlength: [150, 'Napomena ne moze da bude duza od 150 karaktera']
+    },
+
+    radnik8_ime : {
+        type: String
+    },
+
+    radnik8_k: {
+        type: Number,
+        min: [0, 'Broj ne moze biti negativan'],
+        max: [100, 'Najveca vrednost je 100']
+    },
+
+    radnik8_r: {
+        type: Number,
+        min: [0, 'Broj ne moze biti negativan'],
+        max: [100, 'Najveca vrednost je 100']
+    },
+
+    radnik8_d: {
+        type: Number,
+        min: [0, 'Broj ne moze biti negativan'],
+        max: [100, 'Najveca vrednost je 100']
+    },
+
+    radnik8_vreme: {
+        type: Number,
+        min: [0, 'Broj ne moze biti negativan'],
+        max: [12, 'Najveca vrednost je 12 sati']
+    },
+
+    radnik8_nap: {
+        type: String,
+        maxlength: [150, 'Napomena ne moze da bude duza od 150 karaktera']
+    },
+
+    dorada1_rn: {
+        type: Number,
+        maxlength: [8, 'Radni nalog sadrzi najvise 8 cifre']
+    },
+
+    dorada1_proizvod: {
+        type: String,
+        trim: true,
+        maxlength: [100, 'Radni nalog sadrzi najvise 8 cifre']
+    },
+
+    dorada1_duz: {
+        type: Number
+    },
+
+    dorada1_nap: {
+        type: String,
+        trim: true,
+        maxlength: [100, 'Napomena sadrzi najvise 8 cifre']
+    },
+
+    dorada2_rn: {
+        type: Number,
+        maxlength: [8, 'Radni nalog sadrzi najvise 8 cifre']
+    },
+
+    dorada2_proizvod: {
+        type: String,
+        trim: true,
+        maxlength: [100, 'Radni nalog sadrzi najvise 8 cifre']
+    },
+
+    dorada2_duz: {
+        type: Number
+    },
+
+    dorada2_nap: {
+        type: String,
+        trim: true,
+        maxlength: [100, 'Napomena sadrzi najvise 8 cifre']
+    },
+
+    dorada3_rn: {
+        type: Number,
+        maxlength: [8, 'Radni nalog sadrzi najvise 8 cifre']
+    },
+
+    dorada3_proizvod: {
+        type: String,
+        trim: true,
+        maxlength: [100, 'Radni nalog sadrzi najvise 8 cifre']
+    },
+
+    dorada3_duz: {
+        type: Number
+    },
+
+    dorada3_nap: {
+        type: String,
+        trim: true,
+        maxlength: [100, 'Napomena sadrzi najvise 8 cifre']
+    },
+
+    dorada4_rn: {
+        type: Number,
+        maxlength: [8, 'Radni nalog sadrzi najvise 8 cifre']
+    },
+
+    dorada4_proizvod: {
+        type: String,
+        trim: true,
+        maxlength: [100, 'Radni nalog sadrzi najvise 8 cifre']
+    },
+
+    dorada4_duz: {
+        type: Number
+    },
+
+    dorada4_nap: {
+        type: String,
+        trim: true,
+        maxlength: [100, 'Napomena sadrzi najvise 8 cifre']
+    },
+
+    dorada5_rn: {
+        type: Number,
+        maxlength: [8, 'Radni nalog sadrzi najvise 8 cifre']
+    },
+
+    dorada5_proizvod: {
+        type: String,
+        trim: true,
+        maxlength: [100, 'Radni nalog sadrzi najvise 8 cifre']
+    },
+
+    dorada5_duz: {
+        type: Number
+    },
+
+    dorada5_nap: {
+        type: String,
+        trim: true,
+        maxlength: [100, 'Napomena sadrzi najvise 8 cifre']
+    },
+
+    dorada6_rn: {
+        type: Number,
+        maxlength: [8, 'Radni nalog sadrzi najvise 8 cifre']
+    },
+
+    dorada6_proizvod: {
+        type: String,
+        trim: true,
+        maxlength: [100, 'Radni nalog sadrzi najvise 8 cifre']
+    },
+
+    dorada6_duz: {
+        type: Number
+    },
+
+    dorada6_nap: {
+        type: String,
+        trim: true,
+        maxlength: [100, 'Napomena sadrzi najvise 8 cifre']
+    },
+
+    dorada7_rn: {
+        type: Number,
+        maxlength: [8, 'Radni nalog sadrzi najvise 8 cifre']
+    },
+
+    dorada7_proizvod: {
+        type: String,
+        trim: true,
+        maxlength: [100, 'Radni nalog sadrzi najvise 8 cifre']
+    },
+
+    dorada7_duz: {
+        type: Number
+    },
+
+    dorada7_nap: {
+        type: String,
+        trim: true,
+        maxlength: [100, 'Napomena sadrzi najvise 8 cifre']
+    },
+
+    dorada8_rn: {
+        type: Number,
+        maxlength: [8, 'Radni nalog sadrzi najvise 8 cifre']
+    },
+
+    dorada8_proizvod: {
+        type: String,
+        trim: true,
+        maxlength: [100, 'Radni nalog sadrzi najvise 8 cifre']
+    },
+
+    dorada8_duz: {
+        type: Number
+    },
+
+    dorada8_nap: {
+        type: String,
+        trim: true,
+        maxlength: [100, 'Napomena sadrzi najvise 8 cifre']
+    },
+
+    dorada9_rn: {
+        type: Number,
+        maxlength: [8, 'Radni nalog sadrzi najvise 8 cifre']
+    },
+
+    dorada9_proizvod: {
+        type: String,
+        trim: true,
+        maxlength: [100, 'Radni nalog sadrzi najvise 8 cifre']
+    },
+
+    dorada9_duz: {
+        type: Number
+    },
+
+    dorada9_nap: {
+        type: String,
+        trim: true,
+        maxlength: [100, 'Napomena sadrzi najvise 8 cifre']
+    },
+
+    dorada10_rn: {
+        type: Number,
+        maxlength: [8, 'Radni nalog sadrzi najvise 8 cifre']
+    },
+
+    dorada10_proizvod: {
+        type: String,
+        trim: true,
+        maxlength: [100, 'Radni nalog sadrzi najvise 8 cifre']
+    },
+
+    dorada10_duz: {
+        type: Number
+    },
+
+    dorada10_nap: {
+        type: String,
+        trim: true,
+        maxlength: [100, 'Napomena sadrzi najvise 8 cifre']
+    },
+
+    proboj1_rn: {
+        type: Number,
+        maxlength: [8, 'Radni nalog sadrzi najvise 8 cifre']
+    },
+
+    proboj1_proizvod: {
+        type: String,
+        trim: true,
+        maxlength: [100, 'Radni nalog sadrzi najvise 8 cifre']
+    },
+
+    proboj2_duz: {
+        type: Number
+    },
+
+    proboj2_rn: {
+        type: Number,
+        maxlength: [8, 'Radni nalog sadrzi najvise 8 cifre']
+    },
+
+    proboj2_proizvod: {
+        type: String,
+        trim: true,
+        maxlength: [100, 'Radni nalog sadrzi najvise 8 cifre']
+    },
+
+    proboj2_duz: {
+        type: Number
+    },
+
+    proboj3_duz: {
+        type: Number
+    },
+
+    proboj3_rn: {
+        type: Number,
+        maxlength: [8, 'Radni nalog sadrzi najvise 8 cifre']
+    },
+
+    proboj3_proizvod: {
+        type: String,
+        trim: true,
+        maxlength: [100, 'Radni nalog sadrzi najvise 8 cifre']
+    },
+
+    proboj3_duz: {
+        type: Number
+    },
+
+    proboj4_duz: {
+        type: Number
+    },
+
+    proboj4_rn: {
+        type: Number,
+        maxlength: [8, 'Radni nalog sadrzi najvise 8 cifre']
+    },
+
+    proboj4_proizvod: {
+        type: String,
+        trim: true,
+        maxlength: [100, 'Radni nalog sadrzi najvise 8 cifre']
+    },
+
+    proboj4_duz: {
+        type: Number
+    },
+
+    proboj5_duz: {
+        type: Number
+    },
+
+    proboj5_rn: {
+        type: Number,
+        maxlength: [8, 'Radni nalog sadrzi najvise 8 cifre']
+    },
+
+    proboj5_proizvod: {
+        type: String,
+        trim: true,
+        maxlength: [100, 'Radni nalog sadrzi najvise 8 cifre']
+    },
+
+    proboj5_duz: {
+        type: Number
+    },
+
+    proboj6_duz: {
+        type: Number
+    },
+
+    proboj6_rn: {
+        type: Number,
+        maxlength: [8, 'Radni nalog sadrzi najvise 8 cifre']
+    },
+
+    proboj6_proizvod: {
+        type: String,
+        trim: true,
+        maxlength: [100, 'Radni nalog sadrzi najvise 8 cifre']
+    },
+
+    proboj6_duz: {
+        type: Number
+    },
+
+    createdByUser: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: "User"
+    },
+
+    updatedByUser: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    }
 
 }, {
     timestamps: true

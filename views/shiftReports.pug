@@ -4,12 +4,12 @@ mixin list1(a)
     -var arr = [1,2,3,4,5,6,7,8,9,10,11]
     each number in arr
         td.align-middle
-            input.form-control(name=a + '-' + number, type='text')
+            input.form-control(name=a + '-' + number, type='number', placeholder='/')
 
 mixin list(a,b)
    -for (var x = 0; x <= b; x++)
     td.align-middle
-            input.form-control(name=a + '_' + x, type='text')
+            input.form-control(name=a + '_' + x, type='number', placeholder='/')
 
 block user
     include layouts/userNotLogedIn.pug
@@ -124,7 +124,7 @@ block content
                                     input.form-control.col-4(type='number', placeholder='R')
                                     input.form-control.col-4(type='number', placeholder='D')
                             td.align-middle
-                                input.form-control(type='text')
+                                input.form-control(type='number', placeholder='/')
                             td.align-middle(colspan='11')
                                 textarea.form-control(id='#', cols='30', rows='2', placeholder='napomena...')
             .row.p-2.d-print-none
@@ -135,18 +135,21 @@ block content
                     thead.thead-dark
                         tr
                             th.align-middle.w-25(scope='col') Status
-                            th.align-middle.text-center(scope='col') Broj RN
-                            th.align-middle.text-center.w-50(scope='col') Proizvod
+                            th.align-middle.text-center(scope='col') Broj&nbsp;RN
+                            th.align-middle.text-center.w-25(scope='col') Proizvod
                             th.align-middle.text-center(scope='col') Dužina
+                            th.align-middle.text-center.w-25(scope='col') Napomena
                     tbody#doradaLista
                         tr
                             th.align-middle.w-25(scope='row') Dorada
                             td.align-middle
-                                input.form-control(type='text')
+                                input.form-control(type='number', placeholder='/')
                             td.align-middle
-                                input.form-control(type='text')
+                                input.form-control(type='text', placeholder='/')
                             td.align-middle
-                                input.form-control(type='text')
+                                input.form-control(type='number', placeholder='/')
+                            td.align-middle
+                                input.form-control(type='text', placeholder='/')
             .row.p-2.d-print-none
                 button#addDorada.btn.btn-outline-success.mr-1.ml-auto Dodaj stavku
                 button#removeDorada.btn.btn-outline-danger.mr-auto Ukloni stavku
@@ -162,11 +165,11 @@ block content
                         tr
                             th.align-middle.w-25(scope='row') Proboj
                             td.align-middle
-                                input.form-control(type='text')
+                                input.form-control(type='number', placeholder='/')
                             td.align-middle.w-50
-                                input.form-control.pedeset(type='text')
+                                input.form-control.pedeset(type='text', placeholder='/')
                             td.align-middle
-                                input.form-control(type='text')
+                                input.form-control(type='number', placeholder='/')
             .row.p-2.d-print-none
                 button#addProboj.btn.btn-outline-success.mr-1.ml-auto Dodaj stavku
                 button#removeProboj.btn.btn-outline-danger.mr-auto Ukloni stavku
