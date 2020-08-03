@@ -14,13 +14,13 @@ block content
                                 i.far.fa-user.mr-2
                                 | Prijava
                         .card-body
-                            form#authForm
+                            form#authForm(action='/api/v2/auth/login', method='POST')
                                 .form-group
                                     label(for='email') Email
-                                    input#email.form-control(type='email', name='email')
+                                    input#email.form-control.mt-1.mb-1(type='email', name='email', autofocus=true)
                                 .form-group
                                     label(for='password') Šifra
-                                    input#password.form-control(type='password', name='password')
+                                    input#password.form-control.mt-1.mb-1   (type='password', name='password')
                                 a.text-muted(href='#')
                                     p Zaboravili ste šifru?
                                 button.btn.btn-info.btn-block.mt-3(type='submit') Pošalji
