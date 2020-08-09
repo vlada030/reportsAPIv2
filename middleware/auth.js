@@ -8,17 +8,15 @@ const ErrorResponse = require('../utils/errorResponse');
 exports.protect = asyncHandler(async (req, res, next) => {
     let token;
     //console.log('poziva se protect, provera cookie / bearer');
-    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-        token = req.headers.authorization.split(' ')[1];
+    if (req.session && req.session.token) {
+        token = req.session.token;
         //console.log('token je prosao preko bearer');
     } 
-    else if (req.cookies.token) {
-        token = req.cookies.token;
-        //console.log('token je prosao preko cookie');
-    }
+    
     // ako token ne postoji znaci da korisnik nije logovan
     if (!token) {
-        return next(new ErrorResponse('Korisnik nema autorizaciju da pristupi ovoj ruti.', 401));
+        //return next(new ErrorResponse('Korisnik nema autorizaciju da pristupi ovoj ruti.', 401));
+        return res.redirect('/api/v2/auth/login');
     }
 
     try {
@@ -29,12 +27,14 @@ exports.protect = asyncHandler(async (req, res, next) => {
 
         // mora i ovo da se doda ako je u medjuvremenu korisnik obrisan, a ostao je token - više teoretski, nakon postman testiranja
         if (!req.user) {
-            return next(new ErrorResponse('Ulogujte se ponovo, korisnik nema autorizaciju da pristupi ovoj ruti, ', 401));
+            //return next(new ErrorResponse('Ulogujte se ponovo, korisnik nema autorizaciju da pristupi ovoj ruti, ', 401));
+            return res.redirect('/api/v2/auth/login');
         }
 
         next();
     } catch (err) {
-            return next(new ErrorResponse('Korisnik nema autorizaciju da pristupi ovoj ruti', 401));
+            // return next(new ErrorResponse('Korisnik nema autorizaciju da pristupi ovoj ruti', 401));
+            return res.redirect('/api/v2/auth/login');
     }
 });
 

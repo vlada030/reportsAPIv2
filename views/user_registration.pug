@@ -14,25 +14,27 @@ block content
                                 i.far.fa-user
                                 |   Korisnički panel
                         .card-body
-                            form#authForm(action="/", method="POST")
+                            form#authForm(action="/api/v2/auth/register", method="POST")
                                 .form-group
                                     label(for="name") Korisničko ime
-                                    input#name.form-control.mt-1.mb-1(name="name", type="email", placeholder="Obavezno polje", autofocus)
+                                    input#name.form-control.mt-1.mb-1(name="name", type="text", placeholder="Obavezno polje", autofocus)
+
                                 .form-group
                                     label(for="email") Email
                                     input#email.form-control.mt-1.mb-1(name="email", type="email", placeholder="Obavezno polje")
+
                                 .form-group
                                     label(for="password") Šifra
                                     input#password.form-control.mt-1.mb-1(name="password", type="password", placeholder="Obavezno polje")
 
                                 .form-group.mb-4
                                     label(for="password2") Ponovite šifru
-                                    input#password2.form-control.mt-1.mb-1(type="password", placeholder="Obavezno polje")
-                                .form-group.mb-4
-                                    label Odaberite profilnu sliku
-                                    .custom-file.mt-1.mb-1                          
-                                        input#customFile.custom-file-input(type="file", accept="image/*")
-                                        label.custom-file-label(for="customFile") Opciono polje &#42;
+                                    input#confirmPassword.form-control.mt-1.mb-1(type="password", placeholder="Obavezno polje")
+                                //- .form-group.mb-4
+                                //-     label Odaberite profilnu sliku
+                                //-     .custom-file.mt-1.mb-1                          
+                                //-         input#customFile.custom-file-input(type="file", accept="image/*")
+                                //-         label.custom-file-label(for="customFile") Opciono polje &#42;
     
                                 button.btn.btn-info.btn-block.mt-3(type="submit")  Pošalji
 

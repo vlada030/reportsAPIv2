@@ -9,7 +9,12 @@ const asyncHandler = require('../middleware/asyncHandler');
 
 exports.getShiftReportsHTML = (req, res, next) => {
 
-    res.status(200).render('shiftReports', {title: 'Smenski izveštaj o radu', path: 'shift', lang: 'none'});
+    res.status(200).render("shiftReports", {
+        title: "Smenski izveštaj o radu",
+        path: "shift",
+        isAuthenticated: req.session.isLoggedIn,
+        userName: req.session.name
+    });
 };
 
 // @desc   Create Report

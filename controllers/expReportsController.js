@@ -8,9 +8,15 @@ const ErrorResponse = require('../utils/errorResponse');
 // @access Private
 
 exports.getExpReportsHTML = (req, res, next) => {
-    const lang = req.query.lang;
+    const lang = req.query.lang || 'ser';
 
-    res.status(200).render('expReports', {title: 'Izveštaji za inostrano tržište', path: 'ino', lang: lang});
+    res.status(200).render("expReports", {
+        title: "Izveštaji za inostrano tržište",
+        path: "ino",
+        lang,
+        isAuthenticated: req.session.isLoggedIn,
+        userName: req.session.name
+    });
 };
 
 // @desc   Create Report

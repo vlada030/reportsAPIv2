@@ -1,18 +1,17 @@
 extends layouts/main-layout.pug
 
-block user
-    include layouts/userNotLogedIn.pug
-
 block secondaryMenu
-    include layouts/productMenu.pug
+    include layouts/secondaryMenuProduct.pug
 
 block language 
-    if lang === 'eng'
-        a(href="/api/v2/reports/exp?lang=ser").btn.btn-outline-info Promeni jezik 
-            img(src="/img/sr.png", alt="sr").icon
-    else
-       a(href="/api/v2/reports/exp?lang=eng").btn.btn-outline-info Promeni jezik 
-            img(src="/img/en.png", alt="en").icon 
+    ul.navbar-nav.ml-auto
+        li.nav-item.mr-2
+            if lang === 'eng'
+                a(href="/api/v2/reports/exp?lang=ser").btn.btn-outline-info Promeni jezik 
+                    img(src="/img/sr.png", alt="sr").icon
+            else
+                a(href="/api/v2/reports/exp?lang=eng").btn.btn-outline-info Promeni jezik 
+                    img(src="/img/en.png", alt="en").icon
 
 block content
     section.py-2#report

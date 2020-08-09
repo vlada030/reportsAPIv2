@@ -1,0 +1,21 @@
+ul.navbar-nav.mr-auto#optionsNav
+    if isAuthenticated
+        li.nav-item.mr-2.mb-2.mb-lg-0
+            a(href="../products/create").btn.btn-secondary Dodaj novi proizvod
+
+        li.nav-item.mr-2.mb-2.mb-lg-0
+            a(href="../products/update").btn.btn-secondary Izmeni / Obriši proizvod
+
+        li.nav-item.mb-2.mb-lg-0
+            a(href="#").btn.btn-secondary Svi izvestaji
+
+    else
+        li.nav-item.mr-2.mb-2.mb-lg-0(data-toggle="tooltip", title="Morate prvo da se prijavite!", data-placement="bottom")
+            a(href="#").btn.btn-secondary.disabled Dodaj novi proizvod
+
+        li.nav-item.mr-2.mb-2.mb-lg-0(data-toggle="tooltip", title="Morate prvo da se prijavite!", data-placement="bottom")
+            a(href="#").btn.btn-secondary.disabled Izmeni / Obriši proizvod
+
+        li.nav-item.mb-2.mb-lg-0(data-toggle="tooltip", title="Morate prvo da se prijavite!", data-placement="bottom")
+            a(href="#").btn.btn-secondary.disabled Svi izveštaji
+        

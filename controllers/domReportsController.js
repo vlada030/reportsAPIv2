@@ -7,12 +7,15 @@ const ErrorResponse = require("../utils/errorResponse");
 // @access Private
 
 exports.getDomReportsHTML = asyncHandler((req, res) => {
-    const lang = req.query.lang;
+    const lang = req.query.lang || 'ser';
 
     res.status(200).render("domReports", {
         title: "Izveštaji za domaće tržište",
         path: "dom",
         lang,
+        isAuthenticated: req.session.isLoggedIn,
+        userName: req.session.name
+        
     });
 });
 

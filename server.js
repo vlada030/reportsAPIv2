@@ -4,6 +4,8 @@ const colors = require('colors');
 const path = require('path');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const MongoDbSessionStore = require('connect-mongodb-session')(session);
 const formidableMiddleware = require('express-formidable');
 const mongoSanitize = require('express-mongo-sanitize');
 const cors = require('cors');
@@ -40,7 +42,7 @@ app.set('views', 'views');
 
 // pozivanje defaultnog body parsera za dobijanje req.body
 // ako je req.body u vidu objects ili arrays - form-urlencoded
-//app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({extended: false}));
 // ako je req.body JSON format
 app.use(express.json());
 
@@ -49,8 +51,18 @@ app.use(express.json());
 //app.use(formidableMiddleware());
 
 // pozivanje cookie parsera da bi u cookie mogao sa se ubaci token
-app.use(cookieParser());
+//app.use(cookieParser());
 
+// da se nebi opetercivala memorija noda, snimanje session u MongoDb
+const storeSession = new MongoDbSessionStore({
+    uri: process.env.MONGO_URI,
+    collection: 'sessions'
+});
+
+// umesto cookie jos bolje je koristiti session
+app.use(
+    session({secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false, cookie: {}, store: storeSession})
+    );
 
 
 // pozivanje morgan loggera
