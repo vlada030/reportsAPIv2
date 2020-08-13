@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const MongoDbSessionStore = require('connect-mongodb-session')(session);
 const csrf = require('csurf');
+const flash = require('connect-flash');
 const formidableMiddleware = require('express-formidable');
 const mongoSanitize = require('express-mongo-sanitize');
 const cors = require('cors');
@@ -78,9 +79,11 @@ app.use(
 
 // nakon pozivanje session poziva se csrf zastita jer je konfigurisana preko session
 app.use(csurfProtection);
-
-// poziva se pre routa, a posle csrf pozovanja
+// poziva se pre routa, a posle csrf pozivanja
 app.use(csrfLocalsVariable);
+
+// pozivanje flash messages
+app.use(flash());
 
 // pozivanje morgan loggera
 if (process.env.NODE_ENV === 'development') {

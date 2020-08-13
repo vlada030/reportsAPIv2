@@ -34,8 +34,15 @@ exports.uploadUserPhoto = upload.single('avatar');
 
 exports.getRegisterUserHTML = (req, res) => {
 
+    // ukoliko nema error, message je prazan hiz pa ga pug ne vidi kao nepostojeci
+    let message = req.flash('error');
+    if (message.length === 0) {
+        message = null
+    }
+
     res.status(200).render("user_registration", {
-        title: "Registracija novog korisnika"
+        title: "Registracija novog korisnika",
+        errorMessage: message
     });
 };
 
@@ -47,10 +54,17 @@ exports.getRegisterUserHTML = (req, res) => {
 exports.register = asyncHandler(async (req, res, next) => {
     
     const {name, email, password, role} = req.body;
+
+    if (!name || !email || !password) {
+        //return next(new ErrorResponse('Unesite email i šifru', 400));
+        req.flash('error', 'Obavezna polja oznacena su zvezdicom');
+        res.redirect('/api/v2/auth/register');
+    }
     
     const emailExist = await User.findOne({email});
 
     if (emailExist) {
+        req.flash('error', 'Korisnik sa unetim e-mailom postoji, proverite unos!')
         return res.redirect('/api/v2/auth/register');
     }
 
@@ -67,13 +81,6 @@ exports.register = asyncHandler(async (req, res, next) => {
     // umesto ovoga ispod stavlja se response koji u sebi ukljucuju cookie
     await sendTokenResponse(user, 200, res, req);
     
-    // // nakon sto je iznad sve prošlo kreiraj token i uključi ga u response
-    // const token = user.getSignedJwtToken();
-    
-    // res.status(200).json({
-        //     success: true,
-        //     token
-        // });
     });
     
 // @desc   Get HTML for User login
@@ -82,9 +89,15 @@ exports.register = asyncHandler(async (req, res, next) => {
 
 exports.getLoginUserHTML = (req, res) => {
     console.log(req.session);
+    // ukoliko nema error, message je prazan hiz pa ga pug ne vidi kao nepostojeci
+    let message = req.flash('error');
+    if (message.length === 0) {
+        message = false
+    } 
 
     res.status(200).render("user_login", {
-        title: "Prijava korisnika"        
+        title: "Prijava korisnika",
+        errorMessage: message      
     });
 };
     
@@ -104,6 +117,7 @@ exports.login = asyncHandler(async (req, res, next) => {
     // validacija da li su polja prazna
     if (!email || !password) {
         //return next(new ErrorResponse('Unesite email i šifru', 400));
+        req.flash('error', 'Obavezna polja oznacena su zvezdicom');
         res.redirect('/api/v2/auth/login');
     }
     // gore iznad select: false znaci da nam ne vraca sifru, ali ovde nam je potrebna da bi mogli da uporedimo sifre i dodajemo select(+password)
@@ -111,6 +125,7 @@ exports.login = asyncHandler(async (req, res, next) => {
 
     if (!user) {
         // return next(new ErrorResponse('Pogrešno uneti podaci. Invalid credentials.', 401));
+        req.flash('error', 'Pogrešno uneti podaci');
         res.redirect('/api/v2/auth/login');
     }
     // pozivanje methods iz User modela za proveru sifre
@@ -118,19 +133,13 @@ exports.login = asyncHandler(async (req, res, next) => {
 
     if (!isMatch) {
        // return next(new ErrorResponse('Pogrešno uneti podaci. Invalid credentials.', 401));
+       req.flash('error', 'Pogrešno uneti podaci');
        res.redirect('/api/v2/auth/login');
     }
     
     // umesto ovoga ispod stavlja se response koji u sebi ukljucuju cookie
     await sendTokenResponse(user, 200, res, req);
 
-    // // nakon sto je iznad sve prošlo kreiraj token i uključi ga u response
-    // const token = user.getSignedJwtToken();
-
-    // res.status(200).json({
-    //     success: true,
-    //     token
-    // });
 }); 
 
 
@@ -186,7 +195,7 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
     // snimamo sa validateBeforeSave: true
 
     // izbrisi postojeci token iz tokens array
-    user.tokens = user.tokens.filter(token => token.token !== req.cookies.token);
+    user.tokens = user.tokens.filter(token => token.token !== req.session.token);
 
     await user.save();
     // prilikom promene ili resetovanja sifre VRACA SE TOKEN - pravilo

@@ -9,7 +9,7 @@ html(lang="en")
         link(rel="stylesheet", href="/style.css")
         link(rel="shortcut icon", href="/img/favicon.png")
         title #{title}
-    body.bg-info
+    body.bg-info.vh-100
         nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.py-2
             .container
                 a.navbar-brand(href="/api/v2/reports/dom")
@@ -29,7 +29,12 @@ html(lang="en")
                         li.nav-item
 
                             block link
-                                  
+
+        hr.m-0.border.border-secondary.mb-4
+
+        if errorMessage
+            .message.error #{errorMessage}
+                          
         block content                  
 
         block footer

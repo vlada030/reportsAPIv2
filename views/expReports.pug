@@ -53,7 +53,8 @@ block content
                         .row.font-weight-bold.mb-2.d-print-none
                             .col-8
                                 .row.align-items-center
-                                    .col-5 Šifra proizvoda:
+                                    .col-5 
+                                        label Šifra proizvoda:
                                     .col-7
                                         input(type="text", placeholder="Unesi 7-cifreni broj").form-control.font-weight-bold#productCode
                                         small Error message
@@ -87,9 +88,11 @@ block content
                             .col-8
                                 .row.align-items-center
                                     if lang === 'eng'
-                                        .col-5 Manufacture Year:
+                                        .col-5 
+                                            label Manufacture Year:
                                     else   
-                                        .col-5 Godina proizvodnje:
+                                        .col-5 
+                                            label Godina proizvodnje:
                                     
                                     .col-7
                                         input(type="text", placeholder="Unesi 4-cifreni broj").form-control.font-weight-bold#yearManufacture
@@ -111,9 +114,11 @@ block content
                             .col-8
                                 .row
                                     if lang === 'eng'
-                                        .col-5 Drum Number:
+                                        .col-5 
+                                            label Drum Number:
                                     else   
-                                        .col-5 Broj doboša:
+                                        .col-5 
+                                            label Broj doboša:
                                     
                                     .col-7#drumList
                                         .row.mb-2

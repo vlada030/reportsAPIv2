@@ -105,14 +105,34 @@ input::placeholder {
   font-weight: 100;
 }
 
+label:after {
+  content: ' *';
+  color: red;
+  /* margin-left: 0.3rem; */
+}
+
+.message {
+  width: 50%;
+  margin: 1rem auto;
+  margin-bottom: 0;
+  text-align: center;
+  padding: .2rem;
+  border-radius: .4rem;
+
+}
+
 .error {
-  /*border: 1px solid var(--error-color);*/
-  box-shadow: 0px 0px 8px var(--error-color);
+  border: 3px solid rgb(250, 37, 0);
+  background-color: rgb(248, 137, 103);
+
+  /* box-shadow: 0px 0px 8px var(--error-color); */
 
 }
 
 .success {
-  box-shadow: 0px 0px 8px var(--success-color);
+  border: 3px solid rgb(4, 160, 69);
+  background-color: rgb(76, 238, 143);
+  /* box-shadow: 0px 0px 8px var(--success-color); */
 }
 
 small {

@@ -4,9 +4,9 @@ block link
     a.nav-link(href="../auth/login") PRIJAVA
 
 block content
-    section.my-5
-        .container
-            .row
+    section.h-75
+        .container.h-100
+            .row.h-100
                 .col-md-6.m-auto
                     .card
                         .card-header
@@ -17,19 +17,19 @@ block content
                             form#authForm(action="/api/v2/auth/register", method="POST")
                                 .form-group
                                     label(for="name") Korisničko ime
-                                    input#name.form-control.mt-1.mb-1(name="name", type="text", placeholder="Obavezno polje", autofocus)
+                                    input#name.form-control.mt-1.mb-1(name="name", type="text", autofocus)
 
                                 .form-group
                                     label(for="email") Email
-                                    input#email.form-control.mt-1.mb-1(name="email", type="email", placeholder="Obavezno polje")
+                                    input#email.form-control.mt-1.mb-1(name="email", type="email")
 
                                 .form-group
                                     label(for="password") Šifra
-                                    input#password.form-control.mt-1.mb-1(name="password", type="password", placeholder="Obavezno polje")
+                                    input#password.form-control.mt-1.mb-1(name="password", type="password")
 
                                 .form-group.mb-4
                                     label(for="password2") Ponovite šifru
-                                    input#confirmPassword.form-control.mt-1.mb-1(type="password", placeholder="Obavezno polje")
+                                    input#confirmPassword.form-control.mt-1.mb-1(type="password")
                                 //- .form-group.mb-4
                                 //-     label Odaberite profilnu sliku
                                 //-     .custom-file.mt-1.mb-1                          
