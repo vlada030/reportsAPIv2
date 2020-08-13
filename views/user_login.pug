@@ -25,6 +25,9 @@ block content
 
                                 a.text-muted(href='#')
                                     p Zaboravili ste šifru?
+
+                                input(type="hidden", name="_csrf", value=csrfToken)
+
                                 button.btn.btn-info.btn-block.mt-3(type='submit') Pošalji
 
 block footer

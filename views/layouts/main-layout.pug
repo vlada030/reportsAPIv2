@@ -45,6 +45,7 @@ html(lang="en")
                                 a.btn.btn-outline-info(href="../auth/login") #{userName}
                             li.nav-item
                                 form(action="/api/v2/auth/logoutAll", method="POST")
+                                    input(type="hidden", name="_csrf", value=csrfToken)
                                     button.btn.btn-outline-info(type="submit") Odjava         
     
         nav.navbar.navbar-expand-lg.bg-warning.pb-1.sticky-top

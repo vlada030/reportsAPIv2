@@ -13,9 +13,7 @@ exports.getDomReportsHTML = asyncHandler((req, res) => {
         title: "Izveštaji za domaće tržište",
         path: "dom",
         lang,
-        isAuthenticated: req.session.isLoggedIn,
-        userName: req.session.name
-        
+        userName: req.session.name        
     });
 });
 

@@ -35,7 +35,7 @@ block content
                                 //-     .custom-file.mt-1.mb-1                          
                                 //-         input#customFile.custom-file-input(type="file", accept="image/*")
                                 //-         label.custom-file-label(for="customFile") Opciono polje &#42;
-    
+                                input(type="hidden", name="_csrf", value=csrfToken)
                                 button.btn.btn-info.btn-block.mt-3(type="submit")  Pošalji
 
 block footer

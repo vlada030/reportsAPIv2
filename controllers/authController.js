@@ -34,7 +34,9 @@ exports.uploadUserPhoto = upload.single('avatar');
 
 exports.getRegisterUserHTML = (req, res) => {
 
-    res.status(200).render('user_registration', {title: 'Registracija novog korisnika', path: 'none', lang: 'none'});
+    res.status(200).render("user_registration", {
+        title: "Registracija novog korisnika"
+    });
 };
 
 
@@ -81,7 +83,9 @@ exports.register = asyncHandler(async (req, res, next) => {
 exports.getLoginUserHTML = (req, res) => {
     console.log(req.session);
 
-    res.status(200).render('user_login', {title: 'Prijava korisnika', path: 'none', lang: 'none'});
+    res.status(200).render("user_login", {
+        title: "Prijava korisnika"        
+    });
 };
     
 // @desc   Login User
@@ -329,30 +333,36 @@ exports.deleteAvatar = asyncHandler(async (req, res, next) => {
 }); 
 
 // @desc    Log user out & clear cookie 
-// @route   GET /api/v2/auth/logout
+// @route   POST /api/v2/auth/logout
 // @access  Private
 
 exports.logout = asyncHandler(async (req, res, next) => {
 
     // brisanje tokena iz kog hocemo da se izlogujemo, ostali ostaju
-    req.user.tokens = req.user.tokens.filter(token => token.token !== req.cookies.token );    
+    req.user.tokens = req.user.tokens.filter(token => token.token !== req.session.token );    
     await req.user.save();
 
     // postavljanje cookija na vrednost none
-    res.cookie('token', 'none', {
-        expires: new Date(Date.now() + 10 * 1000),
-        httpOnly: true
-    });
-    
-    res.status(200).json({
-        success: true,
-        data: "Current user session logged out"
-    });
+    // res.cookie('token', 'none', {
+    //     expires: new Date(Date.now() + 10 * 1000),
+    //     httpOnly: true
+    // });
 
+    
+    // res.status(200).json({
+        //     success: true,
+        //     data: "Current user session logged out"
+        // });
+        
+    // brisanje session
+    req.session.destroy(err => {
+        console.log(err);
+        res.redirect('/api/v2/reports/dom');
+    });
 }); 
 
 // @desc    Log user out & clear cookie 
-// @route   GET /api/v2/auth/logoutAll
+// @route   POST /api/v2/auth/logoutAll
 // @access  Private
 
 exports.logoutAll = asyncHandler(async (req, res, next) => {
@@ -362,14 +372,20 @@ exports.logoutAll = asyncHandler(async (req, res, next) => {
     await req.user.save();
 
     // postavljanje cookija na vrednost none
-    res.cookie('token', 'none', {
-        expires: new Date(Date.now() + 10 * 1000),
-        httpOnly: true
-    });
+    // res.cookie('token', 'none', {
+    //     expires: new Date(Date.now() + 10 * 1000),
+    //     httpOnly: true
+    // });
     
-    res.status(200).json({
-        success: true,
-        data: "All user's sessions logged out"
+    // res.status(200).json({
+    //     success: true,
+    //     data: "All user's sessions logged out"
+    // });
+    
+    // brisanje session
+    req.session.destroy(err => {
+        console.log(err);
+        res.redirect('/api/v2/reports/dom');
     });
 
 });

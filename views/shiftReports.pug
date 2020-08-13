@@ -168,6 +168,9 @@ block content
                 p.col-6.text-left.lead QS 06.10.03.03/01
                 p.col-6.text-right.lead Poslovođa smenske kontrole
         .text-center.py-4.d-print-none
+
+            input(type="hidden", name="_csrf", value=csrfToken)
+
             button.btn.btn-warning.btn-lg.m-0.mr-sm-4(onclick='window.print()') Sačuvaj PDF
             input.btn.btn-warning.btn-lg(type='reset', value='Obriši sva polja')
 

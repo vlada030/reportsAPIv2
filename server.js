@@ -6,12 +6,15 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const MongoDbSessionStore = require('connect-mongodb-session')(session);
+const csrf = require('csurf');
 const formidableMiddleware = require('express-formidable');
 const mongoSanitize = require('express-mongo-sanitize');
 const cors = require('cors');
 
 //import custom error handlera
 const errorHandler = require('./middleware/errorHandler');
+// import csrf middleware za dodavalje locals promenjive
+const csrfLocalsVariable = require('./middleware/csrfLocals');
 // import MONGO konekcije 
 const connectDB = require('./config/db');
 
@@ -28,6 +31,9 @@ const pageNotFound = require('./controllers/404Controller');
 dotenv.config({
     path: "./config/config.env"
 });
+
+// konfiguracija csurf zastite, ovim se dodaje svakom req.csrf
+const csurfProtection = csrf();
 
 // pozivanje konekcije nakon .env, a pre app
 connectDB();
@@ -61,9 +67,20 @@ const storeSession = new MongoDbSessionStore({
 
 // umesto cookie jos bolje je koristiti session
 app.use(
-    session({secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false, cookie: {}, store: storeSession})
-    );
+    session({
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: false,
+        cookie: {},
+        store: storeSession,
+    })
+);
 
+// nakon pozivanje session poziva se csrf zastita jer je konfigurisana preko session
+app.use(csurfProtection);
+
+// poziva se pre routa, a posle csrf pozovanja
+app.use(csrfLocalsVariable);
 
 // pozivanje morgan loggera
 if (process.env.NODE_ENV === 'development') {

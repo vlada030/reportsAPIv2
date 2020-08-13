@@ -170,6 +170,7 @@ block content
                                         p.ml-2#productColor /
                         //- osmi red
                         .text-center.py-2.d-print-none
+                            input(type="hidden", name="_csrf", value=csrfToken)
                             button(type="submit").btn.btn-warning.btn-lg.m-0.mr-sm-4#saveAsPDF Sačuvaj PDF
                             input(type="reset", value="Obriši sva polja").btn.btn-warning.btn-lg 
 
