@@ -1,5 +1,7 @@
 
 const crypto = require('crypto');
+const {validationResult} = require('express-validator');
+
 const User = require('../models/User');
 const asyncHandler = require('../middleware/asyncHandler');
 const ErrorResponse = require('../utils/errorResponse');
@@ -37,12 +39,14 @@ exports.getRegisterUserHTML = (req, res) => {
     // ukoliko nema error, message je prazan hiz pa ga pug ne vidi kao nepostojeci
     let message = req.flash('error');
     if (message.length === 0) {
-        message = null
+        message = false
     }
-
+    // implementirano pamcenje prethodnog unosa
+    // pri prvom pokretanju nema vrednosti za ove ulaze
     res.status(200).render("user_registration", {
         title: "Registracija novog korisnika",
-        errorMessage: message
+        errorMessage: message,
+        oldInput: { name: "", email: "", password: "", confirmPassword: "" }
     });
 };
 
@@ -53,26 +57,37 @@ exports.getRegisterUserHTML = (req, res) => {
 
 exports.register = asyncHandler(async (req, res, next) => {
     
-    const {name, email, password, role} = req.body;
+    const {name, email, password, confirmPassword} = req.body;
 
-    if (!name || !email || !password) {
-        //return next(new ErrorResponse('Unesite email i šifru', 400));
-        req.flash('error', 'Obavezna polja oznacena su zvezdicom');
-        res.redirect('/api/v2/auth/register');
-    }
+    const errors = validationResult(req);
+    console.log(errors)
     
+    // validacija preko express-validatora
+    // implementirano pamcenje prethodnog unosa
+    if (!errors.isEmpty()) {
+        return res.status(422).render("user_registration", {
+            title: "Registracija novog korisnika",
+            errorMessage: errors.array()[0].msg,
+            oldInput: {name, email, password, confirmPassword}
+        })
+    }
+
     const emailExist = await User.findOne({email});
 
     if (emailExist) {
-        req.flash('error', 'Korisnik sa unetim e-mailom postoji, proverite unos!')
-        return res.redirect('/api/v2/auth/register');
+        //req.flash('error', 'Korisnik sa unetim e-mailom postoji')
+        // return res.redirect('/api/v2/auth/register');
+        return res.status(422).render("user_registration", {
+            title: "Registracija novog korisnika",
+            errorMessage: 'Korisnik sa unetim e-mailom postoji',
+            oldInput: {name, email, password, confirmPassword}
+        })
     }
 
     const user = await User.create({
         name,
         email,
-        password,
-        role
+        password  
     });
 
     // slanje welcome emaila nakon uspesnog snimanja 
@@ -89,7 +104,7 @@ exports.register = asyncHandler(async (req, res, next) => {
 
 exports.getLoginUserHTML = (req, res) => {
     console.log(req.session);
-    // ukoliko nema error, message je prazan hiz pa ga pug ne vidi kao nepostojeci
+    // ukoliko nema error, message je prazan hiz pa ga pug vidi kao postojeci
     let message = req.flash('error');
     if (message.length === 0) {
         message = false
@@ -97,7 +112,8 @@ exports.getLoginUserHTML = (req, res) => {
 
     res.status(200).render("user_login", {
         title: "Prijava korisnika",
-        errorMessage: message      
+        errorMessage: message,
+        oldInput: {email: '', password:''}      
     });
 };
     
@@ -117,24 +133,36 @@ exports.login = asyncHandler(async (req, res, next) => {
     // validacija da li su polja prazna
     if (!email || !password) {
         //return next(new ErrorResponse('Unesite email i šifru', 400));
-        req.flash('error', 'Obavezna polja oznacena su zvezdicom');
-        res.redirect('/api/v2/auth/login');
+        //req.flash('error', 'Obavezna polja označena su zvezdicom');
+        res.status(422).render("user_login", {
+            title: "Prijava korisnika",
+            errorMessage: 'Obavezna polja označena su zvezdicom',
+            oldInput: {email, password}
+        });
     }
     // gore iznad select: false znaci da nam ne vraca sifru, ali ovde nam je potrebna da bi mogli da uporedimo sifre i dodajemo select(+password)
     const user = await User.findOne({email}).select('+password');
 
     if (!user) {
         // return next(new ErrorResponse('Pogrešno uneti podaci. Invalid credentials.', 401));
-        req.flash('error', 'Pogrešno uneti podaci');
-        res.redirect('/api/v2/auth/login');
+        //req.flash('error', 'Pogrešno uneti podaci');
+        res.status(422).render("user_login", {
+            title: "Prijava korisnika",
+            errorMessage: 'Pogrešno uneti podaci',
+            oldInput: {email, password}
+        });
     }
     // pozivanje methods iz User modela za proveru sifre
     const isMatch = await user.passwordMatchCheck(password);
 
     if (!isMatch) {
        // return next(new ErrorResponse('Pogrešno uneti podaci. Invalid credentials.', 401));
-       req.flash('error', 'Pogrešno uneti podaci');
-       res.redirect('/api/v2/auth/login');
+       //req.flash('error', 'Pogrešno uneti podaci');
+       res.status(422).render("user_login", {
+        title: "Prijava korisnika",
+        errorMessage: 'Pogrešno uneti podaci',
+        oldInput: {email, password}
+    });
     }
     
     // umesto ovoga ispod stavlja se response koji u sebi ukljucuju cookie

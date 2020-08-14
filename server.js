@@ -48,7 +48,8 @@ app.set('view engine', 'pug');
 app.set('views', 'views');
 
 // pozivanje defaultnog body parsera za dobijanje req.body
-// ako je req.body u vidu objects ili arrays - form-urlencoded
+// ako je req.body u vidu strings/arrays (extended: false) ili bilo sta (extended: true)- form-urlencoded
+
 app.use(express.urlencoded({extended: false}));
 // ako je req.body JSON format
 app.use(express.json());
