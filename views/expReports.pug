@@ -1,17 +1,23 @@
 extends layouts/main-layout.pug
 
-block secondaryMenu
-    include layouts/secondaryMenuProduct.pug
+block primaryNavBar
+    include layouts/primaryNavBarAll.pug
 
-block language 
-    ul.navbar-nav.ml-auto
-        li.nav-item.mr-2
-            if lang === 'eng'
-                a(href="/api/v2/reports/exp?lang=ser").btn.btn-outline-info Promeni jezik 
-                    img(src="/img/sr.png", alt="sr").icon
-            else
-                a(href="/api/v2/reports/exp?lang=eng").btn.btn-outline-info Promeni jezik 
-                    img(src="/img/en.png", alt="en").icon
+block secondaryNavBar
+    include layouts/secondaryNavBar.pug    
+    
+        block secondaryMenu
+            include layouts/secondaryMenuProduct.pug
+
+        block language 
+            ul.navbar-nav.ml-auto
+                li.nav-item.mr-2
+                    if lang === 'eng'
+                        a(href='/api/v2/reports/exp?lang=ser').btn.btn-outline-info Promeni jezik 
+                            img(src='/img/sr.png', alt='sr').icon
+                    else
+                        a(href='/api/v2/reports/exp?lang=eng').btn.btn-outline-info Promeni jezik 
+                            img(src='/img/en.png', alt='en').icon
 
 block content
     section.py-2#report
@@ -19,14 +25,14 @@ block content
             //- prvi red
             .row.align-items-center.pt-4.footer
                 .col-2
-                    img(src="/img/TFKable.jpg", alt="TFKable").img-fluid
+                    img(src='/img/TFKable.jpg', alt='TFKable').img-fluid
                 .col-8.text-center
                     p Društvo sa ograničenom odgovornošću
                     p.lead.font-weight-normal TF Kable Fabrika kablova Zaječar
                     p.text-muted ISO 9001
                         span.ml-4 ISO 14001
                 .col-2.d-flex.justify-content-center
-                    img(src="/img/TF FKZ.jpg", alt="TF FKZ", style="height: 7rem; width:auto;").img-fluid
+                    img(src='/img/TF FKZ.jpg', alt='TF FKZ', style='height: 7rem; width:auto;').img-fluid
             hr
             //- drugi red
             .text-center.text-muted.aprDetails.mb-5
@@ -41,7 +47,7 @@ block content
                     else 
                         h2.text-center.mr-4 Izveštaj o rutinskom ispitivanju
 
-                    input(type="text", style="width:3rem", value="1").form-control#ordinalNumber
+                    input(type='text', style='width:3rem', value='1').form-control#ordinalNumber
                     p.m-0 
                         | &nbsp;/&nbsp;
                         span.year
@@ -56,7 +62,7 @@ block content
                                     .col-5 
                                         label Šifra proizvoda:
                                     .col-7
-                                        input(type="text", placeholder="Unesi 7-cifreni broj").form-control.font-weight-bold#productCode
+                                        input(type='text', placeholder='Unesi 7-cifreni broj').form-control.font-weight-bold#productCode
                                         small Error message
 
                         //- peti red
@@ -95,7 +101,7 @@ block content
                                             label Godina proizvodnje:
                                     
                                     .col-7
-                                        input(type="text", placeholder="Unesi 4-cifreni broj").form-control.font-weight-bold#yearManufacture
+                                        input(type='text', placeholder='Unesi 4-cifreni broj').form-control.font-weight-bold#yearManufacture
                                         small Error message
 
                         //- osmi red
@@ -123,11 +129,11 @@ block content
                                     .col-7#drumList
                                         .row.mb-2
                                             .col-6
-                                                input(type="text").form-control.text-right.font-weight-bold.item
+                                                input(type='text').form-control.text-right.font-weight-bold.item
                                                 small Error message
 
                                             .col-6.input-group
-                                                input(type="number",value=0).form-control.text-right.font-weight-bold.itemLength
+                                                input(type='number',value=0).form-control.text-right.font-weight-bold.itemLength
                                                 .input-group-append
                                                     span.input-group-text m
                             .col-2
@@ -149,9 +155,9 @@ block content
                                         .input-group-append
                                             span.input-group-text m
                         .text-center.mb-4.d-print-none
-                            input(type="hidden", name="_csrf", value=csrfToken)
-                            button(type="submit").btn.btn-warning.btn-lg.m-0.mr-sm-4 Sačuvaj PDF
-                            input(type="reset", value="Obriši sva polja", form="inoForm").btn.btn-warning.btn-lg
+                            input(type='hidden', name='_csrf', value=csrfToken)
+                            button(type='submit').btn.btn-warning.btn-lg.m-0.mr-sm-4 Sačuvaj PDF
+                            input(type='reset', value='Obriši sva polja', form='inoForm').btn.btn-warning.btn-lg
 
             include layouts/testsTable.pug
             

@@ -1,7 +1,10 @@
-extends layouts/auth_layout.pug
+extends layouts/main-layout.pug
 
-block link
-    a.nav-link(href="../auth/register") REGISTRACIJA
+block primaryNavBar
+    include layouts/primaryNavBarAuth.pug
+
+        block link
+            a.nav-link(href='../auth/register') REGISTRACIJA
 
 block content
     section.h-75
@@ -17,16 +20,16 @@ block content
                             form#authForm(action='/api/v2/auth/login', method='POST', novalidate)
                                 .form-group
                                     label(for='email') Email
-                                    input#email.form-control.mt-1.mb-1(type='email', name='email', value=oldInput.email, autofocus=true)
+                                    input#email.form-control.mt-1.mb-1(type='email', name='email', value=oldInput.email, placeholder='example@mail.com', autofocus=true)
 
                                 .form-group
                                     label(for='password') Šifra
-                                    input#password.form-control.mt-1.mb-1(type='password', name='password', value=oldInput.password)
+                                    input#password.form-control.mt-1.mb-1(type='password', name='password', value=oldInput.password, placeholder='*******')
 
                                 a.text-muted(href='#')
                                     p Zaboravili ste šifru?
 
-                                input(type="hidden", name="_csrf", value=csrfToken)
+                                input(type='hidden', name='_csrf', value=csrfToken)
 
                                 button.btn.btn-info.btn-block.mt-3(type='submit') Pošalji
 

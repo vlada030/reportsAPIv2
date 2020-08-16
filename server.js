@@ -45,7 +45,12 @@ const app = express();
 // setovanje template engine - pug
 app.set('view engine', 'pug');
 // opciono - po defaultu pug fajlovi su u views, ovo je višak 
-app.set('views', 'views');
+app.set('views', path.join(__dirname, 'views'));
+
+// pozivanje morgan loggera
+if (process.env.NODE_ENV === 'development') {
+    app.use(morgan('dev'));
+}
 
 // pozivanje defaultnog body parsera za dobijanje req.body
 // ako je req.body u vidu strings/arrays (extended: false) ili bilo sta (extended: true)- form-urlencoded
@@ -85,11 +90,6 @@ app.use(csrfLocalsVariable);
 
 // pozivanje flash messages
 app.use(flash());
-
-// pozivanje morgan loggera
-if (process.env.NODE_ENV === 'development') {
-    app.use(morgan('dev'));
-}
 
 // Mongo sanitize - No-SQL injection
 app.use(mongoSanitize());

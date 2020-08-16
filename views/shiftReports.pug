@@ -11,8 +11,14 @@ mixin list(a,b)
     td.align-middle
             input.form-control(name=a + '_' + x, type='number', placeholder='/')
 
-block secondaryMenu
-    include layouts/secondaryMenuShift.pug
+block primaryNavBar
+    include layouts/primaryNavBarAll.pug
+
+block secondaryNavBar
+    include layouts/secondaryNavBar.pug 
+
+        block secondaryMenu
+            include layouts/secondaryMenuShift.pug
     
 block content
     section#report.py-2
@@ -169,7 +175,7 @@ block content
                 p.col-6.text-right.lead Poslovođa smenske kontrole
         .text-center.py-4.d-print-none
 
-            input(type="hidden", name="_csrf", value=csrfToken)
+            input(type='hidden', name='_csrf', value=csrfToken)
 
             button.btn.btn-warning.btn-lg.m-0.mr-sm-4(onclick='window.print()') Sačuvaj PDF
             input.btn.btn-warning.btn-lg(type='reset', value='Obriši sva polja')

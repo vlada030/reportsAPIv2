@@ -1,5 +1,8 @@
 extends layouts/main-layout.pug
 
+block primaryNavBar
+    include layouts/primaryNavBarAll.pug
+
 block content
     .container.mb-4.p-2
         h2.text-center.mb-4.pb-4 Promena detalja proizvoda
@@ -117,7 +120,7 @@ block content
                                 option(value='<20') <20pC
                     hr.w-75.mb-4
 
-                    input(type="hidden", name="_csrf", value=csrfToken)
+                    input(type='hidden', name='_csrf', value=csrfToken)
                     
                     .row.mb-4
                         .col-md-6.mx-auto.row.justify-content-center

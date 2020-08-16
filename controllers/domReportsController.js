@@ -52,26 +52,28 @@ exports.getAllDomReports = asyncHandler(async (req, res, next) => {
 exports.getDomReport = asyncHandler(async (req, res, next) => {
     const MISBroj = req.params.id;
 
-    const report = await DomReport.find({ MISBroj }).populate({
-        path: "createdByUser",
-        select: "name",
-    }).populate({
-        path: "updatedByUser",
-        select: "name",
-    });
+    const report = await DomReport.findOne({ MISBroj })
+        .populate({
+            path: "createdByUser",
+            select: "name",
+        })
+        .populate({
+            path: "updatedByUser",
+            select: "name",
+        })
+        .populate("proizvod"); // popunjava virtuals polje
 
-    if (report.length !== 1) {
+    if (!report) {
         return next(
             new ErrorResponse(
                 `Izveštaj sa MIS brojem ${MISBroj} ne postoji`,
                 400
-            )
-        );
+            ));
     }
 
-    res.status(201).json({
+    res.status(200).json({
         success: true,
-        data: report,
+        data: report
     });
 });
 

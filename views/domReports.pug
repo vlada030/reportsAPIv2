@@ -1,17 +1,23 @@
 extends layouts/main-layout.pug
 
-block secondaryMenu
-    include layouts/secondaryMenuProduct.pug
+block primaryNavBar
+    include layouts/primaryNavBarAll.pug
 
-block language 
-    ul.navbar-nav.ml-auto
-        li.nav-item.mr-2
-            if lang === 'eng'
-                a(href="/api/v2/reports/dom?lang=ser").btn.btn-outline-info Promeni jezik 
-                    img(src="/img/sr.png", alt="sr").icon
-            else
-                a(href="/api/v2/reports/dom?lang=eng").btn.btn-outline-info Promeni jezik 
-                    img(src="/img/en.png", alt="en").icon 
+block secondaryNavBar
+    include layouts/secondaryNavBar.pug    
+    
+        block secondaryMenu
+            include layouts/secondaryMenuProduct.pug
+
+        block language 
+            ul.navbar-nav.ml-auto
+                li.nav-item.mr-2
+                    if lang === 'eng'
+                        a(href='/api/v2/reports/dom?lang=ser').btn.btn-outline-info Promeni jezik 
+                            img(src='/img/sr.png', alt='sr').icon
+                    else
+                        a(href='/api/v2/reports/dom?lang=eng').btn.btn-outline-info Promeni jezik 
+                            img(src='/img/en.png', alt='en').icon 
 
 block content
     section#report.mt-2.mb-4
@@ -33,7 +39,7 @@ block content
                     else
                         h2.text-center.mr-4 Izveštaj o rutinskom ispitivanju
 
-                    input(type='text', style="width:3rem", value='1').form-control#ordinalNumber
+                    input(type='text', style='width:3rem', value='1').form-control#ordinalNumber
                     p.m-0 
                         | &nbsp;/&nbsp;
                         span.year 
@@ -48,7 +54,7 @@ block content
                                     .col-4 
                                         label Šifra :
                                     .col-8
-                                        input(type="number", placeholder="Unesi 7-cifreni broj").form-control.font-weight-bold#productCode
+                                        input(type='number', placeholder='Unesi 7-cifreni broj').form-control.font-weight-bold#productCode
                                         small Error message 
                         //- cetvrti red
                         .row.font-weight-bold.mb-2
@@ -77,56 +83,56 @@ block content
                                 .form-group.row.align-items-center
                                     .col-4
                                         if lang === 'eng'
-                                            label(for="workOrder") Work Order:
+                                            label(for='workOrder') Work Order:
                                         else   
-                                            label(for="workOrder") Radni nalog:
+                                            label(for='workOrder') Radni nalog:
                                          
                                     .col-8
-                                        input(type="number", placeholder="Unesi 8-cifreni broj").form-control.font-weight-bold#workOrder
+                                        input(type='number', placeholder='Unesi 8-cifreni broj').form-control.font-weight-bold#workOrder
                                         small Error message
                                     
                             .col-lg-6
                                 .form-group.row.align-items-center
                                     .col-4
                                         if lang === 'eng'
-                                            label(for="num") Drum Number:
+                                            label(for='num') Drum Number:
                                         else   
-                                            label(for="num") Broj kalema:
+                                            label(for='num') Broj kalema:
                                         
                                     .col-4
-                                        input(type="text", placeholder="7-cifreni broj").form-control.font-weight-bold#misNumber
+                                        input(type='text', placeholder='7-cifreni broj').form-control.font-weight-bold#misNumber
                                         small Error message
                                     .col-4
                                         select.form-control.font-weight-bold#drumSize
-                                            option(value="TK06T") TK06T
-                                            option(value="TK07T") TK07T
-                                            option(value="TK08T") TK08T
-                                            option(value="TK08AT") TK08AT
-                                            option(value="TK090T") TK090T
-                                            option(value="TK100T") TK100T
-                                            option(value="TK10AT" selected) TK10AT
-                                            option(value="TK120T") TK120T
-                                            option(value="TK140T") TK140T
-                                            option(value="TK160T") TK160T
-                                            option(value="TK180T") TK180T
-                                            option(value="TK200T") TK200T
-                                            option(value="TK20AT") TK20AT
-                                            option(value="TK210T") TK210T
-                                            option(value="TK220T") TK220T
-                                            option(value="TK240T") TK240T
-                                            option(value="pallet") Pallet
+                                            option(value='TK06T') TK06T
+                                            option(value='TK07T') TK07T
+                                            option(value='TK08T') TK08T
+                                            option(value='TK08AT') TK08AT
+                                            option(value='TK090T') TK090T
+                                            option(value='TK100T') TK100T
+                                            option(value='TK10AT' selected) TK10AT
+                                            option(value='TK120T') TK120T
+                                            option(value='TK140T') TK140T
+                                            option(value='TK160T') TK160T
+                                            option(value='TK180T') TK180T
+                                            option(value='TK200T') TK200T
+                                            option(value='TK20AT') TK20AT
+                                            option(value='TK210T') TK210T
+                                            option(value='TK220T') TK220T
+                                            option(value='TK240T') TK240T
+                                            option(value='pallet') Pallet
                         //- sesti red
                         .row.font-weight-bold.mb-2.stampa
                             .col-lg-6
                                 .form-group.row.align-items-center
                                     .col-4
                                         if lang === 'eng'
-                                            label(for="length") Cable Length:
+                                            label(for='length') Cable Length:
                                         else   
-                                            label(for="length") Dužina:                                        
+                                            label(for='length') Dužina:                                        
 
                                     .input-group.col-5
-                                        input(type="number").form-control.text-right.font-weight-bold#length
+                                        input(type='number').form-control.text-right.font-weight-bold#length
                                         .input-group-append
                                             span.input-group-text m
                                         small Error message
@@ -134,18 +140,18 @@ block content
                                 .form-group.row.align-items-center
                                     .col-4
                                         if lang === 'eng'
-                                            label(for="weight") Weight (bruto/neto):
+                                            label(for='weight') Weight (bruto/neto):
                                         else   
-                                            label(for="weight") Težina (bruto/neto):                                       
+                                            label(for='weight') Težina (bruto/neto):                                       
 
                                     .input-group.col-4
-                                        input(type="number").form-control.text-right.font-weight-bold.pr-2#bruto
+                                        input(type='number').form-control.text-right.font-weight-bold.pr-2#bruto
                                         .input-group-append
                                             span.input-group-text kg
                                         small Error message
 
                                     .input-group.col-4
-                                        input(type="number").form-control.text-right.font-weight-bold.pr-2#neto
+                                        input(type='number').form-control.text-right.font-weight-bold.pr-2#neto
                                         .input-group-append
                                             span.input-group-text kg
                                         small Error message
@@ -171,9 +177,9 @@ block content
                                         p.ml-2#productColor /
                         //- osmi red
                         .text-center.py-2.d-print-none
-                            input(type="hidden", name="_csrf", value=csrfToken)
-                            button(type="submit").btn.btn-warning.btn-lg.m-0.mr-sm-4#saveAsPDF Sačuvaj PDF
-                            input(type="reset", value="Obriši sva polja").btn.btn-warning.btn-lg 
+                            input(type='hidden', name='_csrf', value=csrfToken)
+                            button(type='submit').btn.btn-warning.btn-lg.m-0.mr-sm-4#saveAsPDF Sačuvaj PDF
+                            input(type='reset', value='Obriši sva polja').btn.btn-warning.btn-lg 
 
             include layouts/testsTable.pug
 

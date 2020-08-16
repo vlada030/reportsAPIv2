@@ -1,6 +1,6 @@
 :root {
-    --custom-orange:#ffd500;
-    --custom-blue: #17a2b8;
+    --custom-orange:rgb(255, 213, 0);
+    --custom-blue: rgb(23, 162, 184);
     --success-color: #2ecc71;
     --error-color: #e74c3c;
 }
@@ -14,6 +14,13 @@ body {
     font-size: 1.6rem;
     background: var(--custom-orange) !important;
 }  */
+
+body {
+  background-image: linear-gradient(rgba(23,162,184,.8), rgba(23,162,184,.8)), url('./img/pogon-4.JPG');
+  background-size: cover;
+  background-attachment: fixed;
+}
+
 
 .navbar:nth-child(2) {
   border-bottom: 2px solid rgba(0, 0, 0, .2);

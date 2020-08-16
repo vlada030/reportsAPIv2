@@ -17,12 +17,12 @@ const DomReportSchema = new mongoose.Schema({
     },
 
     sifra: {
-        type: Number,
-        required: [true, 'Unesite sifru proizvoda'],
+        type: mongoose.Schema.Types.Number,
+        //required: [true, 'Unesite sifru proizvoda'],
         // validate: [lengthValidation(this.sifra, 7), 'Sifra mora da sadrzi 7 broja'] 
-        validate: [function() {
-            return this.sifra.toString().length === 7;
-        } , 'Sifra mora da sadrzi 7 broja'] 
+        // validate: [function() {
+        //     return this.sifra.toString().length === 7;
+        // } , 'Sifra mora da sadrzi 7 broja']
     },
 
     radniNalog: {
@@ -70,7 +70,22 @@ const DomReportSchema = new mongoose.Schema({
         ref: "User"
     }
 },{
-    timestamps: true
+    timestamps: true,
+    toJSON: {virtuals: true},
+    toObject: {virtuals: true}
+});
+
+// domReports sadrzi sifru proizvoda i preko nje da se pozove i popuni ceo proizvod
+// MORA PREKO VIRTUALS jer se pretrazuje preko polja SIFRA ,a ne _id
+
+DomReportSchema.virtual('proizvod', {
+    // model iz kog se cupaju podaci
+    ref: 'Product',
+    // polje u DomReports
+    localField: 'sifra',
+    // polje u Product
+    foreignField: 'sifra',
+    justOne: false
 });
 
 module.exports = mongoose.model('DomReport', DomReportSchema);
