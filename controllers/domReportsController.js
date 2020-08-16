@@ -17,6 +17,24 @@ exports.getDomReportsHTML = asyncHandler((req, res) => {
     });
 });
 
+// @desc   Domestic Reports - All
+// @route  GET /api/v2/reports/dom/allReports
+// @access Private
+
+exports.getAllDomReportsHTML = asyncHandler(async(req, res) => {
+
+    const reports = await DomReport.find().populate("proizvod");
+
+    console.log(reports)
+
+    res.status(200).render("domReportsAll", {
+        title: "Izveštaji za domaće tržište",
+        path: "dom",
+        userName: req.session.name,
+        reports
+    });
+});
+
 // @desc   Create Report
 // @route  POST /api/v2/reports/dom
 // @access Private

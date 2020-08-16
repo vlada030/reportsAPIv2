@@ -1,6 +1,6 @@
 const express = require('express');
 
-const {getDomReportsHTML, createDomReport, getAllDomReports, getDomReport, updateDomReport, deleteDomReport} = require('../controllers/domReportsController');
+const {getDomReportsHTML, getAllDomReportsHTML, createDomReport, getAllDomReports, getDomReport, updateDomReport, deleteDomReport} = require('../controllers/domReportsController');
 
 const { getExpReportsHTML, createExpReport, getAllExpReports, getExpReport, updateExpReport, deleteExpReport } = require('../controllers/expReportsController');
 
@@ -16,6 +16,7 @@ const router = express.Router();
 
 router.route('/dom').get(getDomReportsHTML).post(protect, createDomReport);
 router.route('/dom/all').get(protect, advancedResults(DomReport, {path: 'createdByUser', select: 'name'}), getAllDomReports);
+router.route('/dom/allReports').get(getAllDomReportsHTML);
 router.route('/dom/:id').get(getDomReport).delete(protect, deleteDomReport).put(protect, updateDomReport);;
 
 router.route('/exp').get(getExpReportsHTML).post(protect, createExpReport);

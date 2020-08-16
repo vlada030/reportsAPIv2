@@ -18,11 +18,11 @@ const DomReportSchema = new mongoose.Schema({
 
     sifra: {
         type: mongoose.Schema.Types.Number,
-        //required: [true, 'Unesite sifru proizvoda'],
-        // validate: [lengthValidation(this.sifra, 7), 'Sifra mora da sadrzi 7 broja'] 
-        // validate: [function() {
-        //     return this.sifra.toString().length === 7;
-        // } , 'Sifra mora da sadrzi 7 broja']
+        required: [true, 'Unesite sifru proizvoda'],
+        //validate: [lengthValidation(this.sifra, 7), 'Sifra mora da sadrzi 7 broja'] 
+        validate: [function() {
+            return this.sifra.toString().length === 7;
+        } , 'Sifra mora da sadrzi 7 broja']
     },
 
     radniNalog: {
@@ -85,7 +85,7 @@ DomReportSchema.virtual('proizvod', {
     localField: 'sifra',
     // polje u Product
     foreignField: 'sifra',
-    justOne: false
+    justOne: true
 });
 
 module.exports = mongoose.model('DomReport', DomReportSchema);
