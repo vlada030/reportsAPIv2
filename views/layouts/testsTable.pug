@@ -28,56 +28,56 @@
                         td pieces
                     else
                         td komada   
-                    td#wiresNumber /
+                    td#wiresNumber=report ? report.proizvod.brojZica : '/'
                 tr
                     if lang === 'eng'
                         td Component Wire Diametar
                     else
                         td Prečnik žice
                     td mm
-                    td#wireDiametar /
+                    td#wireDiametar=report ? report.proizvod.precnikZice : '/'
                 tr
                     if lang === 'eng'
                         td Maximum Allowed Conductor Resistance
                     else
                         td Maksimalni dozvoljeni otpor provodnika                                
                     td ohm/km
-                    td#resistance /
+                    td#resistance=report ? report.proizvod.otpor : '/'
                 tr
                     if lang === 'eng'
                         td First Semi-Conductive Layer Thickness
                     else
                         td Debljina prvog poluprovodnog sloja
                     td mm
-                    td#semiFirst /
+                    td#semiFirst=report ? report.proizvod.debPPS1 : '/'
                 tr
                     if lang === 'eng'
                         td Insulation Thickness
                     else
                         td Debljina izolacije
                     td mm
-                    td#thickInsulation /
+                    td#thickInsulation=report ? report.proizvod.debIzolacije : '/'
                 tr
                     if lang === 'eng'
                         td Second Semi-Conductive Layer Thickness
                     else
                         td Debljina drugog poluprovodnog sloja
                     td mm
-                    td#semiSecond /
+                    td#semiSecond=report ? report.proizvod.debPPS2 : '/'
                 tr
                     if lang === 'eng'
                         td Sheath Thickness
                     else
                         td Debljina plašta
                     td mm
-                    td#thickSheath /
+                    td#thickSheath=report ? report.proizvod.debPlasta : '/'
                 tr
                     if lang === 'eng'
                         td Overall Diametar
                     else	
                         td Spoljni prečnik
                     td mm
-                    td#outerDiametar /
+                    td#outerDiametar=report ? report.proizvod.spPrecnik : '/'
                 
                 tr
                     if lang === 'eng'
@@ -85,14 +85,14 @@
                     else
                         td Ispitni napon / 5 minuta
                     td kV (AC)
-                    td#testVoltage /
+                    td#testVoltage=report ? report.proizvod.ispitniNapon : '/'
                 tr
                     if lang === 'eng'
                         td Maximum allowed partial discharges, 2Uo	
                     else
                         td Maksimalno dozvoljena parcijalna pražnjenja, 2Uo
                     td pC
-                    td#pDischarge /                                              
+                    td#pDischarge=report ? report.proizvod.parcijalna : '/'                                              
         if lang === 'eng'
             p.text-center.font-weight-bold This confirms that the cable has been tested in accordance with the given norm and fully meets the requirements.
         else        

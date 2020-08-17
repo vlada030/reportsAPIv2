@@ -8,7 +8,7 @@ const asyncHandler = require('../middleware/asyncHandler');
 
 exports.getCreateProductHTML = (req, res, next) => {
 
-    res.status(200).render('create_product', {title: 'Dodaj novi proizvod', path: 'none', lang: 'none'});
+    res.status(200).render('create_product', {title: 'Dodaj novi proizvod', path: 'product'});
 };
 
 // @desc   Get HTML for product update
@@ -17,7 +17,7 @@ exports.getCreateProductHTML = (req, res, next) => {
 
 exports.getUpdateProductHTML = (req, res, next) => {
 
-    res.status(200).render('update_product', {title: 'Izmeni postojeći proizvod', path: 'none', lang: 'none'});
+    res.status(200).render('update_product', {title: 'Izmeni postojeći proizvod', path: 'product'});
 };
 
 // @desc   Get all products

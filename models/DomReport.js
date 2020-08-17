@@ -35,7 +35,8 @@ const DomReportSchema = new mongoose.Schema({
     },
 
     velDob: {
-        type: String
+        type: String,
+        required: true
     },
 
     duzina: {

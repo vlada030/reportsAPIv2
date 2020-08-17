@@ -20,6 +20,10 @@ block secondaryNavBar
                             img(src='/img/en.png', alt='en').icon 
 
 block content
+
+    // setovanje readonly/disabled atributa input elemenata
+    -var readonlyStatus = report ? true : false
+    
     section#report.mt-2.mb-4
         .container.bg-light
             //- prvi red
@@ -46,15 +50,17 @@ block content
 
             .row
                 .col-10.mx-auto
-                    form.border.border-dark.p-3#domesticForm 
-                        //- treci red   
+                    form.border.border-dark.p-3#domesticForm
+                        
+                        
+                          
                         .row.font-weight-bold.mb-3.d-print-none     
                             .col-lg-6
                                 .row.align-items-center
                                     .col-4 
                                         label Šifra :
                                     .col-8
-                                        input(type='number', placeholder='Unesi 7-cifreni broj').form-control.font-weight-bold#productCode
+                                        input(type='number' placeholder='Unesi 7-cifreni broj' value=report ? report.sifra : '' readonly=readonlyStatus).form-control.font-weight-bold#productCode
                                         small Error message 
                         //- cetvrti red
                         .row.font-weight-bold.mb-2
@@ -65,7 +71,7 @@ block content
                                     else   
                                         .col-4 Tip Kabla 
                                     .col-7
-                                        p#cableType.ml-2 /
+                                        p#cableType.ml-2=report ? report.proizvod.proizvod : '/'
                                     
                             .col-lg-6
                                 .row
@@ -75,7 +81,7 @@ block content
                                         .col-4 Nazivni Napon
                                     
                                     .col-4
-                                        p#ratedVoltage.ml-1 /
+                                        p#ratedVoltage.ml-1=report ? report.proizvod.napon : '/'
 
                         //- peti red 
                         .row.font-weight-bold.mb-2.stampa
@@ -88,7 +94,7 @@ block content
                                             label(for='workOrder') Radni nalog:
                                          
                                     .col-8
-                                        input(type='number', placeholder='Unesi 8-cifreni broj').form-control.font-weight-bold#workOrder
+                                        input(type='number', placeholder='Unesi 8-cifreni broj' value=report ? report.radniNalog : '' readonly=readonlyStatus).form-control.font-weight-bold#workOrder
                                         small Error message
                                     
                             .col-lg-6
@@ -100,17 +106,17 @@ block content
                                             label(for='num') Broj kalema:
                                         
                                     .col-4
-                                        input(type='text', placeholder='7-cifreni broj').form-control.font-weight-bold#misNumber
+                                        input(type='text', placeholder='7-cifreni broj' value=report ? report.MISBroj : '' readonly=readonlyStatus).form-control.font-weight-bold#misNumber
                                         small Error message
                                     .col-4
-                                        select.form-control.font-weight-bold#drumSize
-                                            option(value='TK06T') TK06T
+                                        select.form-control.font-weight-bold#drumSize(disabled=readonlyStatus)
+                                            option(value='TK06T' selected= report&&report.velDob==='TK06T' ? true : false) TK06T
                                             option(value='TK07T') TK07T
                                             option(value='TK08T') TK08T
                                             option(value='TK08AT') TK08AT
                                             option(value='TK090T') TK090T
                                             option(value='TK100T') TK100T
-                                            option(value='TK10AT' selected) TK10AT
+                                            option(value='TK10AT' selected= report&&report.velDob==='TK10AT' ? true : false) TK10AT
                                             option(value='TK120T') TK120T
                                             option(value='TK140T') TK140T
                                             option(value='TK160T') TK160T
@@ -132,7 +138,7 @@ block content
                                             label(for='length') Dužina:                                        
 
                                     .input-group.col-5
-                                        input(type='number').form-control.text-right.font-weight-bold#length
+                                        input(type='number' value=report ? report.duzina : '' readonly=readonlyStatus).form-control.text-right.font-weight-bold#length
                                         .input-group-append
                                             span.input-group-text m
                                         small Error message
@@ -145,13 +151,13 @@ block content
                                             label(for='weight') Težina (bruto/neto):                                       
 
                                     .input-group.col-4
-                                        input(type='number').form-control.text-right.font-weight-bold.pr-2#bruto
+                                        input(type='number' value=report ? report.bruto : '' readonly=readonlyStatus).form-control.text-right.font-weight-bold.pr-2#bruto
                                         .input-group-append
                                             span.input-group-text kg
                                         small Error message
 
                                     .input-group.col-4
-                                        input(type='number').form-control.text-right.font-weight-bold.pr-2#neto
+                                        input(type='number' value=report ? report.neto : '' readonly=readonlyStatus).form-control.text-right.font-weight-bold.pr-2#neto
                                         .input-group-append
                                             span.input-group-text kg
                                         small Error message
@@ -165,7 +171,7 @@ block content
                                         .col-4 Standard: 
                                                              
                                     .col-8
-                                        p.ml-2#standard /
+                                        p.ml-2#standard=report ? report.proizvod.propis : '/'
 
                             .col-6
                                 .row
@@ -174,7 +180,7 @@ block content
                                     else   
                                         .col-4 Boja: 
                                     .col-8
-                                        p.ml-2#productColor /
+                                        p.ml-2#productColor=report ? report.proizvod.boja : '/'
                         //- osmi red
                         .text-center.py-2.d-print-none
                             input(type='hidden', name='_csrf', value=csrfToken)

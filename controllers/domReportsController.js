@@ -22,10 +22,7 @@ exports.getDomReportsHTML = asyncHandler((req, res) => {
 // @access Private
 
 exports.getAllDomReportsHTML = asyncHandler(async(req, res) => {
-
     const reports = await DomReport.find().populate("proizvod");
-
-    console.log(reports)
 
     res.status(200).render("domReportsAll", {
         title: "Izveštaji za domaće tržište",
@@ -89,10 +86,14 @@ exports.getDomReport = asyncHandler(async (req, res, next) => {
             ));
     }
 
-    res.status(200).json({
-        success: true,
-        data: report
-    });
+    res.status(200).render('domReports', {
+        title: "Izveštaji za domaće tržište",
+        path: "dom",
+        lang: 'ser',
+        userName: req.session.name,
+        report        
+    })
+    
 });
 
 // @desc   Update Report

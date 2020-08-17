@@ -20,17 +20,19 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.py-2
                     a.nav-link(href='/api/v2/reports/exp', class=(path === 'ino' ? 'active' : '')) Ino Izveštaji
                 li.nav-item
                     a.nav-link(href='/api/v2/reports/shift', class=(path === 'shift' ? 'active' : '')) Smenski Izveštaji
+                li.nav-item
+                    a.nav-link(href='/api/v2/products/create', class=(path === 'product' ? 'active' : '')) Proizvodi
                                         
             if !isAuthenticated
                 ul.navbar-nav.ml-auto#userNav
                     li.nav-item.mr-2.mb-2.mb-lg-0
-                        a.btn.btn-outline-info(href='../auth/login') Prijava
+                        a.btn.btn-outline-info(href='/api/v2/auth/login') Prijava
                     li.nav-item
-                        a.btn.btn-outline-info(href='../auth/register') Registracija
+                        a.btn.btn-outline-info(href='/api/v2/auth/register') Registracija
             else 
                 ul.navbar-nav.ml-auto#userNav
                     li.nav-item.mr-2.mb-2.mb-lg-0
-                        a.btn.btn-outline-info(href='../auth/login') #{userName}
+                        a.btn.btn-outline-info(href='#') #{userName}
                     li.nav-item
                         form(action='/api/v2/auth/logoutAll', method='POST')
                             input(type='hidden', name='_csrf', value=csrfToken)

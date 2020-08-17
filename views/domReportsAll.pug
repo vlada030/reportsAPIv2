@@ -6,18 +6,18 @@ block primaryNavBar
 block secondaryNavBar
     include layouts/secondaryNavBar.pug
         block secondaryMenu
-            include layouts/secondaryMenuProduct.pug
+            include layouts/secondaryMenuReport.pug
 
 block content
     .container.my-3.w-100
         .row.w-100
             .list-group.w-100
                 each report in reports
-                    a(href="#").list-group-item.list-group-item-action.d-flex.justify-content-around
+                    a(href=`../dom/${report.MISBroj}`).list-group-item.list-group-item-action.d-flex.justify-content-around
                         span=`Radni Nalog: ${report.radniNalog}` 
                         span=`MIS Broj: ${report.MISBroj}`
-                        span=`Naziv Proizvoda: ${report.proizvod}`
-                        span=`Dužina: ${report.proizvod}m`
+                        span=`Naziv Proizvoda: ${report.proizvod.proizvod}`
+                        span=`Dužina: ${report.duzina}m`
     
 block footer    
     include layouts/fixed_footer.pug

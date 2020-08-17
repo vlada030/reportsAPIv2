@@ -3,6 +3,12 @@ extends layouts/main-layout.pug
 block primaryNavBar
     include layouts/primaryNavBarAll.pug
 
+block secondaryNavBar
+    include layouts/secondaryNavBar.pug    
+    
+        block secondaryMenu
+            include layouts/secondaryMenuProduct.pug
+
 block content
     .container.mb-4.p-2
         h2.text-center.mb-4.pb-4 Promena detalja proizvoda
