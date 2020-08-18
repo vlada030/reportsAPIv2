@@ -8,17 +8,41 @@ const asyncHandler = require('../middleware/asyncHandler');
 
 exports.getCreateProductHTML = (req, res, next) => {
 
-    res.status(200).render('create_product', {title: 'Dodaj novi proizvod', path: 'product'});
+    res.status(200).render("create_product", {
+        title: "Dodaj novi proizvod",
+        path: "product",
+        userName: req.session.name
+    });
 };
 
 // @desc   Get HTML for product update
 // @route  GET /api/v2/products/update
 // @access Private
 
-exports.getUpdateProductHTML = (req, res, next) => {
+exports.getUpdateProductHTML = asyncHandler((req, res, next) => {
 
-    res.status(200).render('update_product', {title: 'Izmeni postojeći proizvod', path: 'product'});
-};
+    res.status(200).render("update_product", {
+        title: "Izmeni postojeći proizvod",
+        path: "product",
+        userName: req.session.name
+    });
+});
+
+// @desc   Get HTML for displaying all products
+// @route  GET /api/v1/products/allProducts
+// @access Private
+
+exports.getAllProductsHTML = asyncHandler(async(req, res, next) => {
+    const products = await Product.find();
+    
+    res.status(200).render("productsAll", {
+        title: "Postojeće šifre proizvoda",
+        path: "product",
+        userName: req.session.name,
+        products
+    });
+});
+
 
 // @desc   Get all products
 // @route  GET /api/v1/products
@@ -58,8 +82,8 @@ exports.getProducts = asyncHandler(async (req, res, next) => {
 });
 
 // @desc   Get single product
-// @route  GET /api/v1/products/:id
-// @access Public
+// @route  GET /api/v2/products/:id
+// @access Private
 
 exports.getProduct = asyncHandler(async (req, res, next) => {
     const product = await Product.find({sifra: req.params.id}).populate({
@@ -84,10 +108,12 @@ exports.getProduct = asyncHandler(async (req, res, next) => {
     
     // poziva fju za pretvaranje Decimal128 u String
     const convertedProduct = decimal128ToStringOutput(product);
-
-    res.status(200).json({
-        success: true,
-        data: convertedProduct
+    
+    res.status(200).render("update_product", {
+        title: "Izmeni postojeći proizvod",
+        path: "product",
+        userName: req.session.name,
+        product: convertedProduct[0]
     }); 
 });
 

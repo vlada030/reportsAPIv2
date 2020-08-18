@@ -28,7 +28,7 @@ block content
                     .form-group.row.align-items-center.pb-4
                         label.col-md-4(for='ratedVoltage') Nazivni napon:
                         .col-md-8
-                            select#ratedVoltage.form-control(name='ratedVoltage')
+                            select#ratedVoltage.form-control(name='napon')
                                 option(value='100V') 100V
                                 option(value='380V') 380V
                                 option(value='300/300V') 300/300V
@@ -49,7 +49,7 @@ block content
                     .form-group.row.align-items-center.pb-4
                         label.col-md-4(for='productColor') Boja:
                         .col-md-8
-                            select#productColor.form-control(name='productColor')
+                            select#productColor.form-control(name='boja')
                                 option(value='crna', selected='') Crna
                                 option(value='siva') Siva
                                 option(value='bela') Bela
@@ -105,7 +105,7 @@ block content
                     .form-group.row.align-items-center.pb-4
                         label.col-md-4(for='testVoltage') Ispitni napon:
                         .col-md-8
-                            select#testVoltage.form-control(name='testVoltage')
+                            select#testVoltage.form-control(name='ispitniNapon')
                                 option(value='2') 2kV
                                 option(value='2.5') 2.5kV
                                 option(value='3') 3kV
@@ -120,7 +120,7 @@ block content
                     .form-group.row.align-items-center.pb-4
                         label.col-md-4(for='pDischarge') Parcijalna pražnjenja:
                         .col-md-8
-                            select#pDischarge.form-control(name='pDischarge')
+                            select#pDischarge.form-control(name='parcijalna')
                                 option(value='/') /
                                 option(value='<2') <2pC
                                 option(value='<20') <20pC

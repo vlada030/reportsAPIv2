@@ -12,12 +12,15 @@ block content
     .container.my-3.w-100
         .row.w-100
             .list-group.w-100
+                -var No = 1
                 each report in reports
-                    a(href=`../dom/${report.MISBroj}`).list-group-item.list-group-item-action.d-flex.justify-content-around
-                        span=`Radni Nalog: ${report.radniNalog}` 
-                        span=`MIS Broj: ${report.MISBroj}`
-                        span=`Naziv Proizvoda: ${report.proizvod.proizvod}`
-                        span=`Dužina: ${report.duzina}m`
+                    a(href=`../dom/${report.MISBroj}`).list-group-item.list-group-item-action.d-flex.justify-content-between
+                        span.w-25.px-2=`${No}.`
+                        span.w-25.px-2=`MIS Broj: ${report.MISBroj}`
+                        span.w-25.px-2=`Nalog: ${report.radniNalog}` 
+                        span.w-25.px-2=report.proizvod.proizvod
+                        span.w-25.text-right.px-2=`${report.duzina}m`
+                    - No++    
     
 block footer    
     include layouts/fixed_footer.pug

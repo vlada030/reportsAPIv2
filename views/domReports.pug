@@ -7,7 +7,7 @@ block secondaryNavBar
     include layouts/secondaryNavBar.pug    
     
         block secondaryMenu
-            include layouts/secondaryMenuProduct.pug
+            include layouts/secondaryMenuReport.pug
 
         block language 
             ul.navbar-nav.ml-auto
@@ -111,22 +111,22 @@ block content
                                     .col-4
                                         select.form-control.font-weight-bold#drumSize(disabled=readonlyStatus)
                                             option(value='TK06T' selected= report&&report.velDob==='TK06T' ? true : false) TK06T
-                                            option(value='TK07T') TK07T
-                                            option(value='TK08T') TK08T
-                                            option(value='TK08AT') TK08AT
-                                            option(value='TK090T') TK090T
-                                            option(value='TK100T') TK100T
+                                            option(value='TK07T' selected= report&&report.velDob==='TK07T' ? true : false) TK07T
+                                            option(value='TK08T' selected= report&&report.velDob==='TK08T' ? true : false) TK08T
+                                            option(value='TK08AT' selected= report&&report.velDob==='TK08AT' ? true : false) TK08AT
+                                            option(value='TK090T' selected= report&&report.velDob==='TK090T' ? true : false) TK090T
+                                            option(value='TK100T' selected= report&&report.velDob==='TK100T' ? true : false) TK100T
                                             option(value='TK10AT' selected= report&&report.velDob==='TK10AT' ? true : false) TK10AT
-                                            option(value='TK120T') TK120T
-                                            option(value='TK140T') TK140T
-                                            option(value='TK160T') TK160T
-                                            option(value='TK180T') TK180T
-                                            option(value='TK200T') TK200T
-                                            option(value='TK20AT') TK20AT
-                                            option(value='TK210T') TK210T
-                                            option(value='TK220T') TK220T
-                                            option(value='TK240T') TK240T
-                                            option(value='pallet') Pallet
+                                            option(value='TK120T' selected= report&&report.velDob==='TK120T' ? true : false) TK120T
+                                            option(value='TK140T' selected= report&&report.velDob==='TK140T' ? true : false) TK140T
+                                            option(value='TK160T' selected= report&&report.velDob==='TK160T' ? true : false) TK160T
+                                            option(value='TK180T' selected= report&&report.velDob==='TK180T' ? true : false) TK180T
+                                            option(value='TK200T' selected= report&&report.velDob==='TK200T' ? true : false) TK200T
+                                            option(value='TK20AT' selected= report&&report.velDob==='TK20AT' ? true : false) TK20AT
+                                            option(value='TK210T' selected= report&&report.velDob==='TK210T' ? true : false) TK210T
+                                            option(value='TK220T' selected= report&&report.velDob==='TK220T' ? true : false) TK220T
+                                            option(value='TK240T' selected= report&&report.velDob==='TK240T' ? true : false) TK240T
+                                            option(value='pallet' selected= report&&report.velDob==='pallet' ? true : false) Pallet
                         //- sesti red
                         .row.font-weight-bold.mb-2.stampa
                             .col-lg-6
