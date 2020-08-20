@@ -81,11 +81,12 @@ exports.getProducts = asyncHandler(async (req, res, next) => {
     // });    
 });
 
-// @desc   Get single product
+// @desc   Get single product and render HTML
 // @route  GET /api/v2/products/:id
 // @access Private
 
 exports.getProduct = asyncHandler(async (req, res, next) => {
+    
     const product = await Product.find({sifra: req.params.id}).populate({
         path: 'createdByUser',
         select: 'name email'
@@ -114,6 +115,32 @@ exports.getProduct = asyncHandler(async (req, res, next) => {
         path: "product",
         userName: req.session.name,
         product: convertedProduct[0]
+    }); 
+});
+// @desc   Get single product and rturn JSON
+// @route  GET /api/v2/products/:id/json
+// @access Private
+
+exports.getProductJSON = asyncHandler(async (req, res, next) => {
+    
+    const product = await Product.find({sifra: req.params.id}).populate({
+        path: 'createdByUser',
+        select: 'name email'
+    }).populate({
+        path: 'modifiedByUser',
+        select: 'name email'
+    });
+    
+    if (product.length !== 1) {
+        return next(new ErrorResponse(`Product with id ${req.params.id} not found`, 404)); 
+    }    
+    
+    // poziva fju za pretvaranje Decimal128 u String
+    const convertedProduct = decimal128ToStringOutput(product);
+    
+    res.status(200).json( {
+        success: true,
+        data: convertedProduct
     }); 
 });
 
