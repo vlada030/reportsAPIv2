@@ -132,7 +132,7 @@ exports.getProductJSON = asyncHandler(async (req, res, next) => {
     });
     
     if (product.length !== 1) {
-        return next(new ErrorResponse(`Product with id ${req.params.id} not found`, 404)); 
+        return next(new ErrorResponse(`Proizvod sa šifrom ${req.params.id} nije pronađen`, 404)); 
     }    
     
     // poziva fju za pretvaranje Decimal128 u String

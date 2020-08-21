@@ -1,22 +1,37 @@
-import {getProduct} from './product';
 // bez ovoga ne radi npr async/await... i blokira celu app
 import '@babel/polyfill';
+import {getProduct} from './ajaxRequests';
+import errorHandler from './errorHandler';
+import {showMessage, deleteMessage} from './alertMessage';
+import {updateReportsUI} from './userInterface';
 
 const productCode = document.getElementById('productCode');
 
 if (productCode) {
-    productCode.addEventListener('input', async e => {
+    productCode.addEventListener('input', async (e) => {
         e.preventDefault();
-        if (productCode.value.trim() < 7) {
-            console.log('Duzina sifre je manja od 7')
-            throw new Error('Duzina sifre je manja od 7')
-        }
-        console.log(productCode.value);
-        const product = await getProduct(productCode.value.trim());
+        try {
+            // 1. proveri početno stanje
+            // obriši alert poruku ako je ima
+            deleteMessage();
+            // uradi update product polja
+            updateReportsUI(void 0);
 
-        console.log(product.data.data[0])
-
- 
-        
+            if (productCode.value.trim().length !== 7) {
+                throw new Error('Šifra proizvoda se sastoji iz 7 cifara')
+            }
+            console.log(productCode.value);
+            const product = await getProduct(productCode.value.trim());
+            console.log(product)
+            if (product) {
+                console.log(product.data.data[0])
+                updateReportsUI(product.data.data[0]);
+    
+            }
+            
+        } catch (error) {
+            errorHandler(error);
+        }       
     });
 }
+
