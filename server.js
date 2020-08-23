@@ -52,6 +52,20 @@ if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
 
+// app.use(function (req, res, next) {
+//     res.header("Access-Control-Allow-Origin", "http://localhost:5000");
+//     res.header(
+//         "Access-Control-Allow-Headers",
+//         "Origin, X-Requested-With, Content-Type, Accept, Authorization,  X-PINGOTHER"
+//     );
+//     res.header("Access-Control-Allow-Credentials", true);
+//     res.header(
+//         "Access-Control-Allow-Methods",
+//         "GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS"
+//     );
+//     next();
+// });
+
 // pozivanje defaultnog body parsera za dobijanje req.body
 // ako je req.body u vidu strings/arrays (extended: false) ili bilo sta (extended: true)- form-urlencoded
 
@@ -79,7 +93,7 @@ app.use(
         resave: false,
         saveUninitialized: false,
         cookie: {},
-        store: storeSession,
+        store: storeSession
     })
 );
 
@@ -95,7 +109,14 @@ app.use(flash());
 app.use(mongoSanitize());
 
 // CORS
-app.use(cors());
+//app.use(cors());
+app.use(cors({
+    // zbog axiosa corsu mora da se doda credentials
+    //origin: ['http://localhost:5000', 'http://127.0.0.1:5000','https://localhost:5000', 'https://127.0.0.1:5000'],
+    // origin: true,
+    // methods: ['GET', 'PUT'],
+    // credentials: true
+}));
 
 // pravljenje static foldera
 app.use(express.static(path.join(__dirname, 'public')));

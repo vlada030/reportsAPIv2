@@ -35,3 +35,8 @@ if (productCode) {
     });
 }
 
+window.addEventListener('click', (e) => {
+    if (e.target.matches('.close')) {
+        deleteMessage();
+    }
+})

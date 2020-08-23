@@ -7,10 +7,9 @@ const ErrorResponse = require('../utils/errorResponse');
 // token moze biti smesten na dva mesta ili u cookie ili u headers.authorization (string pocinje sa Bearer pa razmak pa token) 
 exports.protect = asyncHandler(async (req, res, next) => {
     let token;
-    //console.log('poziva se protect, provera cookie / bearer');
+    
     if (req.session && req.session.token) {
         token = req.session.token;
-        //console.log('token je prosao preko bearer');
     } 
     
     // ako token ne postoji znaci da korisnik nije logovan

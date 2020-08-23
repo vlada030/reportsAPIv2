@@ -12,7 +12,7 @@ router.route('/').get(advancedResults(Product), getProducts).post(protect, creat
 router.route('/create').get(protect, getCreateProductHTML);
 router.route('/update').get(protect, getUpdateProductHTML);
 router.route('/allProducts').get(protect, getAllProductsHTML);
-router.route('/:id').get(getProduct).put(protect, updateProduct).delete(protect, deleteProduct);
+router.route('/:id').get(protect, getProduct).put(protect, updateProduct).delete(protect, deleteProduct);
 router.route('/:id/json').get(protect, getProductJSON);
 
 module.exports = router;
