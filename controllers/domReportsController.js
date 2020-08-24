@@ -1,6 +1,10 @@
 const DomReport = require("../models/DomReport");
+const Product = require("../models/Product");
+
 const asyncHandler = require("../middleware/asyncHandler");
 const ErrorResponse = require("../utils/errorResponse");
+
+const {validationResult} = require('express-validator');
 
 // @desc   Domestic Reports
 // @route  GET /api/v2/reports/dom
@@ -40,26 +44,41 @@ exports.getAllDomReportsHTML = asyncHandler(async(req, res) => {
 exports.createDomReport = asyncHandler(async (req, res, next) => {
     const lang = req.query.lang || 'ser';
     req.body.createdByUser = req.user.id;
-    // const bruto = req.body.bruto;
-    // const neto = req.body.neto;
 
-    // if (neto > bruto) {
-    //     return next(new ErrorResponse("Bruto mora biti veće od neto", 400));
-    // }
+    // za povlacenje podataka na osnovu sifre prpoizvoda
+    const proizvod = await Product.findOne({sifra: req.body.sifra});
+
+    req.body.proizvod = proizvod;
+
+    // cupanje errors iz express-validatora
+    const errors = validationResult(req);
+    console.log(errors)
     
+    // validacija preko express-validatora
+    // implementirano pamcenje prethodnog unosa
+    if (!errors.isEmpty()) {
+        return res.status(422).render("domReports", {
+            title: "Izveštaji za domaće tržište",
+            path: "dom",
+            lang,
+            errorMessage: errors.array()[0].msg,
+            report: req.body,
+            readonlyInputStatus: false
+        })
+    }
     await DomReport.create(req.body);
 
     // ovo mora da se doda da bi se zadrzao unos , da ne brise unesene vrednosti
-    const report = await DomReport.findOne({ MISBroj: req.body.MISBroj })
-        .populate({
-            path: "createdByUser",
-            select: "name",
-        })
-        .populate({
-            path: "updatedByUser",
-            select: "name",
-        })
-        .populate("proizvod"); // popunjava virtuals polje
+    // const report = await DomReport.findOne({ MISBroj: req.body.MISBroj })
+    //     .populate({
+    //         path: "createdByUser",
+    //         select: "name",
+    //     })
+    //     .populate({
+    //         path: "updatedByUser",
+    //         select: "name",
+    //     })
+    //     .populate("proizvod"); // popunjava virtuals polje
 
     res.status(201).render("domReports", {
         title: "Izveštaji za domaće tržište",
@@ -67,7 +86,7 @@ exports.createDomReport = asyncHandler(async (req, res, next) => {
         lang,
         userName: req.session.name,
         successMessage: 'Izveštaj je uspešno snimljen u bazu.',
-        report,
+        report: req.body,
         readonlyInputStatus: false    
     });
 });

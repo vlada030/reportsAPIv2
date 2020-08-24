@@ -1,5 +1,7 @@
 const express = require('express');
 
+const {body} = require('express-validator'); 
+
 const {getDomReportsHTML, getAllDomReportsHTML, createDomReport, getAllDomReports, getDomReport, updateDomReport, deleteDomReport} = require('../controllers/domReportsController');
 
 const { getExpReportsHTML, createExpReport, getAllExpReports, getExpReport, updateExpReport, deleteExpReport } = require('../controllers/expReportsController');
@@ -14,7 +16,34 @@ const ShiftReport = require('../models/ShiftReport');
 
 const router = express.Router();
 
-router.route('/dom').get(getDomReportsHTML).post(protect, createDomReport);
+router
+    .route("/dom")
+    .get(getDomReportsHTML)
+    .post(
+        protect,
+        body('sifra', "Šifra se sastoji od 7 cifara")
+            .isNumeric()
+            .isLength(7)
+            .trim(),
+        body("radniNalog", "Radni nalog sastoji se od 8 cifara")
+            .isNumeric()
+            .isLength(8)
+            .trim(),
+        body("MISBroj")
+            .isNumeric()
+            .isLength(7)
+            .withMessage("MIS broj sastoji se od 7 cifara")
+            .custom(async (value, { req }) => {
+                const report = await DomReport.findOne({MISBroj: value});
+                
+                if (report) {
+                    throw new Error('Izveštaj pod ovim MIS brojem postoji!');
+                }
+                return true;
+            })
+            .trim(),
+        createDomReport
+    );
 router.route('/dom/all').get(protect, advancedResults(DomReport, {path: 'createdByUser', select: 'name'}), getAllDomReports);
 router.route('/dom/allReports').get(getAllDomReportsHTML);
 router.route('/dom/:id').get(getDomReport).delete(protect, deleteDomReport).put(protect, updateDomReport);
