@@ -103,7 +103,7 @@ exports.register = asyncHandler(async (req, res, next) => {
 // @access Public
 
 exports.getLoginUserHTML = (req, res) => {
-    console.log(req.session);
+    //console.log(req.session);
     // ukoliko nema error, message je prazan hiz pa ga pug vidi kao postojeci
     let message = req.flash('error');
     if (message.length === 0) {

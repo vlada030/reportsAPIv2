@@ -13,7 +13,8 @@ exports.getDomReportsHTML = asyncHandler((req, res) => {
         title: "Izveštaji za domaće tržište",
         path: "dom",
         lang,
-        userName: req.session.name        
+        userName: req.session.name,
+        readonlyInputStatus: false        
     });
 });
 
@@ -37,18 +38,37 @@ exports.getAllDomReportsHTML = asyncHandler(async(req, res) => {
 // @access Private
 
 exports.createDomReport = asyncHandler(async (req, res, next) => {
+    const lang = req.query.lang || 'ser';
     req.body.createdByUser = req.user.id;
-    const bruto = req.body.bruto;
-    const neto = req.body.neto;
+    // const bruto = req.body.bruto;
+    // const neto = req.body.neto;
 
-    if (neto > bruto) {
-        return next(new ErrorResponse("Bruto mora biti veće od neto", 400));
-    }
-    const report = await DomReport.create(req.body);
+    // if (neto > bruto) {
+    //     return next(new ErrorResponse("Bruto mora biti veće od neto", 400));
+    // }
+    
+    await DomReport.create(req.body);
 
-    res.status(201).json({
-        success: true,
-        data: report,
+    // ovo mora da se doda da bi se zadrzao unos , da ne brise unesene vrednosti
+    const report = await DomReport.findOne({ MISBroj: req.body.MISBroj })
+        .populate({
+            path: "createdByUser",
+            select: "name",
+        })
+        .populate({
+            path: "updatedByUser",
+            select: "name",
+        })
+        .populate("proizvod"); // popunjava virtuals polje
+
+    res.status(201).render("domReports", {
+        title: "Izveštaji za domaće tržište",
+        path: "dom",
+        lang,
+        userName: req.session.name,
+        successMessage: 'Izveštaj je uspešno snimljen u bazu.',
+        report,
+        readonlyInputStatus: false    
     });
 });
 
@@ -91,7 +111,8 @@ exports.getDomReport = asyncHandler(async (req, res, next) => {
         path: "dom",
         lang: 'ser',
         userName: req.session.name,
-        report        
+        report,
+        readonlyInputStatus: true   
     })
     
 });

@@ -22,8 +22,17 @@ block secondaryNavBar
 block content
 
     // setovanje readonly/disabled atributa input elemenata
-    -var readonlyStatus = report ? true : false
-    
+        
+    if errorMessage
+        .alert.alert--error
+            p #{errorMessage}
+            p.close &times;
+
+    if successMessage
+        .alert.alert--success
+            p #{successMessage}
+            p.close &times;
+
     section#report.mt-2.mb-4
         .container.bg-light
             //- prvi red
@@ -43,24 +52,21 @@ block content
                     else
                         h2.text-center.mr-4 Izveštaj o rutinskom ispitivanju
 
-                    input(type='text', style='width:3rem', value='1').form-control#ordinalNumber
+                    input(type='number' style='width:3rem' name='rb' form='domesticForm' value=report ? report.rb : 1).form-control#ordinalNumber
                     p.m-0 
                         | &nbsp;/&nbsp;
                         span.year 
 
             .row
                 .col-10.mx-auto
-                    form.border.border-dark.p-3#domesticForm
-                        
-                        
-                          
+                    form.border.border-dark.p-3#domesticForm(action='/api/v2/reports/dom' method='POST')                        
                         .row.font-weight-bold.mb-3.d-print-none     
                             .col-lg-6
                                 .row.align-items-center
                                     .col-4 
                                         label Šifra :
                                     .col-8
-                                        input(type='number' placeholder='Unesi 7-cifreni broj' value=report ? report.sifra : '' readonly=readonlyStatus).form-control.font-weight-bold#productCode
+                                        input(type='number' placeholder='Unesi 7-cifreni broj' value=report ? report.sifra : '' readonly=readonlyInputStatus name='sifra').form-control.font-weight-bold#productCode
                                         small Error message 
                         //- cetvrti red
                         .row.font-weight-bold.mb-2
@@ -94,7 +100,7 @@ block content
                                             label(for='workOrder') Radni nalog:
                                          
                                     .col-8
-                                        input(type='number', placeholder='Unesi 8-cifreni broj' value=report ? report.radniNalog : '' readonly=readonlyStatus).form-control.font-weight-bold#workOrder
+                                        input(type='number', placeholder='Unesi 8-cifreni broj' value=report ? report.radniNalog : '' readonly=readonlyInputStatus name='radniNalog').form-control.font-weight-bold#workOrder
                                         small Error message
                                     
                             .col-lg-6
@@ -106,10 +112,10 @@ block content
                                             label(for='num') Broj kalema:
                                         
                                     .col-4
-                                        input(type='text', placeholder='7-cifreni broj' value=report ? report.MISBroj : '' readonly=readonlyStatus).form-control.font-weight-bold#misNumber
+                                        input(type='text', placeholder='7-cifreni broj' value=report ? report.MISBroj : '' readonly=readonlyInputStatus name='MISBroj').form-control.font-weight-bold#misNumber
                                         small Error message
                                     .col-4
-                                        select.form-control.font-weight-bold#drumSize(disabled=readonlyStatus)
+                                        select.form-control.font-weight-bold#drumSize(disabled=readonlyInputStatus name='velDob')
                                             option(value='TK06T' selected= report&&report.velDob==='TK06T' ? true : false) TK06T
                                             option(value='TK07T' selected= report&&report.velDob==='TK07T' ? true : false) TK07T
                                             option(value='TK08T' selected= report&&report.velDob==='TK08T' ? true : false) TK08T
@@ -138,7 +144,7 @@ block content
                                             label(for='length') Dužina:                                        
 
                                     .input-group.col-5
-                                        input(type='number' value=report ? report.duzina : '' readonly=readonlyStatus).form-control.text-right.font-weight-bold#length
+                                        input(type='number' value=report ? report.duzina : '' readonly=readonlyInputStatus name='duzina').form-control.text-right.font-weight-bold#length
                                         .input-group-append
                                             span.input-group-text m
                                         small Error message
@@ -151,13 +157,13 @@ block content
                                             label(for='weight') Težina (bruto/neto):                                       
 
                                     .input-group.col-4
-                                        input(type='number' value=report ? report.bruto : '' readonly=readonlyStatus).form-control.text-right.font-weight-bold.pr-2#bruto
+                                        input(type='number' value=report ? report.bruto : '' readonly=readonlyInputStatus name='bruto').form-control.text-right.font-weight-bold.pr-2#bruto
                                         .input-group-append
                                             span.input-group-text kg
                                         small Error message
 
                                     .input-group.col-4
-                                        input(type='number' value=report ? report.neto : '' readonly=readonlyStatus).form-control.text-right.font-weight-bold.pr-2#neto
+                                        input(type='number' value=report ? report.neto : '' readonly=readonlyInputStatus name='neto').form-control.text-right.font-weight-bold.pr-2#neto
                                         .input-group-append
                                             span.input-group-text kg
                                         small Error message
@@ -184,8 +190,9 @@ block content
                         //- osmi red
                         .text-center.py-2.d-print-none
                             input(type='hidden', name='_csrf', value=csrfToken)
-                            button(type='submit').btn.btn-warning.btn-lg.m-0.mr-sm-4#saveAsPDF Sačuvaj PDF
-                            input(type='reset', value='Obriši sva polja').btn.btn-warning.btn-lg 
+                            button.btn.btn-warning.btn-lg.m-0.mr-sm-4(onclick="event.preventDefault(); window.print();") Štampaj PDF
+                            button(type='submit').btn.btn-warning.btn-lg.m-0.mr-sm-4 Sačuvaj
+                            input(type='reset', value='Obriši polja').btn.btn-warning.btn-lg 
 
             include layouts/testsTable.pug
 

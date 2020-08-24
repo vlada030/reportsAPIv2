@@ -1,23 +1,33 @@
 ul.navbar-nav.mr-auto#optionsNav
     if isAuthenticated
         li.nav-item.mr-2.mb-2.mb-lg-0
-            a(href=`/api/v2/reports/dom/allReports`).btn.btn-secondary Svi izveštaji
+            a(href=`/api/v2/reports/${path}`).btn.btn-secondary Kreiraj izveštaj
+
+        li.nav-item.mr-2.mb-2.mb-lg-0
+            a(href=`#`).btn.btn-secondary Obriši Izveštaj
+
+        li.nav-item.mr-2.mb-2.mb-lg-0
+            a(href=`/api/v2/reports/${path}/allReports`).btn.btn-secondary Svi izveštaji
 
         li.nav-item.mr-2.mb-2.mb-lg-0
             a(href=`#`).btn.btn-secondary Prethodni Izveštaj
 
-        li.nav-item.mr-2.mb-2.mb-lg-0
+        li.nav-item.mb-2.mb-lg-0
             a(href=`#`).btn.btn-secondary Sledeći Izveštaj
 
-        li.nav-item.mb-2.mb-lg-0
-            a(href=`#`).btn.btn-secondary Obriši Izveštaj
 
     else
         li.nav-item.mr-2.mb-2.mb-lg-0(data-toggle='tooltip', title='Morate prvo da se prijavite!', data-placement='bottom')
-            a(href='#').btn.btn-secondary.disabled Dodaj novi proizvod
+            a(href='#').btn.btn-secondary.disabled Kreiraj izveštaj
 
         li.nav-item.mr-2.mb-2.mb-lg-0(data-toggle='tooltip', title='Morate prvo da se prijavite!', data-placement='bottom')
-            a(href='#').btn.btn-secondary.disabled Izmeni / Obriši proizvod
+            a(href='#').btn.btn-secondary.disabled Obriši Izveštaj
+
+        li.nav-item.mr-2.mb-2.mb-lg-0(data-toggle='tooltip', title='Morate prvo da se prijavite!', data-placement='bottom')
+            a(href='#').btn.btn-secondary.disabled Svi izveštaji
+
+        li.nav-item.mr-2.mb-2.mb-lg-0(data-toggle='tooltip', title='Morate prvo da se prijavite!', data-placement='bottom')
+            a(href='#').btn.btn-secondary.disabled Svi izveštaji
 
         li.nav-item.mb-2.mb-lg-0(data-toggle='tooltip', title='Morate prvo da se prijavite!', data-placement='bottom')
             a(href='#').btn.btn-secondary.disabled Svi izveštaji
