@@ -21,7 +21,7 @@ router
     .get(getDomReportsHTML)
     .post(
         protect,
-        body('sifra', "Šifra se sastoji od 7 cifara")
+        body("sifra", "Šifra se sastoji od 7 cifara")
             .isNumeric()
             .isLength(7)
             .trim(),
@@ -33,11 +33,30 @@ router
             .isNumeric()
             .isLength(7)
             .withMessage("MIS broj sastoji se od 7 cifara")
-            .custom(async (value, { req }) => {
-                const report = await DomReport.findOne({MISBroj: value});
-                
+            .custom(async (value) => {
+                const report = await DomReport.findOne({ MISBroj: value });
+
                 if (report) {
-                    throw new Error('Izveštaj pod ovim MIS brojem postoji!');
+                    throw new Error("Izveštaj pod ovim MIS brojem postoji!");
+                }
+                return true;
+            })
+            .trim(),
+        body("duzina", "Najmanja dužina je 1m, a najveća 3000m")
+            .isNumeric()
+            .isInt({ gt: 1, lt: 3000 })
+            .trim(),
+        body("neto", "Najmanja težina je 1kg, a najveća 5000kg")
+            .isNumeric()
+            .isInt({ gt: 1, lt: 5000 })
+            .trim(),
+        body("bruto")
+            .isNumeric()
+            .isInt({ gt: 1, lt: 6000 })
+            .withMessage('Najmanja težina je 1kg, a najveća 6000kg')
+            .custom((value, {req}) => {
+                if (value <= req.body.neto) {
+                    throw new Error("Bruto mora da bude veće od neto");
                 }
                 return true;
             })

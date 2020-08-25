@@ -192,7 +192,7 @@ block content
                             input(type='hidden', name='_csrf', value=csrfToken)
                             button.btn.btn-warning.btn-lg.m-0.mr-sm-4(onclick="event.preventDefault(); window.print();") Štampaj PDF
                             button(type='submit').btn.btn-warning.btn-lg.m-0.mr-sm-4 Sačuvaj
-                            input(type='reset', value='Obriši polja').btn.btn-warning.btn-lg 
+                            button(onclick='resetDomReportsForm()').btn.btn-warning.btn-lg Obriši polja
 
             include layouts/testsTable.pug
 

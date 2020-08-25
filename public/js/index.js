@@ -40,3 +40,12 @@ window.addEventListener('click', (e) => {
         deleteMessage();
     }
 })
+
+const resetDomReportsForm = () => {
+    document.getElementById('sifra').value = '';
+    document.getElementById('radniNalog').value = '';
+    document.getElementById('MISBroj').value = '';
+    document.getElementById('duzina').value = '';
+    document.getElementById('neto').value = '';
+    document.getElementById('bruto').value = '';
+}

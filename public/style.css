@@ -76,34 +76,7 @@ label {
     height: auto;
 }
 
-/* prilikom stampe setuj padding na nulu */
-@media print {
-    #bruto,
-    #neto,
-    #drumSize {
-        padding: 0;
-    }
 
-    .smanji {
-        margin-top: 0rem !important;
-        margin-bottom: 0rem !important;
-        padding-top: 0rem !important;
-        padding-bottom: 0rem !important;
-    }
-
-    .centriraj {
-        flex-direction: row !important;
-    }
-
-    .stampa {
-        flex-wrap: nowrap;
-    }
-    .stampa > h2 {
-        font-size: 27px;
-        flex: 0 0 75%;
-        max-width: 75%;
-    }
-}
 /* input elementi tipa number da nemaju spiner unutra */
 input[type="number"] {
     -moz-appearance: textfield;
@@ -125,9 +98,9 @@ label:after {
 }
 
 @media print {
-    label:after {
-        content: "";
-    }
+    
+
+    
 }
 
 .alert {
@@ -173,6 +146,56 @@ label:after {
 small {
     display: none;
     color: var(--error-color);
+}
+
+/* podešavanja za štampu strane
+    https://stackoverflow.com/questions/1542320/margin-while-printing-html-page
+*/
+@media print {
+    @page {
+        size: A4; /* DIN A4 standard, Europe */
+        margin:0; /* this affects the margin in the printer settings */ 
+      }
+
+    body {
+        /* display:table;
+        table-layout:fixed; */
+        width: 210mm;
+        height: 282mm;
+        padding-top:0.8cm;
+        padding-bottom:0.5cm;
+        /* height:auto; */
+         }
+
+    #bruto,
+    #neto,
+    #drumSize {
+        padding: 0;
+    }
+
+    .smanji {
+        margin-top: 0rem !important;
+        margin-bottom: 0rem !important;
+        padding-top: 0rem !important;
+        padding-bottom: 0rem !important;
+    }
+
+    .centriraj {
+        flex-direction: row !important;
+    }
+
+    .stampa {
+        flex-wrap: nowrap;
+    }
+    .stampa > h2 {
+        font-size: 27px;
+        flex: 0 0 75%;
+        max-width: 75%;
+    }
+
+    label:after {
+        content: "";
+    }
 }
 
 #nav-icon3 {
