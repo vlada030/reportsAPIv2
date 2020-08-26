@@ -154,7 +154,7 @@ exports.getProductJSON = asyncHandler(async (req, res, next) => {
 exports.createProduct = asyncHandler( async (req, res, next) => {
     
     req.body.createdByUser = req.user.id;
-
+    console.log(JSON.stringify(req.body))
     // cupanje errors iz express-validatora
     const errors = validationResult(req);
     console.log(errors)
@@ -177,7 +177,9 @@ exports.createProduct = asyncHandler( async (req, res, next) => {
     res.status(201).render('product', {
         title: "Dodaj novi proizvod",
         path: "product",
-        userName: req.session.name
+        userName: req.session.name,
+        product: req.body,
+        successMessage: 'Proizvod je uspešno sačuvan'
     });
 }); 
 
