@@ -2,13 +2,15 @@ const Product = require('../models/Product');
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/asyncHandler');
 
+const { validationResult } = require('express-validator');
+
 // @desc   Get HTML for product creeate
 // @route  GET /api/v2/products/create
 // @access Private
 
 exports.getCreateProductHTML = (req, res, next) => {
 
-    res.status(200).render("create_product", {
+    res.status(200).render("product", {
         title: "Dodaj novi proizvod",
         path: "product",
         userName: req.session.name
@@ -21,8 +23,8 @@ exports.getCreateProductHTML = (req, res, next) => {
 
 exports.getUpdateProductHTML = asyncHandler((req, res, next) => {
 
-    res.status(200).render("update_product", {
-        title: "Izmeni postojeći proizvod",
+    res.status(200).render("product", {
+        title: "Izmeni proizvod",
         path: "product",
         userName: req.session.name
     });
@@ -110,8 +112,8 @@ exports.getProduct = asyncHandler(async (req, res, next) => {
     // poziva fju za pretvaranje Decimal128 u String
     const convertedProduct = decimal128ToStringOutput(product);
     
-    res.status(200).render("update_product", {
-        title: "Izmeni postojeći proizvod",
+    res.status(200).render("product", {
+        title: "Izmeni proizvod",
         path: "product",
         userName: req.session.name,
         product: convertedProduct[0]
@@ -146,21 +148,37 @@ exports.getProductJSON = asyncHandler(async (req, res, next) => {
 
 
 // @desc   Create product
-// @route  POST /api/v2/products
+// @route  POST /api/v2/products/create
 // @access Private
 
-exports.createProduct = asyncHandler(
-    async (req, res, next) => {
-        // protect middleware koji se poziva pre ove fje ubacuje iz tokena req.user i sa ovim će svaki novokreirani proizvod da ima usera koji ga je uneo
-        //req.fields.createdByUser = req.user.id;
-        req.body.createdByUser = req.user.id;
+exports.createProduct = asyncHandler( async (req, res, next) => {
+    
+    req.body.createdByUser = req.user.id;
 
-        const product = await Product.create(req.body);
+    // cupanje errors iz express-validatora
+    const errors = validationResult(req);
+    console.log(errors)
+    
+    // validacija preko express-validatora
+    // implementirano pamcenje prethodnog unosa
+    if (!errors.isEmpty()) {
+        return res.status(422).render("product", {
+            title: "Dodaj novi proizvod",
+            path: "product",
+            userName: req.session.name,
+            errorMessage: errors.array()[0].msg,
+            product: req.body
+            
+        })
+    }
 
-        res.status(201).json({
-            success: true,
-            data: product
-        });
+    const product = await Product.create(req.body);
+
+    res.status(201).render('product', {
+        title: "Dodaj novi proizvod",
+        path: "product",
+        userName: req.session.name
+    });
 }); 
 
 // @desc   Update product
