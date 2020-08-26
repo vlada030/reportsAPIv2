@@ -9,21 +9,20 @@ const baseURL = 'http://127.0.0.1:5000';
 
 export const getProduct = async ( value ) => {
         
-        const result = await axios({
-            method: 'GET',
-            url: `${baseURL}/api/v2/products/${value}/json`           
-        });
+    const result = await axios({
+        method: 'GET',
+        url: `${baseURL}/api/v2/products/${value}/json`           
+    });
 
-        return result;   
-    
+    return result;     
 }
+
 export const deleteProduct = async ( value ) => {
         
-        const result = await axios({
-            url: `${baseURL}/api/v2/reports/dom/${value}`,
-            method: 'DELETE'           
-        });
+    const result = await axios({
+        url: `${baseURL}/api/v2/reports/dom/${value}`,
+        method: 'DELETE'           
+    });
 
-        return result;   
-    
+    return result;      
 }

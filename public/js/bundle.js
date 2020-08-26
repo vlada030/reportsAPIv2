@@ -8890,7 +8890,10 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-var productCode = document.getElementById('productCode'); // 
+// 
+var productCode = document.getElementById('productCode');
+var saveButton = document.getElementById('save');
+var savePDFButton = document.getElementById('savePDF'); // provera da li postoji proizvoda sa određenom šifrom
 
 if (productCode) {
   productCode.addEventListener('input', /*#__PURE__*/function () {
@@ -8906,43 +8909,50 @@ if (productCode) {
               // obriši alert poruku ako je ima
               (0, _alertMessage.deleteMessage)(); // uradi update product polja
 
-              (0, _userInterface.updateReportsUI)(void 0); // NE PRAVI NEPOTREBAN ZAHTEV AKO SIFRA NIJE DUŽINE 7
+              (0, _userInterface.updateReportsUI)(void 0); // proveri button SAVE / PDF da li su disabled
+
+              saveButton.removeAttribute('disabled');
+              savePDFButton.removeAttribute('disabled'); // NE PRAVI NEPOTREBAN ZAHTEV AKO SIFRA NIJE DUŽINE 7
 
               if (!(productCode.value.trim().length !== 7)) {
-                _context.next = 6;
+                _context.next = 10;
                 break;
               }
 
+              // blokiraj SAVE button
+              saveButton.setAttribute('disabled', 'true');
+              savePDFButton.setAttribute('disabled', 'true');
               throw new Error('Šifra proizvoda se sastoji iz 7 cifara');
 
-            case 6:
+            case 10:
               console.log(productCode.value);
-              _context.next = 9;
+              _context.next = 13;
               return (0, _ajaxRequests.getProduct)(productCode.value.trim());
 
-            case 9:
+            case 13:
               product = _context.sent;
-              console.log(product); // AKO POSTOJI PROIZVOD UPDATE UI
+              console.log(product);
 
               if (product) {
+                // AKO POSTOJI PROIZVOD UPDATE UI
                 console.log(product.data.data[0]);
                 (0, _userInterface.updateReportsUI)(product.data.data[0]);
               }
 
-              _context.next = 17;
+              _context.next = 21;
               break;
 
-            case 14:
-              _context.prev = 14;
+            case 18:
+              _context.prev = 18;
               _context.t0 = _context["catch"](1);
               (0, _errorHandler.default)(_context.t0);
 
-            case 17:
+            case 21:
             case "end":
               return _context.stop();
           }
         }
-      }, _callee, null, [[1, 14]]);
+      }, _callee, null, [[1, 18]]);
     }));
 
     return function (_x) {

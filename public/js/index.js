@@ -5,9 +5,12 @@ import errorHandler from './errorHandler';
 import {showMessage, deleteMessage} from './alertMessage';
 import {updateReportsUI} from './userInterface';
 
-const productCode = document.getElementById('productCode');
-
 // 
+const productCode = document.getElementById('productCode');
+const saveButton = document.getElementById('save');
+const savePDFButton = document.getElementById('savePDF');
+
+// provera da li postoji proizvoda sa određenom šifrom
 if (productCode) {
     productCode.addEventListener('input', async (e) => {
         e.preventDefault();
@@ -17,19 +20,25 @@ if (productCode) {
             deleteMessage();
             // uradi update product polja
             updateReportsUI(void 0);
+            // proveri button SAVE / PDF da li su disabled
+            saveButton.removeAttribute('disabled');
+            savePDFButton.removeAttribute('disabled');
 
             // NE PRAVI NEPOTREBAN ZAHTEV AKO SIFRA NIJE DUŽINE 7
             if (productCode.value.trim().length !== 7) {
-                throw new Error('Šifra proizvoda se sastoji iz 7 cifara')
+                // blokiraj SAVE button
+                saveButton.setAttribute('disabled', 'true');
+                savePDFButton.setAttribute('disabled', 'true');
+                throw new Error('Šifra proizvoda se sastoji iz 7 cifara');
             }
             console.log(productCode.value);
             const product = await getProduct(productCode.value.trim());
             console.log(product)
-            // AKO POSTOJI PROIZVOD UPDATE UI
             if (product) {
+                // AKO POSTOJI PROIZVOD UPDATE UI
                 console.log(product.data.data[0])
                 updateReportsUI(product.data.data[0]);    
-            }
+            } 
             
         } catch (error) {
             errorHandler(error);

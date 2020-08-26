@@ -20,18 +20,18 @@ router
     .route("/dom")
     .get(getDomReportsHTML)
     .post(
-        protect,
+        protect,[
         body("sifra", "Šifra se sastoji od 7 cifara")
             .isNumeric()
-            .isLength(7)
+            .isLength({min: 7, max: 7})
             .trim(),
         body("radniNalog", "Radni nalog sastoji se od 8 cifara")
             .isNumeric()
-            .isLength(8)
+            .isLength({min: 8, max: 8})
             .trim(),
         body("MISBroj")
             .isNumeric()
-            .isLength(7)
+            .isLength({min: 7, max: 7})
             .withMessage("MIS broj sastoji se od 7 cifara")
             .custom(async (value) => {
                 const report = await DomReport.findOne({ MISBroj: value });
@@ -55,12 +55,12 @@ router
             .isInt({ gt: 1, lt: 6000 })
             .withMessage('Najmanja težina je 1kg, a najveća 6000kg')
             .custom((value, {req}) => {
-                if (value <= req.body.neto) {
-                    throw new Error("Bruto mora da bude veće od neto");
+                if (parseInt(req.body.neto, 10) > parseInt(value, 10) ) {
+                    throw new Error("Bruto težina mora da bude veća od neto težine");
                 }
                 return true;
             })
-            .trim(),
+            .trim()],
         createDomReport
     );
 router.route('/dom/all').get(protect, advancedResults(DomReport, {path: 'createdByUser', select: 'name'}), getAllDomReports);
