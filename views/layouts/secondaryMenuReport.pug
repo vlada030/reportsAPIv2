@@ -4,8 +4,26 @@ ul.navbar-nav.mr-auto#optionsNav
             a(href=`/api/v2/reports/${path}`).btn.btn-secondary Kreiraj izveštaj
 
         li.nav-item.mr-2.mb-2.mb-lg-0
-            a(href=`#`).btn.btn-secondary Obriši Izveštaj
+            if (report)
+                button(type="button" data-toggle="modal" data-target="#myModal").btn.btn-secondary Obriši izveštaj
 
+                .modal.fade#myModal(tabindex="-1" data-backdrop="static" data-keyboard="false")
+                    .modal-dialog
+                        .modal-content
+                            .modal-header.bg-warning
+                                h5.modal-title.myModalLabel Brisanje izveštaja
+                                button(type="button" data-dismiss="modal" aria-label="Close").close
+                                    span &times;
+                                
+                            .modal-body
+                                p Potvrdi brisanje?
+                            
+                            .modal-footer
+                                button(type="button" data-dismiss="modal").btn.btn-secondary Otkaži
+                                button(data-reportID=report.MISBroj type="button" data-dismiss="modal").btn.btn-warning#eraseReport Izbriši
+            else
+                button(type="button" data-toggle="modal" data-target="#myModal" disabled).btn.btn-secondary Obriši izveštaj         
+            
         li.nav-item.mr-2.mb-2.mb-lg-0
             a(href=`/api/v2/reports/${path}/allReports`).btn.btn-secondary Svi izveštaji
 

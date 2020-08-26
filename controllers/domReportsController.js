@@ -61,6 +61,7 @@ exports.createDomReport = asyncHandler(async (req, res, next) => {
             title: "Izveštaji za domaće tržište",
             path: "dom",
             lang,
+            userName: req.session.name,
             errorMessage: errors.array()[0].msg,
             report: req.body,
             readonlyInputStatus: false
@@ -118,11 +119,19 @@ exports.getDomReport = asyncHandler(async (req, res, next) => {
         .populate("proizvod"); // popunjava virtuals polje
 
     if (!report) {
-        return next(
-            new ErrorResponse(
-                `Izveštaj sa MIS brojem ${MISBroj} ne postoji`,
-                400
-            ));
+        // return next(
+        //     new ErrorResponse(
+        //         `Izveštaj sa MIS brojem ${MISBroj} ne postoji`,
+        //         400
+        //     ));
+        return res.status(404).render("domReports", {
+            title: "Izveštaji za domaće tržište",
+            path: "dom",
+            lang: "ser",
+            userName: req.session.name,
+            readonlyInputStatus: false,
+            errorMessage: 'Traženi izveštaj ne postoji ili je izbrisan.'
+        });
     }
 
     res.status(200).render('domReports', {
@@ -169,10 +178,17 @@ exports.updateDomReport = asyncHandler(async (req, res, next) => {
 // @access Private
 
 exports.deleteDomReport = asyncHandler(async (req, res, next) => {
+    const lang = req.query.lang || 'ser';
+
     await DomReport.findOneAndDelete({ MISBroj: req.params.id });
 
-    res.status(200).json({
-        success: true,
-        data: {},
+    res.status(200).render("domReports", {
+        title: "Izveštaji za domaće tržište",
+        path: "dom",
+        lang,
+        userName: req.session.name,
+        readonlyInputStatus: false,
+        successMessage: 'Izveštaj je izbrisan'       
     });
+    
 });

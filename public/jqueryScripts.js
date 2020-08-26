@@ -12,4 +12,6 @@ $(document).ready(function() {
     });
     // pokretanje tooltipa
     $('[data-toggle="tooltip"]').tooltip();
+    // pokretanje modala
+    //$('#myModal').modal();
 });
