@@ -10,6 +10,7 @@ const productCode = document.getElementById('productCode');
 const updateProductCode = document.getElementById('updateProductCode');
 const saveButton = document.getElementById('save');
 const savePDFButton = document.getElementById('savePDF');
+const saveUpdateButton = document.getElementById('saveProductUpdate');
 
 // provera da li postoji proizvod sa zadatom šifrom dom/exp Reports
 if (productCode) {
@@ -32,9 +33,7 @@ if (productCode) {
                 savePDFButton.setAttribute('disabled', 'true');
                 throw new Error('Šifra proizvoda se sastoji iz 7 cifara');
             }
-            console.log(productCode.value);
             const product = await getProduct(productCode.value.trim());
-            console.log(product)
             if (product) {
                 // AKO POSTOJI PROIZVOD UPDATE UI
                 console.log(product.data.data[0])
@@ -57,12 +56,12 @@ if (updateProductCode) {
             // uradi update product polja
             updateProductUI(void 0);
             // proveri button SAVE / PDF da li su disabled
-            saveButton.removeAttribute('disabled');
+            saveUpdateButton.removeAttribute('disabled');
 
             // NE PRAVI NEPOTREBAN ZAHTEV AKO SIFRA NIJE DUŽINE 7
             if (updateProductCode.value.trim().length !== 7) {
                 // blokiraj SAVE button
-                saveButton.setAttribute('disabled', 'true');
+                saveUpdateButton.setAttribute('disabled', 'true');
                 throw new Error('Šifra proizvoda se sastoji iz 7 cifara');
             }
             console.log(updateProductCode.value);
@@ -98,13 +97,13 @@ const resetDomReportsForm = () => {
 
 
 // OBRIŠI DOMREPORT IZ BAZE
-window.addEventListener('click', (e) => {
+window.addEventListener('click',async (e) => {
     // kada je klinkuto dugme Obriši na modalu
     if (e.target.matches('#eraseReport')) {
         try {
             const eraseID = e.target;
             console.log(eraseID.dataset.reportid);
-            deleteReport(eraseID.dataset.reportid);
+            await deleteReport(eraseID.dataset.reportid);
             showMessage('Izveštaj je uspešno obrisan.', 'success');
             window.setTimeout(() => {
                 location.assign('/api/v2/reports/dom');                
@@ -117,16 +116,36 @@ window.addEventListener('click', (e) => {
 })
 
 // POŠALJI PUT REQUEST ZA UPDATE PROIZVODA
-saveButton.addEventListener('click', (e) => {
-    e.preventDefault();
-    let data = {};
-    let formData = Array.from(document.getElementById("productHandleForm").elements);
-    console.log(formData);
-    formData.forEach(el => {
-        if (el.getAttribute('type') !== 'hidden' && el.tagName.toLowerCase() !== 'button') {
-            data[el.name] = el.value;
-        }        
+if (saveUpdateButton) {
+    saveUpdateButton.addEventListener('click',async (e) => {
+        e.preventDefault();
+        try {
+
+            let data = {};
+
+             // obriši alert poruku ako je ima
+             deleteMessage();
+
+            // pretvori node list u array
+            let formData = Array.from(document.getElementById("productHandleForm").elements);
+            // kreiraj data object {name: value} i izbaci button element i csrf token input
+            formData.forEach(el => {
+                if (el.getAttribute('type') !== 'hidden' && el.tagName.toLowerCase() !== 'button') {
+                    data[el.name] = el.value;
+                }        
+            })
+            const result = await updateProduct(data.sifra, data);
+            console.log(result);  
+            
+            if (result.data.success === true) {
+                showMessage('Proizvod je uspešno izmenjen.', 'success');
+                window.setTimeout(() => {
+                    location.assign('/api/v2/reports/dom');                
+                }, 1500)
+            }
+            
+        } catch (error) {
+            errorHandler(error);
+        }
     })
-    console.log(data);
-    updateProduct(data.sifra, data);
-})
+}

@@ -69,21 +69,6 @@ router
     .put(
         protect,
         [
-            body("sifra")
-                .isNumeric()
-                .isLength({ min: 7, max: 7 })
-                .withMessage("Šifra proizvoda mora da sadrži 7 broja")
-                .custom(async (value) => {
-                    const product = await Product.findOne({ sifra: value });
-
-                    if (product) {
-                        throw new Error(
-                            "Proizvod sa ovom šifrom postoji, unesite drugu šifru"
-                        );
-                    }
-                    return true;
-                })
-                .trim(),
             body("proizvod", "Naziv proizvoda sadrži od 2 do 45 slova/broja")
                 .isAlphanumeric()
                 .isLength({ min: 2, max: 45 })

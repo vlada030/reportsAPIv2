@@ -189,15 +189,27 @@ exports.createProduct = asyncHandler( async (req, res, next) => {
 // @access Private
 
 exports.updateProduct = asyncHandler(async (req, res, next) => {    
-    let product = await Product.findOne({sifra: req.params.id});
+    //let product = await Product.findOne({sifra: req.params.id});
 
     // u slucaju da u ObjectId promenimo jedno slovo, a ukupan broj/format
     // id ostane isti izbacuje success: true, DATA: NULL
     // vazi i za ObjectId i za npr {sifra: 777}
-    if (!product) {
-        return next(new ErrorResponse(`Product with id ${req.params.id} not found`, 404));
-    }
+    // if (!product) {
+    //     return next(new ErrorResponse(`Product with id ${req.params.id} not found`, 404));
+    // }
 
+    // cupanje errors iz express-validatora
+    const errors = validationResult(req);
+    console.log(errors)
+    
+    // validacija preko express-validatora
+    // implementirano pamcenje prethodnog unosa
+    if (!errors.isEmpty()) {
+        return res.status(422).json({
+            success: false,
+            data: errors.array()[0].msg
+        });
+    }
     // dodavanje usera iz middleware tokena koji je modifikovao proizvod
     req.body.modifiedByUser = req.user.id;
     // req.body.modifiedAt = Date.now();
@@ -205,15 +217,17 @@ exports.updateProduct = asyncHandler(async (req, res, next) => {
     //req.fields.modifiedAt = Date.now();
 
     product = await Product.findOneAndUpdate({sifra: req.params.id}, req.body, {
-        new: true, 
-        runValidators: true,
-        context: 'query'
+        new: true
+        //     new: true, 
+        //     runValidators: true,
+        //     context: 'query'
+        
     });
-
+    
     res.status(200).json({
         success: true,
         data: product
-    });     
+    })     
 });
 
 // @desc   Delete product

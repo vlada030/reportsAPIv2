@@ -2,8 +2,6 @@
 import {showMessage, deleteMessage} from './alertMessage';
 
 export default error => {
-
-    console.log('catch petlja')
     // console.log('X', error)
     // console.log('XX',error.message)
     // console.log('XXX',error.response)
@@ -12,10 +10,16 @@ export default error => {
     if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
+        console.log(error.response);
+
         if (error.response.status === 500) {
             console.log('Greška u konekciji sa serverom');
             showMessage('Greška u konekciji sa serverom', 'error');
-        } else {
+        } else if (error.response.status === 422) {
+            console.log('Greska prilikom validacije axios PUT requesta')
+            showMessage(error.response.data.data, 'error')
+        }
+         else {
             //console.log(error.response.status);
             console.log(error.response.data.error);
             showMessage(error.response.data.error, 'error')
