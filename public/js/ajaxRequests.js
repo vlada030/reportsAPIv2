@@ -17,11 +17,22 @@ export const getProduct = async ( value ) => {
     return result;     
 }
 
-export const deleteProduct = async ( value ) => {
+export const deleteReport = async ( value ) => {
         
     const result = await axios({
         url: `${baseURL}/api/v2/reports/dom/${value}`,
         method: 'DELETE'           
+    });
+
+    return result;      
+}
+
+export const updateProduct = async ( value, data ) => {
+        
+    const result = await axios({
+        url: `${baseURL}/api/v2/products/${value}`,
+        method: 'PUT',
+        data           
     });
 
     return result;      

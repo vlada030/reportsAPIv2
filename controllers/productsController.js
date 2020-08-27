@@ -26,7 +26,8 @@ exports.getUpdateProductHTML = asyncHandler((req, res, next) => {
     res.status(200).render("product", {
         title: "Izmeni proizvod",
         path: "product",
-        userName: req.session.name
+        userName: req.session.name,
+        isProductCodeIdExist: true
     });
 });
 
@@ -184,7 +185,7 @@ exports.createProduct = asyncHandler( async (req, res, next) => {
 }); 
 
 // @desc   Update product
-// @route  PUT /api/v1/products/:id
+// @route  PUT /api/v2/products/:id
 // @access Private
 
 exports.updateProduct = asyncHandler(async (req, res, next) => {    
@@ -202,8 +203,6 @@ exports.updateProduct = asyncHandler(async (req, res, next) => {
     // req.body.modifiedAt = Date.now();
     //req.fields.modifiedByUser = req.user.id;
     //req.fields.modifiedAt = Date.now();
-
-
 
     product = await Product.findOneAndUpdate({sifra: req.params.id}, req.body, {
         new: true, 

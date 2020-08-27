@@ -22,14 +22,15 @@ block content
             p.close &times;
 
     .container.mb-4.p-2
-        h2.text-center.mb-4.pb-4 #{title}
+        h2.text-center.my-4 #{title}
+        hr.w-25.mb-4
         .row
             .col-lg-8.bg-warning.rounded.mx-auto
-                form#productCreateForm.p-4(action='/api/v2/products/create', method='POST')
+                form#productHandleForm.p-4(action='/api/v2/products/create', method='POST')
                     .form-group.row.align-items-center.pb-4
                         label.col-md-4(for='productCode') Šifra proizvoda:
                         .col-md-8
-                            input.form-control(type='number' name='sifra' placeholder='Unesi 7-cifreni broj' value=product ? product.sifra : '')
+                            input.form-control(type='number' name='sifra' placeholder='Unesi 7-cifreni broj' value=product ? product.sifra : '' id= isProductCodeIdExist ? 'updateProductCode' : '' autofocus=true)
                             small Error message
                     .form-group.row.align-items-center.pb-4
                         label.col-md-4(for='cableType') Naziv proizvoda:
@@ -126,7 +127,7 @@ block content
                         label.col-md-4(for='thickSheath') Debljina plašta:
                         .col-md-8
                             .input-group
-                                input#thickSheath.form-control(placeholder='Obavezno polje', type='text', name='debPlasta',  value=product ? product.debPlasta : '0')
+                                input#thickSheath.form-control(placeholder='Obavezno polje', type='text', name='debPlasta',  value=product ? product.debPlasta : '')
                                 .input-group-append
                                     span.input-group-text mm
                                 small Error message
@@ -164,7 +165,7 @@ block content
                     .row.mb-4
                         .col-md-6.mx-auto.row.justify-content-center
                             input(type='hidden', name='_csrf', value=csrfToken)
-                            button.text-center.btn.btn-info.w-50.mb-2(type='submit') Sačuvaj
+                            button.text-center.btn.btn-info.w-50.mb-2(type='submit')#save Sačuvaj
                         //- .col-md-6.mx-auto.row.justify-content-center
                         //-     input.btn.btn-info.w-50.mb-2(type='reset', value='Obriši polja')
 
