@@ -25,8 +25,8 @@ const productsRoute = require('./routes/productsRoute');
 const authRoute = require('./routes/authRoute');
 const usersRoute = require('./routes/usersRoute');
 
-// import 404 controlera
-const pageNotFound = require('./controllers/404Controller');
+// import error page (page not found ili neka druga greška) controlera
+const pageNotFound = require('./controllers/errorPageController');
 
 // ENV fajl nije u root folderu zato mora da se navede putanja
 dotenv.config({

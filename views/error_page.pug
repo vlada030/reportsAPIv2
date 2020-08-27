@@ -1,0 +1,20 @@
+extends layouts/main-layout.pug      
+        
+block content
+    .container
+        if error 
+            h2.m-3 
+                i.far.fa-sad-tear.mr-3
+                | Došlo je do greške
+
+            hr.m-3
+            p.m-3=`${statusCode} Error Status Code`
+            p.m-3=error
+        else 
+            h3.m-3
+                i.far.fa-sad-tear.mr-3 
+                    | Strana nije pronađena 👀
+        
+    
+block footer
+    include layouts/fixed_footer.pug

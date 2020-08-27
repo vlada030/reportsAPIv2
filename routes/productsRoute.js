@@ -41,8 +41,22 @@ router
                 .isLength({ min: 1, max: 40 })
                 .trim(),
             body("brojZica", 'Broj žica provodnika je u intervalu 1 - 2500')
-                .isNumeric()
                 .isInt({ gt: 1, lt: 2500 })
+                .trim(),
+            body("precnikZice", 'Prečnik žice komponente je u intervalu 0.2 - 3.6')
+                .isFloat({ min: 0.2, max: 3.6 })
+                .trim(),
+            body("otpor", 'Vrednost otpora mora da bude u granicama 0.01 - 24')
+                .isFloat({ min: 0.01, max: 24 })
+                .trim(),
+            body("debIzolacije", 'Debljina izolacije je u intervalu 0.1 - 9')
+                .isFloat({ min: 0.1, max: 9 })
+                .trim(),
+            body("debPlasta", 'Debljina plašta je u intervalu 0.1 - 4')
+                .isFloat({ min: 0.1, max: 4 })
+                .trim(),
+            body("spPrecnik", 'Spoljnji prečnik mora da bude u granicama 2 - 70')
+                .isFloat({ min: 2, max: 70 })
                 .trim(),
         ],
         createProduct
