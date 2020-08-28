@@ -47,14 +47,14 @@ block content
                     else 
                         h2.text-center.mr-4 Izveštaj o rutinskom ispitivanju
 
-                    input(type='text', style='width:3rem', value='1').form-control#ordinalNumber
+                    input(type='number' style='width:3rem' form='inoForm' name='rb' value=report ? report.rb : 1).form-control#ordinalNumber
                     p.m-0 
                         | &nbsp;/&nbsp;
                         span.year
 
             .row
                 .col-10.mx-auto
-                    form.border.border-dark.p-3#inoForm
+                    form.border.border-dark.p-3#expReportsForm(action='/api/v2/reports/exp' method='POST' novalidate)
                         //- cetvrti red
                         .row.font-weight-bold.mb-2.d-print-none
                             .col-8
@@ -62,7 +62,7 @@ block content
                                     .col-5 
                                         label Šifra proizvoda:
                                     .col-7
-                                        input(type='text', placeholder='Unesi 7-cifreni broj').form-control.font-weight-bold#productCode
+                                        input(type='text', placeholder='Unesi 7-cifreni broj' name='sifra').form-control.font-weight-bold#productCode
                                         small Error message
 
                         //- peti red
@@ -101,7 +101,7 @@ block content
                                             label Godina proizvodnje:
                                     
                                     .col-7
-                                        input(type='text', placeholder='Unesi 4-cifreni broj').form-control.font-weight-bold#yearManufacture
+                                        input(type='text', placeholder='Unesi 4-cifreni broj' name='godina' value= report ? report.godina : '').form-control.font-weight-bold#yearManufacture
                                         small Error message
 
                         //- osmi red
@@ -127,19 +127,19 @@ block content
                                             label Broj doboša:
                                     
                                     .col-7#drumList
-                                        .row.mb-2
+                                        .row.mb-2(data-next='2')
                                             .col-6
-                                                input(type='text').form-control.text-right.font-weight-bold.item
+                                                input(type='text' name='dobos_1' value=report ? report.dobos_1 : '/').form-control.text-right.font-weight-bold.item
                                                 small Error message
 
                                             .col-6.input-group
-                                                input(type='number',value=0).form-control.text-right.font-weight-bold.itemLength
+                                                input(type='number' name='duzina_1' value=report ? report.duzina_1 : '/').form-control.text-right.font-weight-bold.itemLength
                                                 .input-group-append
                                                     span.input-group-text m
                             .col-2
-                                button.btn.btn-outline-success.d-print-none#addItemButton Dodaj doboš
+                                button.btn.btn-outline-success.d-print-none#addItem Dodaj doboš
                             .col-2
-                                button.btn.btn-outline-danger.d-print-none#delItemButton Ukloni doboš
+                                button.btn.btn-outline-danger.d-print-none#delItem Ukloni doboš
 
                         //- deseti red 
                         .row.font-weight-bold.mb-4
@@ -156,8 +156,8 @@ block content
                                             span.input-group-text m
                         .text-center.mb-4.d-print-none
                             input(type='hidden', name='_csrf', value=csrfToken)
-                            button(type='submit').btn.btn-warning.btn-lg.m-0.mr-sm-4 Sačuvaj PDF
-                            button(type='submit').btn.btn-warning.btn-lg.m-0.mr-sm-4#save Sačuvaj
+                            button.btn.btn-warning.btn-lg.m-0.mr-sm-4#savePDF(onclick="event.preventDefault(); window.print();" disabled=report ? false : true) Štampaj PDF
+                            button(type='submit' disabled=report ? false : true).btn.btn-warning.btn-lg.m-0.mr-sm-4#save Sačuvaj
                             input(type='reset', value='Obriši sva polja', form='inoForm').btn.btn-warning.btn-lg
 
             include layouts/testsTable.pug

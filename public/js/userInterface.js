@@ -1,12 +1,17 @@
-const elements = {
+export const elements = {
     // zajednicki elementi
     // logovanje
-    optionsNav: document.getElementById('optionsNav'),
-    userNav: document.getElementById('userNav'),
-    logoutButton: document.getElementById('logoutBtn'),
-
+    
     productCode : document.getElementById('productCode'),
-    ordinalNumber: document.getElementById('ordinalNumber'),
+    updateProductCode: document.getElementById('updateProductCode'),
+    
+    saveButton: document.getElementById('save'),
+    savePDFButton: document.getElementById('savePDF'),
+    saveUpdateButton: document.getElementById('saveProductUpdate'),
+    
+    productHandleForm: document.getElementById('productHandleForm'),
+    expReportsForm : document.getElementById('expReportsForm'),
+
     cableType: document.getElementById('cableType'),
     ratedVoltage: document.getElementById('ratedVoltage'),
     standard: document.getElementById('standard'),
@@ -21,6 +26,9 @@ const elements = {
     outerDiametar: document.getElementById('outerDiametar'),
     testVoltage: document.getElementById('testVoltage'),
     pDischarge: document.getElementById('pDischarge'),
+
+
+
     // index.html / index-eng.html
     domesticForm : document.getElementById('domesticForm'),
     workOrder : document.getElementById('workOrder'),
@@ -29,17 +37,12 @@ const elements = {
     bruto : document.getElementById('bruto'),
     neto : document.getElementById('neto'),
     // ino.html / ino-eng.html
-    inoForm : document.getElementById('inoForm'),
     yearManufacture : document.getElementById('yearManufacture'),
     totalLength : document.querySelector('#totalLength'),
     drumList: document.getElementById('drumList'),
-    addItemButton: document.getElementById('addItemButton'),
-    delItemButton: document.getElementById('delItemButton'),
+    addItemButton: document.getElementById('addItem'),
+    delItemButton: document.getElementById('delItem'),
     // product-update.html
-    productUpdateForm: document.getElementById('productUpdateForm'),
-    deleteProductButton: document.getElementById('deleteProduct'),
-    // product-create.html
-    productCreateForm: document.getElementById('productCreateForm'),
     // login.html / registration.html
     authForm: document.getElementById('authForm'),
     name: document.getElementById('name'),
@@ -55,7 +58,7 @@ export const updateReportsUI = (elem) => {
         elements.cableType.innerText = elem.proizvod || "/";
         elements.ratedVoltage.innerText = elem.napon || "/";
         elements.standard.innerText = elem.propis || "/";
-        // jedino boja postoji samo u index.html / index-ino.html
+        // boja postoji samo u exp Reports
         if (elements.productColor) {
             elements.productColor.innerText = elem.boja || "/";
         }
@@ -93,36 +96,70 @@ export const updateReportsUI = (elem) => {
 
 export const updateProductUI = (elem) => {
     
-        if (elem) {
+    if (elem) {
 
-            elements.cableType.value = elem.proizvod || "/";
-            elements.ratedVoltage.value = elem.napon || "/";
-            elements.standard.value = elem.propis || "/";
-            elements.productColor.value = elem.boja || "/";
-            elements.wiresNumber.value = elem.brojZica || "/";
-            elements.wireDiametar.value = elem.precnikZice || "/";
-            elements.resistance.value = elem.otpor || "/";
-            elements.semiFirst.value = elem.debPPS1 || "/";
-            elements.thickInsulation.value = elem.debIzolacije || "/";
-            elements.semiSecond.value = elem.debPPS2 || "/";
-            elements.thickSheath.value = elem.debPlasta || "/";
-            elements.outerDiametar.value = elem.spPrecnik || "/";
-            elements.testVoltage.value = elem.ispitniNapon || "/";
-            elements.pDischarge.value = elem.parcijalna || "/";
+        elements.cableType.value = elem.proizvod || "/";
+        elements.ratedVoltage.value = elem.napon || "/";
+        elements.standard.value = elem.propis || "/";
+        elements.productColor.value = elem.boja || "/";
+        elements.wiresNumber.value = elem.brojZica || "/";
+        elements.wireDiametar.value = elem.precnikZice || "/";
+        elements.resistance.value = elem.otpor || "/";
+        elements.semiFirst.value = elem.debPPS1 || "/";
+        elements.thickInsulation.value = elem.debIzolacije || "/";
+        elements.semiSecond.value = elem.debPPS2 || "/";
+        elements.thickSheath.value = elem.debPlasta || "/";
+        elements.outerDiametar.value = elem.spPrecnik || "/";
+        elements.testVoltage.value = elem.ispitniNapon || "/";
+        elements.pDischarge.value = elem.parcijalna || "/";
     } else {
-            elements.cableType.value = "/";
-            elements.ratedVoltage.value =  "0.6/1kV";
-            elements.standard.value = "/";
-            elements.productColor.value = "crna";
-            elements.wiresNumber.value = "/";
-            elements.wireDiametar.value = "/";
-            elements.resistance.value = "/";
-            elements.semiFirst.value = "/";
-            elements.thickInsulation.value = "/";
-            elements.semiSecond.value = "/";
-            elements.thickSheath.value = "/";
-            elements.outerDiametar.value = "/";
-            elements.testVoltage.value = "3.5";
-            elements.pDischarge.value = "/";
+        elements.cableType.value = "/";
+        elements.ratedVoltage.value =  "0.6/1kV";
+        elements.standard.value = "/";
+        elements.productColor.value = "crna";
+        elements.wiresNumber.value = "/";
+        elements.wireDiametar.value = "/";
+        elements.resistance.value = "/";
+        elements.semiFirst.value = "/";
+        elements.thickInsulation.value = "/";
+        elements.semiSecond.value = "/";
+        elements.thickSheath.value = "/";
+        elements.outerDiametar.value = "/";
+        elements.testVoltage.value = "3.5";
+        elements.pDischarge.value = "/";
     }
 };
+
+export const addItem = (n) => {
+    
+    const elem = `<div class="row mb-2 marker" data-next=${+n + 1}><div class="col-6"><input class="form-control text-right font-weight-bold item" type="text" name="dobos_${n}"  value='/'><small>Error message</small></div><div class="col-6 input-group"><input class="form-control text-right font-weight-bold itemLength" type="number" name="duzina_${n}"  value='0'><div class="input-group-append"><span class="input-group-text">m</span></div></div></div>`;
+
+    elements.drumList.insertAdjacentHTML('beforeend', elem);
+};
+
+export const delItem = () => {
+    const elem = document.querySelector('#drumList .marker:last-child');
+        if (elem) {
+            elem.parentNode.removeChild(elem);
+            //totalLength.textContent = calcTotalLength();
+        }
+};
+
+// preracunaj total length nakon keyup eventa
+export const updateTotalLength = () => {
+    totalLength.textContent = calcTotalLength();
+    
+};
+// node list svih dobosa u ino/ino-eng.html
+export const itemsListArray = () => {
+    return document.querySelectorAll('#drumList .item');
+};
+
+// preracun total polja nakon dodaj / oduzmi item
+function calcTotalLength() {
+    let arr = Array.from(document.querySelectorAll('.itemLength'));
+    return arr.reduce((acc, el) => {
+        acc += el.valueAsNumber;
+        return acc;
+    }, 0);
+} 
