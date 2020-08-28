@@ -92,9 +92,8 @@ const ProductSchema = new mongoose.Schema({
     boja: {
         type: String,
         required: [true, 'Please add a product color'],
-        enum: ['CRNA', 'SIVA', 'BELA', 'CRVENA', 'NARANDŽASTA','ŽUTA', 'ZELENA', 'ŽUTO-ZELENA', 'PLAVA','BRAON', 'N/A', 'BEZBOJNA'],
-        uppercase: true
-        
+        enum: ['CRNA', 'SIVA', 'BELA', 'CRVENA', 'NARANDŽASTA','ŽUTA', 'ZELENA', 'ŽUTO-ZELENA', 'PLAVA','BRAON', 'N/A', 'BEZBOJNA']
+                
     },
 
     propis: {

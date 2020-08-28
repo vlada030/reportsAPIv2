@@ -33,11 +33,9 @@ router
                 })
                 .trim(),
             body("proizvod", 'Naziv proizvoda sadrži od 2 do 45 slova/broja')
-                .isAlphanumeric()
                 .isLength({ min: 2, max: 45 })
                 .trim(),
             body("propis", 'Naziv standarda sadrži najviše 40 slova/broja')
-                .isAlphanumeric()
                 .isLength({ min: 1, max: 40 })
                 .trim(),
             body("brojZica", 'Broj žica provodnika je u intervalu 1 - 2500')
@@ -70,11 +68,9 @@ router
         protect,
         [
             body("proizvod", "Naziv proizvoda sadrži od 2 do 45 slova/broja")
-                .isAlphanumeric()
                 .isLength({ min: 2, max: 45 })
                 .trim(),
             body("propis", "Naziv standarda sadrži najviše 40 slova/broja")
-                .isAlphanumeric()
                 .isLength({ min: 1, max: 40 })
                 .trim(),
             body("brojZica", "Broj žica provodnika je u intervalu 1 - 2500")

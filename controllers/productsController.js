@@ -285,6 +285,9 @@ const decimal128ToStringOutput = (arrOfProductProperties) => {
             if (product.updatedAt) {
                 updatedAt =  product.updatedAt.toUTCString();
             } 
+            if (product.boja) {
+                boja =  product.boja.toLowerCase();
+            } 
 
             return {
                 _id: product._id,
@@ -294,7 +297,7 @@ const decimal128ToStringOutput = (arrOfProductProperties) => {
                 parcijalna: product.parcijalna,
                 proizvod: product.proizvod,
                 napon: product.napon,
-                boja: product.boja,
+                boja,
                 propis: product.propis,
                 brojZica: product.brojZica,
                 precnikZice: precnikZice,

@@ -9005,27 +9005,33 @@ if (productCode) {
 
             case 12:
               product = _context.sent;
+              console.log(product);
 
-              if (product) {
-                // AKO POSTOJI PROIZVOD UPDATE UI
+              if (product && typeof product.data === 'string') {
+                // AKO JE PRODUCT:DATA STRING , RESPONSE PAYLOAD JE LOGIN PAGE - HTML STRING
+                saveButton.setAttribute('disabled', 'true');
+                savePDFButton.setAttribute('disabled', 'true');
+                (0, _alertMessage.showMessage)('Niste logovani', 'error');
+              } else {
+                //AKO POSTOJI PROIZVOD UPDATE UI
                 console.log(product.data.data[0]);
                 (0, _userInterface.updateReportsUI)(product.data.data[0]);
               }
 
-              _context.next = 19;
+              _context.next = 20;
               break;
 
-            case 16:
-              _context.prev = 16;
+            case 17:
+              _context.prev = 17;
               _context.t0 = _context["catch"](1);
               (0, _errorHandler.default)(_context.t0);
 
-            case 19:
+            case 20:
             case "end":
               return _context.stop();
           }
         }
-      }, _callee, null, [[1, 16]]);
+      }, _callee, null, [[1, 17]]);
     }));
 
     return function (_x) {
@@ -9137,7 +9143,7 @@ window.addEventListener('click', /*#__PURE__*/function () {
             (0, _alertMessage.showMessage)('Izveštaj je uspešno obrisan.', 'success');
             window.setTimeout(function () {
               location.assign('/api/v2/reports/dom');
-            }, 2000);
+            }, 1500);
             _context3.next = 13;
             break;
 
@@ -9191,7 +9197,7 @@ if (saveUpdateButton) {
                 (0, _alertMessage.showMessage)('Proizvod je uspešno izmenjen.', 'success');
                 window.setTimeout(function () {
                   location.assign('/api/v2/reports/dom');
-                }, 1500);
+                }, 1000);
               }
 
               _context4.next = 16;
@@ -9243,7 +9249,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49844" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49674" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

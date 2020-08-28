@@ -34,11 +34,17 @@ if (productCode) {
                 throw new Error('Šifra proizvoda se sastoji iz 7 cifara');
             }
             const product = await getProduct(productCode.value.trim());
-            if (product) {
-                // AKO POSTOJI PROIZVOD UPDATE UI
+            console.log(product)
+            if (product && typeof(product.data) === 'string') {
+                // AKO JE PRODUCT:DATA STRING , RESPONSE PAYLOAD JE LOGIN PAGE - HTML STRING
+                saveButton.setAttribute('disabled', 'true');
+                savePDFButton.setAttribute('disabled', 'true'); 
+                showMessage('Niste logovani', 'error')
+            } else {
+                //AKO POSTOJI PROIZVOD UPDATE UI
                 console.log(product.data.data[0])
-                updateReportsUI(product.data.data[0]);    
-            } 
+                updateReportsUI(product.data.data[0]);
+            }
             
         } catch (error) {
             errorHandler(error);
@@ -107,7 +113,7 @@ window.addEventListener('click',async (e) => {
             showMessage('Izveštaj je uspešno obrisan.', 'success');
             window.setTimeout(() => {
                 location.assign('/api/v2/reports/dom');                
-            }, 2000)
+            }, 1500)
             
         } catch (error) {
             errorHandler(error);
@@ -120,7 +126,6 @@ if (saveUpdateButton) {
     saveUpdateButton.addEventListener('click',async (e) => {
         e.preventDefault();
         try {
-
             let data = {};
 
              // obriši alert poruku ako je ima
@@ -141,7 +146,7 @@ if (saveUpdateButton) {
                 showMessage('Proizvod je uspešno izmenjen.', 'success');
                 window.setTimeout(() => {
                     location.assign('/api/v2/reports/dom');                
-                }, 1500)
+                }, 1000)
             }
             
         } catch (error) {
