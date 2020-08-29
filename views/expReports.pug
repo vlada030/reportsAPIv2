@@ -20,6 +20,17 @@ block secondaryNavBar
                             img(src='/img/en.png', alt='en').icon
 
 block content
+
+    if errorMessage
+        .alert.alert--error
+            p #{errorMessage}
+            p.close &times;
+
+    if successMessage
+        .alert.alert--success
+            p #{successMessage}
+            p.close &times;
+
     section.py-2#report
         .container.bg-light
             //- prvi red
@@ -47,7 +58,7 @@ block content
                     else 
                         h2.text-center.mr-4 Izveštaj o rutinskom ispitivanju
 
-                    input(type='number' style='width:3rem' form='inoForm' name='rb' value=report ? report.rb : 1).form-control#ordinalNumber
+                    input(type='number' style='width:3rem' form='expReportsForm' name='rb' value=report ? report.rb : 1).form-control#ordinalNumber
                     p.m-0 
                         | &nbsp;/&nbsp;
                         span.year
@@ -62,7 +73,7 @@ block content
                                     .col-5 
                                         label Šifra proizvoda:
                                     .col-7
-                                        input(type='text', placeholder='Unesi 7-cifreni broj' name='sifra').form-control.font-weight-bold#productCode
+                                        input(type='text', placeholder='Unesi 7-cifreni broj' name='sifra' value=report ? report.sifra : '').form-control.font-weight-bold#productCode
                                         small Error message
 
                         //- peti red
@@ -75,7 +86,7 @@ block content
                                         .col-5 Tip Kabla
 
                                     .col-7
-                                        p.ml-2#cableType /
+                                        p.ml-2#cableType=report ? report.proizvod.proizvod : '/'
 
                         //- sesti red
                         .row.font-weight-bold.mb-2
@@ -87,7 +98,7 @@ block content
                                         .col-5 Nazivni Napon
 
                                     .col-7
-                                        p.ml-2#ratedVoltage /
+                                        p.ml-2#ratedVoltage=report ? report.proizvod.napon : '/'
 
                         //- sedmi red
                         .row.font-weight-bold.mb-3
@@ -113,7 +124,7 @@ block content
                                     else   
                                         .col-5 Standard:
                                     .col-7
-                                        p.ml-2#standard /
+                                        p.ml-2#standard=report ? report.proizvod.propis : '/'
 
                         //- deveti red
                         .row.font-weight-bold.mb-2
@@ -127,15 +138,33 @@ block content
                                             label Broj doboša:
                                     
                                     .col-7#drumList
-                                        .row.mb-2(data-next='2')
-                                            .col-6
-                                                input(type='text' name='dobos_1' value=report ? report.dobos_1 : '/').form-control.text-right.font-weight-bold.item
-                                                small Error message
+                                        if report 
+                                            -var n = 1;
+                                            each val, key in report
+                                                if key.startsWith('dobos') && val
+                                                    -var dobos=`dobos_${n}`
+                                                    -var duzina=`duzina_${n}`
+                                                
+                                                    .row.mb-2(data-next=n+1).marker
+                                                        .col-6
+                                                            input(type='text' name=dobos value=report ? val : '/'  placeholder='broj doboša').form-control.text-right.font-weight-bold.item
+                                                            small Error message
 
-                                            .col-6.input-group
-                                                input(type='number' name='duzina_1' value=report ? report.duzina_1 : '/').form-control.text-right.font-weight-bold.itemLength
-                                                .input-group-append
-                                                    span.input-group-text m
+                                                        .col-6.input-group
+                                                            input(type='number' name=duzina value=report ? report[duzina] : 0 placeholder='/').form-control.text-right.font-weight-bold
+                                                            .input-group-append
+                                                                span.input-group-text m
+                                                    -n++
+                                        else
+                                            .row.mb-2(data-next=2)
+                                                .col-6
+                                                    input(type='text' name=`dobos_1` value='/'  placeholder='broj doboša').form-control.text-right.font-weight-bold.item
+                                                    small Error message
+
+                                                .col-6.input-group
+                                                    input(type='number' name=`duzina_1` value=0 placeholder='/').form-control.text-right.font-weight-bold
+                                                    .input-group-append
+                                                        span.input-group-text m        
                             .col-2
                                 button.btn.btn-outline-success.d-print-none#addItem Dodaj doboš
                             .col-2
@@ -151,7 +180,7 @@ block content
                                         .col-5 Ukupna dužina:
                                     
                                     .col-7.input-group
-                                        p.form-control.text-right.font-weight-bold#totalLength 0
+                                        input(type='number' name='ukupnaDuz' value=report ? report.ukupnaDuz : 0 placeholder='/').form-control.text-right.font-weight-bold#totalLength
                                         .input-group-append
                                             span.input-group-text m
                         .text-center.mb-4.d-print-none

@@ -301,7 +301,22 @@ const ExpReportSchema = new mongoose.Schema({
         ref: "User"
     }
 },{
-    timestamps: true
+    timestamps: true,
+    toJSON: {virtuals: true},
+    toObject: {virtuals: true}
+});
+
+// expReports sadrzi sifru proizvoda i preko nje da se pozove i popuni ceo proizvod
+// MORA PREKO VIRTUALS jer se pretrazuje preko polja SIFRA ,a ne _id
+
+ExpReportSchema.virtual('proizvod', {
+    // model iz kog se cupaju podaci
+    ref: 'Product',
+    // polje u DomReports
+    localField: 'sifra',
+    // polje u Product
+    foreignField: 'sifra',
+    justOne: true
 });
 
 module.exports = mongoose.model('ExpReport', ExpReportSchema);

@@ -29,7 +29,7 @@ exports.getDomReportsHTML = asyncHandler((req, res) => {
 exports.getAllDomReportsHTML = asyncHandler(async(req, res) => {
     const reports = await DomReport.find().populate("proizvod");
 
-    res.status(200).render("domReportsAll", {
+    res.status(200).render("domExpReportsAll", {
         title: "Izveštaji za domaće tržište",
         path: "dom",
         userName: req.session.name,

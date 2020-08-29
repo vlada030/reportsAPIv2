@@ -1,17 +1,15 @@
 export const elements = {
-    // zajednicki elementi
-    // logovanje
     
     productCode : document.getElementById('productCode'),
     updateProductCode: document.getElementById('updateProductCode'),
-    
+    // butons on REport forms
     saveButton: document.getElementById('save'),
     savePDFButton: document.getElementById('savePDF'),
     saveUpdateButton: document.getElementById('saveProductUpdate'),
-    
+    // forms
     productHandleForm: document.getElementById('productHandleForm'),
     expReportsForm : document.getElementById('expReportsForm'),
-
+    // product properies
     cableType: document.getElementById('cableType'),
     ratedVoltage: document.getElementById('ratedVoltage'),
     standard: document.getElementById('standard'),
@@ -26,7 +24,11 @@ export const elements = {
     outerDiametar: document.getElementById('outerDiametar'),
     testVoltage: document.getElementById('testVoltage'),
     pDischarge: document.getElementById('pDischarge'),
-
+    // exp Reports
+    drumList: document.getElementById('drumList'),
+    addItemButton: document.getElementById('addItem'),
+    delItemButton: document.getElementById('delItem'),
+    totalLength : document.querySelector('#totalLength'),
 
 
     // index.html / index-eng.html
@@ -38,12 +40,8 @@ export const elements = {
     neto : document.getElementById('neto'),
     // ino.html / ino-eng.html
     yearManufacture : document.getElementById('yearManufacture'),
-    totalLength : document.querySelector('#totalLength'),
-    drumList: document.getElementById('drumList'),
-    addItemButton: document.getElementById('addItem'),
-    delItemButton: document.getElementById('delItem'),
-    // product-update.html
-    // login.html / registration.html
+
+    // login / registration
     authForm: document.getElementById('authForm'),
     name: document.getElementById('name'),
     email: document.getElementById('email'),
@@ -58,7 +56,7 @@ export const updateReportsUI = (elem) => {
         elements.cableType.innerText = elem.proizvod || "/";
         elements.ratedVoltage.innerText = elem.napon || "/";
         elements.standard.innerText = elem.propis || "/";
-        // boja postoji samo u exp Reports
+        // boja postoji samo u exp Reports, ne u dom Reports
         if (elements.productColor) {
             elements.productColor.innerText = elem.boja || "/";
         }
@@ -132,7 +130,7 @@ export const updateProductUI = (elem) => {
 
 export const addItem = (n) => {
     
-    const elem = `<div class="row mb-2 marker" data-next=${+n + 1}><div class="col-6"><input class="form-control text-right font-weight-bold item" type="text" name="dobos_${n}"  value='/'><small>Error message</small></div><div class="col-6 input-group"><input class="form-control text-right font-weight-bold itemLength" type="number" name="duzina_${n}"  value='0'><div class="input-group-append"><span class="input-group-text">m</span></div></div></div>`;
+    const elem = `<div class="row mb-2 marker" data-next=${+n + 1}><div class="col-6"><input class="form-control text-right font-weight-bold item" type="text" name="dobos_${n}"  value='/' placeholder='broj dobosa'><small>Error message</small></div><div class="col-6 input-group"><input class="form-control text-right font-weight-bold" type="number" name="duzina_${n}"  value=0 placeholder='/'><div class="input-group-append"><span class="input-group-text">m</span></div></div></div>`;
 
     elements.drumList.insertAdjacentHTML('beforeend', elem);
 };
@@ -147,17 +145,14 @@ export const delItem = () => {
 
 // preracunaj total length nakon keyup eventa
 export const updateTotalLength = () => {
-    totalLength.textContent = calcTotalLength();
-    
-};
-// node list svih dobosa u ino/ino-eng.html
-export const itemsListArray = () => {
-    return document.querySelectorAll('#drumList .item');
+    let arr = Array.from(document.querySelectorAll('#drumList input[type="number"]'));
+
+    elements.totalLength.value = calcTotalLength(arr);    
 };
 
 // preracun total polja nakon dodaj / oduzmi item
-function calcTotalLength() {
-    let arr = Array.from(document.querySelectorAll('.itemLength'));
+function calcTotalLength(arr) {
+    
     return arr.reduce((acc, el) => {
         acc += el.valueAsNumber;
         return acc;

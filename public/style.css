@@ -97,12 +97,6 @@ label:after {
     /* margin-left: 0.3rem; */
 }
 
-@media print {
-    
-
-    
-}
-
 .alert {
     width: 50%;
     margin: 1rem auto;
@@ -154,17 +148,19 @@ small {
 @media print {
     @page {
         size: A4; /* DIN A4 standard, Europe */
-        margin:0; /* this affects the margin in the printer settings */ 
+        margin:4mm 0 3mm 0; /* this affects the margin in the printer settings */ 
       }
 
     body {
         /* display:table;
         table-layout:fixed; */
-        width: 210mm;
-        height: 282mm;
-        padding-top:0.8cm;
-        padding-bottom:0.5cm;
+        /* width: 210mm;
+        height: 282mm; */
+        /* padding-top:0.8cm;
+        padding-bottom:0.5cm; */
         /* height:auto; */
+        margin:0;
+        padding:0;
          }
 
     #bruto,

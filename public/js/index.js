@@ -3,7 +3,7 @@ import '@babel/polyfill';
 import {getProduct, updateProduct, deleteReport} from './ajaxRequests';
 import errorHandler from './errorHandler';
 import {showMessage, deleteMessage} from './alertMessage';
-import {elements, updateReportsUI, updateProductUI, addItem, delItem} from './userInterface';
+import {elements, updateReportsUI, updateProductUI, addItem, delItem, updateTotalLength} from './userInterface';
 
 
 
@@ -150,8 +150,9 @@ if (elements.productHandleForm) {
     })
 }
 
-// EXP REPORTS FORMA DODAJ / OBRIŠI STAVKU
+// EXP REPORTS FORMA DODAJ / OBRIŠI STAVKU, PRERACUNAJ UKUPNU DUZINU
 if (elements.expReportsForm) {
+    // dodaj stavku
     elements.addItemButton.addEventListener('click', e => {
         e.preventDefault();
         // obriši poruku ako postoji
@@ -165,11 +166,20 @@ if (elements.expReportsForm) {
         }
     })
 
+    // obrisi stavku
     elements.delItemButton.addEventListener('click', e => {
         e.preventDefault();
         // obriši poruku ako postoji
         deleteMessage();
-
+        // obrisi stavku
         delItem();
+        // preracunaj ponovo ukupnu duzinu
+        updateTotalLength();
     })
+
+    // updejtovanje total length polja prilikom unosa nove duzine
+    elements.drumList.addEventListener('input', function() {
+        updateTotalLength();                
+        
+    });
 }

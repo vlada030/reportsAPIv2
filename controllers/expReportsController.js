@@ -1,7 +1,10 @@
 const ExpReport = require('../models/ExpReport');
+const Product = require('../models/Product');
 
 const asyncHandler = require('../middleware/asyncHandler');
 const ErrorResponse = require('../utils/errorResponse');
+
+const {validationResult} = require('express-validator');
 
 // @desc   Get Export Reports HTML
 // @route  GET /api/v2/reports/exp
@@ -12,26 +15,70 @@ exports.getExpReportsHTML = (req, res, next) => {
 
     res.status(200).render("expReports", {
         title: "Izveštaji za inostrano tržište",
-        path: "ino",
+        path: "exp",
         lang,
-        isAuthenticated: req.session.isLoggedIn,
         userName: req.session.name
     });
 };
+
+// @desc   Export Reports - All
+// @route  GET /api/v2/reports/exp/allReports
+// @access Private
+
+exports.getAllExpReportsHTML = asyncHandler(async(req, res) => {
+    const reports = await ExpReport.find().populate("proizvod");
+    //console.log(reports)
+
+    res.status(200).render("domExpReportsAll", {
+        title: "Izveštaji za inostrano tržište",
+        path: "exp",
+        userName: req.session.name,
+        reports
+    });
+});
 
 // @desc   Create Report
 // @route  POST /api/v2/reports/exp
 // @access Private
 
 exports.createExpReport = asyncHandler( async(req, res, next) => {
+    const lang = req.query.lang || 'ser';
     req.body.createdByUser = req.user.id;
+
+    // za povlacenje podataka na osnovu sifre prpoizvoda
+    const proizvod = await Product.findOne({sifra: req.body.sifra});
+    req.body.proizvod = proizvod;
+
+    console.log(req.body);
+    // cupanje errors iz express-validatora
+    const errors = validationResult(req);
+    console.log(errors)
     
+    // validacija preko express-validatora
+    // implementirano pamcenje prethodnog unosa
+    if (!errors.isEmpty()) {
+        return res.status(422).render("expReports", {
+            title: "Izveštaji za inostrano tržište",
+            path: "exp",
+            lang,
+            userName: req.session.name,
+            errorMessage: errors.array()[0].msg,
+            report: req.body,
+            readonlyInputStatus: false
+        })
+    }
+
     const report = await ExpReport.create(req.body);
 
-    res.status(201).json({
-       success: true,
-       data: report
-   });
+    res.status(201).render("expReports", {
+        title: "Izveštaji za inostrano tržište",
+        path: "exp",
+        lang,
+        userName: req.session.name,
+        report: req.body,
+        successMessage: 'Izveštaj je uspešno kreiran',
+        readonlyInputStatus: false
+    })
 });
 
 // @desc   Get All Reports
@@ -53,20 +100,40 @@ exports.getAllExpReports = asyncHandler( async(req, res, next) => {
 // @access Private
 
 exports.getExpReport = asyncHandler( async(req, res, next) => {
+    const lang = req.query.lang || "ser";
+    const report = await ExpReport.findById(req.params.id)
+        .populate({
+            path: "createdByUser",
+            select: "name",
+        })
+        .populate({
+            path: "updatedByUser",
+            select: "name",
+        })
+        .populate("proizvod");
 
-   const report = await ExpReport.findById(req.params.id).populate({
-       path: 'createdByUser',
-       select: 'name'
-   });
+    if (!report) {
+        //return next(new ErrorResponse(`Izabrani izvestaj ne postoji`, 400));
+        return res.status(404).render("expReports", {
+            title: "Izveštaji za inostrano tržište",
+            path: "exp",
+            lang: "ser",
+            userName: req.session.name,
+            readonlyInputStatus: false,
+            errorMessage: 'Traženi izveštaj ne postoji ili je izbrisan.'
+        });
+    }
 
-   if (!report) {
-       return next(new ErrorResponse(`Izabrani izvestaj ne postoji`, 400));
-   }
+    console.log(report)
 
-   res.status(200).json({
-       success: true,
-       data: report
-   });
+    res.status(200).render("expReports", {
+        title: "Izveštaji za inostrano tržište",
+        path: "exp",
+        lang,
+        userName: req.session.name,
+        report,
+        readonlyInputStatus: false,
+    });
 });
 
 // @desc   Update Report

@@ -4,7 +4,7 @@ const {body} = require('express-validator');
 
 const {getDomReportsHTML, getAllDomReportsHTML, createDomReport, getAllDomReports, getDomReport, updateDomReport, deleteDomReport} = require('../controllers/domReportsController');
 
-const { getExpReportsHTML, createExpReport, getAllExpReports, getExpReport, updateExpReport, deleteExpReport } = require('../controllers/expReportsController');
+const { getExpReportsHTML, createExpReport, getAllExpReports, getAllExpReportsHTML, getExpReport, updateExpReport, deleteExpReport } = require('../controllers/expReportsController');
 
 const {getShiftReportsHTML, createShiftReport, getAllShiftReports, getShiftReport, updateShiftReport, deleteShiftReport} = require('../controllers/shiftReportsController');
 
@@ -69,6 +69,7 @@ router.route('/dom/:id').get(getDomReport).delete(protect, deleteDomReport).put(
 
 router.route('/exp').get(getExpReportsHTML).post(protect, createExpReport);
 router.route('/exp/all').get(protect,advancedResults(ExpReport, {path: 'createdByUser', select: 'name'}),  getAllExpReports);
+router.route('/exp/allReports').get(getAllExpReportsHTML);
 router.route('/exp/:id').get(getExpReport).delete(protect, deleteExpReport).put(protect, updateExpReport);
 
 router.route('/shift').get(getShiftReportsHTML).post(protect, createShiftReport);

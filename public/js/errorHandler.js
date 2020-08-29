@@ -18,6 +18,10 @@ export default error => {
         } else if (error.response.status === 422) {
             console.log('Greska prilikom validacije axios PUT requesta')
             showMessage(error.response.data.data, 'error')
+        
+        } else if (error.response.status === 404) {
+            console.log('Proizvod sa unetom šifrom ne postoji!')
+            showMessage('Proizvod sa unetom šifrom ne postoji', 'error')
         }
          else {
             //console.log(error.response.status);
