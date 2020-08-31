@@ -67,7 +67,30 @@ router.route('/dom/all').get(protect, advancedResults(DomReport, {path: 'created
 router.route('/dom/allReports').get(getAllDomReportsHTML);
 router.route('/dom/:id').get(getDomReport).delete(protect, deleteDomReport).put(protect, updateDomReport);
 
-router.route('/exp').get(getExpReportsHTML).post(protect, createExpReport);
+router
+    .route("/exp")
+    .get(getExpReportsHTML)
+    .post(
+        protect,
+        [
+            body("sifra", "Šifra se sastoji od 7 cifara")
+                .isNumeric()
+                .isLength({ min: 7, max: 7 })
+                .trim(),
+            body("godina", "Godina sadrži 4 cifre")
+                .isNumeric()
+                .isLength({ min: 4, max: 4 })
+                .trim(),
+            body("dobos_1", "Broj na stranici ili MIS Broj doboša može imati 7 - 10 karaktera")
+                .isLength({ min: 7, max: 11 })
+                .trim(),
+            body("duzina_1", "Najmanja dužina je 1m, a najveća 15000m")
+                .isNumeric()
+                .isInt({ gt: 1, lt: 15000 })
+                .trim()
+        ],
+        createExpReport
+    );
 router.route('/exp/all').get(protect,advancedResults(ExpReport, {path: 'createdByUser', select: 'name'}),  getAllExpReports);
 router.route('/exp/allReports').get(getAllExpReportsHTML);
 router.route('/exp/:id').get(getExpReport).delete(protect, deleteExpReport).put(protect, updateExpReport);

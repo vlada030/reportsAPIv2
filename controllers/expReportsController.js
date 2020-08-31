@@ -49,7 +49,7 @@ exports.createExpReport = asyncHandler( async(req, res, next) => {
     const proizvod = await Product.findOne({sifra: req.body.sifra});
     req.body.proizvod = proizvod;
 
-    console.log(req.body);
+    //console.log(req.body);
     // cupanje errors iz express-validatora
     const errors = validationResult(req);
     console.log(errors)
