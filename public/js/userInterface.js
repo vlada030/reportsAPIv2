@@ -2,7 +2,7 @@ export const elements = {
     
     productCode : document.getElementById('productCode'),
     updateProductCode: document.getElementById('updateProductCode'),
-    // butons on REport forms
+    // butons on Report forms
     saveButton: document.getElementById('save'),
     savePDFButton: document.getElementById('savePDF'),
     saveUpdateButton: document.getElementById('saveProductUpdate'),

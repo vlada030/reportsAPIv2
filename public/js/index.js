@@ -159,7 +159,7 @@ if (elements.expReportsForm) {
         deleteMessage();
         let n = document.querySelector('#drumList>div:last-child').dataset.next;
         console.log(n);
-        if (n <= 4) {
+        if (n <= 20) {
             addItem(n);
         } else {
             showMessage('Najviše možete da dodate 20 stavki', 'error');

@@ -39,7 +39,7 @@ router
                 .isLength({ min: 1, max: 40 })
                 .trim(),
             body("brojZica", 'Broj žica provodnika je u intervalu 1 - 2500')
-                .isInt({ gt: 1, lt: 2500 })
+                .isInt({ min: 1, max: 2500 })
                 .trim(),
             body("precnikZice", 'Prečnik žice komponente je u intervalu 0.2 - 3.6')
                 .isFloat({ min: 0.2, max: 3.6 })
@@ -74,7 +74,7 @@ router
                 .isLength({ min: 1, max: 40 })
                 .trim(),
             body("brojZica", "Broj žica provodnika je u intervalu 1 - 2500")
-                .isInt({ gt: 1, lt: 2500 })
+                .isInt({ min: 1, max: 2500 })
                 .trim(),
             body(
                 "precnikZice",

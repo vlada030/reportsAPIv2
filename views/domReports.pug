@@ -22,12 +22,12 @@ block secondaryNavBar
 block content
         
     if errorMessage
-        .alert.alert--error
+        .alert.alert--error.d-print-none
             p #{errorMessage}
             p.close &times;
 
     if successMessage
-        .alert.alert--success
+        .alert.alert--success.d-print-none
             p #{successMessage}
             p.close &times;
 

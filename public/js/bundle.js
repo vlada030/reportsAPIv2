@@ -8568,7 +8568,7 @@ exports.updateTotalLength = exports.delItem = exports.addItem = exports.updatePr
 var elements = {
   productCode: document.getElementById('productCode'),
   updateProductCode: document.getElementById('updateProductCode'),
-  // butons on REport forms
+  // butons on Report forms
   saveButton: document.getElementById('save'),
   savePDFButton: document.getElementById('savePDF'),
   saveUpdateButton: document.getElementById('saveProductUpdate'),
@@ -9268,7 +9268,7 @@ if (_userInterface.elements.expReportsForm) {
     var n = document.querySelector('#drumList>div:last-child').dataset.next;
     console.log(n);
 
-    if (n <= 4) {
+    if (n <= 20) {
       (0, _userInterface.addItem)(n);
     } else {
       (0, _alertMessage.showMessage)('Najviše možete da dodate 20 stavki', 'error');
@@ -9319,7 +9319,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49834" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50975" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
