@@ -76,18 +76,39 @@ router
             body("sifra", "Šifra se sastoji od 7 cifara")
                 .isNumeric()
                 .isLength({ min: 7, max: 7 })
-                .trim(),
+                .trim()
+                .escape(),
             body("godina", "Godina sadrži 4 cifre")
                 .isNumeric()
                 .isLength({ min: 4, max: 4 })
-                .trim(),
-            body("dobos_1", "Broj na stranici ili MIS Broj doboša može imati 7 - 10 karaktera")
-                .isLength({ min: 7, max: 11 })
-                .trim(),
-            body("duzina_1", "Najmanja dužina je 1m, a najveća 15000m")
-                .isNumeric()
-                .isInt({ gt: 1, lt: 15000 })
                 .trim()
+                .escape(),
+            // body("dobos_1", "Broj na stranici ili MIS Broj doboša može imati 7 - 10 karaktera")
+            //     .isLength({ min: 7, max: 11 })
+            //     .trim()
+            //     .escape(),
+            // body("duzina_1", "Najmanja dužina je 1m, a najveća 15000m")
+            //     .isNumeric()
+            //     .isInt({ gt: 1, lt: 15000 })
+            //     .trim()
+            //     .escape(),
+
+            // custom validator za sva polja dobos / duzina
+            body().custom((value, {req}) => {
+                for (const key in req.body) {
+                    if (key.startsWith('dobos')) {
+                        if  (!(req.body[key].length >= 7 && req.body[key].length <= 10)) {
+                            throw new Error("Broj na stranici ili MIS Broj doboša može imati 7 - 10 karaktera");
+                        }
+                        
+                    } else if (key.startsWith('duzina')) {
+                        if  (!(req.body[key] >= 1 && req.body[key] <= 15000)) {
+                            throw new Error("Najmanja dužina je 1m, a najveća 15000m");
+                        }
+                    }
+                }
+                return true;
+            })
         ],
         createExpReport
     );

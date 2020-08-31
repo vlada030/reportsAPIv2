@@ -121,6 +121,15 @@ app.use(cors({
 // pravljenje static foldera
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+// app.use((req, res) => {
+//     for (const key in req.body) {
+//         if (key.startsWith('dobos')) {
+//             console.log(`Key ${key} ima vrednost ${req.body[key]}`)
+            
+//         }
+//     };
+// });
 // postavljanje routa
 app.use('/api/v2/reports', reportsRoute);
 app.use('/api/v2/products', productsRoute);
