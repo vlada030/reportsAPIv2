@@ -20,7 +20,7 @@ ul.navbar-nav.mr-auto#optionsNav
                             
                             .modal-footer
                                 button(type="button" data-dismiss="modal").btn.btn-secondary Otkaži
-                                button(data-reportID=report.MISBroj type="button" data-dismiss="modal").btn.btn-warning#eraseReport Izbriši
+                                button(data-reportID= report.MISBroj ?  report.MISBroj : report._id type="button" data-dismiss="modal").btn.btn-warning#eraseReport Izbriši
             else
                 button(type="button" data-toggle="modal" data-target="#myModal" disabled).btn.btn-secondary Obriši izveštaj         
             

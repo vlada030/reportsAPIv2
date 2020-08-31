@@ -8416,22 +8416,29 @@ exports.getProduct = getProduct;
 
 var deleteReport = /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(value) {
-    var result;
+    var url, result;
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            _context2.next = 2;
+            // ako je value MIS broj duzina je 7, druga vrednost je ObjectId koja je razlicita od 7
+            if (value.length === 7) {
+              url = "".concat(baseURL, "/api/v2/reports/dom/").concat(value);
+            } else {
+              url = "".concat(baseURL, "/api/v2/reports/exp/").concat(value);
+            }
+
+            _context2.next = 3;
             return (0, _axios.default)({
-              url: "".concat(baseURL, "/api/v2/reports/dom/").concat(value),
+              url: url,
               method: 'DELETE'
             });
 
-          case 2:
+          case 3:
             result = _context2.sent;
             return _context2.abrupt("return", result);
 
-          case 4:
+          case 5:
           case "end":
             return _context2.stop();
         }
@@ -9155,7 +9162,7 @@ window.addEventListener('click', function (e) {
 //     document.getElementById('neto').value = '';
 //     document.getElementById('bruto').value = '';
 // }
-// OBRIŠI DOMREPORT IZ BAZE
+// OBRIŠI DOMREPORT/EXPREPORT IZ BAZE
 
 window.addEventListener('click', /*#__PURE__*/function () {
   var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(e) {
@@ -9178,7 +9185,12 @@ window.addEventListener('click', /*#__PURE__*/function () {
           case 6:
             (0, _alertMessage.showMessage)('Izveštaj je uspešno obrisan.', 'success');
             window.setTimeout(function () {
-              location.assign('/api/v2/reports/dom');
+              // MIS broj ima 7 cifre za dom report, exp je ObjectId
+              if (eraseID.dataset.reportid === 7) {
+                location.assign('/api/v2/reports/dom');
+              } else {
+                location.assign('/api/v2/reports/exp');
+              }
             }, 1500);
             _context3.next = 13;
             break;

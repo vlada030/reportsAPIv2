@@ -97,7 +97,7 @@ window.addEventListener('click', (e) => {
 // }
 
 
-// OBRIŠI DOMREPORT IZ BAZE
+// OBRIŠI DOMREPORT/EXPREPORT IZ BAZE
 window.addEventListener('click',async (e) => {
     // kada je klinkuto dugme Obriši na modalu
     if (e.target.matches('#eraseReport')) {
@@ -107,7 +107,12 @@ window.addEventListener('click',async (e) => {
             await deleteReport(eraseID.dataset.reportid);
             showMessage('Izveštaj je uspešno obrisan.', 'success');
             window.setTimeout(() => {
-                location.assign('/api/v2/reports/dom');                
+                // MIS broj ima 7 cifre za dom report, exp je ObjectId
+                if (eraseID.dataset.reportid === 7) {
+                    location.assign('/api/v2/reports/dom');            
+                } else {
+                    location.assign('/api/v2/reports/exp');
+                }
             }, 1500)
             
         } catch (error) {

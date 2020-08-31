@@ -18,9 +18,15 @@ export const getProduct = async ( value ) => {
 }
 
 export const deleteReport = async ( value ) => {
-        
+    let url;
+    // ako je value MIS broj duzina je 7, druga vrednost je ObjectId koja je razlicita od 7
+    if (value.length === 7) {
+        url = `${baseURL}/api/v2/reports/dom/${value}`;
+    } else {
+        url = `${baseURL}/api/v2/reports/exp/${value}`;
+    }
     const result = await axios({
-        url: `${baseURL}/api/v2/reports/dom/${value}`,
+        url,
         method: 'DELETE'           
     });
 

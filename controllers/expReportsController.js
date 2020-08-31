@@ -124,7 +124,7 @@ exports.getExpReport = asyncHandler( async(req, res, next) => {
         });
     }
 
-    console.log(report)
+    //console.log(report)
 
     res.status(200).render("expReports", {
         title: "Izveštaji za inostrano tržište",
@@ -166,11 +166,15 @@ exports.updateExpReport = asyncHandler( async(req, res, next) => {
 // @access Private
 
 exports.deleteExpReport = asyncHandler( async(req, res, next) => {
+    const lang = req.query.lang || 'ser';
 
     await ExpReport.findByIdAndDelete(req.params.id);
 
-   res.status(200).json({
-       success: true,
-       data: {}
-   });
+   res.status(200).render("expReports", {
+        title: "Izveštaji za inostrano tržište",
+        path: "exp",
+        lang,
+        userName: req.session.name,
+        successMessage: 'Izveštaj je izbrisan'
+    });
 });
