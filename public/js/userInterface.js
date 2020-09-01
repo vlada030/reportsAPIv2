@@ -2,13 +2,14 @@ export const elements = {
     
     productCode : document.getElementById('productCode'),
     updateProductCode: document.getElementById('updateProductCode'),
-    // butons on Report forms
+    // butons on Reports forms
     saveButton: document.getElementById('save'),
     savePDFButton: document.getElementById('savePDF'),
     saveUpdateButton: document.getElementById('saveProductUpdate'),
     // forms
     productHandleForm: document.getElementById('productHandleForm'),
     expReportsForm : document.getElementById('expReportsForm'),
+    shiftReportsForm : document.getElementById('shiftReportsForm'),
     // product properies
     cableType: document.getElementById('cableType'),
     ratedVoltage: document.getElementById('ratedVoltage'),
@@ -29,8 +30,16 @@ export const elements = {
     addItemButton: document.getElementById('addItem'),
     delItemButton: document.getElementById('delItem'),
     totalLength : document.querySelector('#totalLength'),
-
-
+    // shift Reports
+    workersList: document.getElementById('workersList'),
+    doradaList: document.getElementById('doradaList'),
+    probojList: document.getElementById('probojList'),
+    addWorkerButton: document.getElementById('addWorker'),
+    removeWorkerButton: document.getElementById('removeWorker'),
+    addItemDoradaButton: document.getElementById('addItemDorada'),
+    removeItemDoradaButton: document.getElementById('removeItemDorada'),
+    addItemProbojButton: document.getElementById('addItemProboj'),
+    removeItemProbojButton: document.getElementById('removeItemProboj'),
     // index.html / index-eng.html
     domesticForm : document.getElementById('domesticForm'),
     workOrder : document.getElementById('workOrder'),
@@ -127,14 +136,14 @@ export const updateProductUI = (elem) => {
         elements.pDischarge.value = "/";
     }
 };
-
+// dodaj stavku u exp reports
 export const addItem = (n) => {
     
     const elem = `<div class="row mb-2 marker" data-next=${+n + 1}><div class="col-6"><input class="form-control text-right font-weight-bold item" type="text" name="dobos_${n}"  value='/' placeholder='broj dobosa'><small>Error message</small></div><div class="col-6 input-group"><input class="form-control text-right font-weight-bold" type="number" name="duzina_${n}"  value=0 placeholder='/'><div class="input-group-append"><span class="input-group-text">m</span></div></div></div>`;
 
     elements.drumList.insertAdjacentHTML('beforeend', elem);
 };
-
+// obrisi stavku u exp reports
 export const delItem = () => {
     const elem = document.querySelector('#drumList .marker:last-child');
         if (elem) {
@@ -143,7 +152,7 @@ export const delItem = () => {
         }
 };
 
-// preracunaj total length nakon keyup eventa
+// exp Reports - preracunaj total length nakon keyup eventa
 export const updateTotalLength = () => {
     let arr = Array.from(document.querySelectorAll('#drumList input[type="number"]'));
 
@@ -158,3 +167,48 @@ function calcTotalLength(arr) {
         return acc;
     }, 0);
 } 
+
+// dodaj radnika u shift Reports
+export const addWorker = (n) => {
+    const elem = `<tr class="marker" data-next=${+n + 1}><th class="align-middle w-25" scope="row"><select class="form-control mb-1" name="radnik${n}_ime"><option value="M. Vučković">M. Vučković</option><option value="B. Marković">B. Marković</option><option value="D. Aranđelović">D. Aranđelović</option><option value="A. Dimitrijević">A. Dimitrijević</option><option value="V. Nešković">V. Nešković</option><option value="G. Jovanović">G. Jovanović</option><option value="G. Pavlović">G. Pavlović</option><option value="M. Lilić">M. Lilić</option><option value="D. Đorđević">D. Đorđević</option><option value="M. Nikolić">M. Nikolić</option><option value="D. Rudović">D. Rudović</option></select><div class="d-flex flex-row"><input class="form-control col-4" type="number" placeholder="K" name="radnik${n}_k"><input class="form-control col-4" type="number" placeholder="R" name="radnik${n}_r"><input class="form-control col-4" type="number" placeholder="D" name="radnik${n}_d"></div></th><td class="align-middle"><input class="form-control" type="number" placeholder="/" name="radnik${n}_vreme"></td><td class="align-middle" colspan="11"><textarea class="form-control" cols="30" rows="2" placeholder="napomena..." name="radnik${n}_nap"></textarea></td></tr>`;
+
+    elements.workersList.insertAdjacentHTML('beforeend', elem);
+};
+
+// obriši radnika u shift Reports
+export const removeWorker = () => {
+    const elem = document.querySelector('#workersList .marker:last-child');
+        if (elem) {
+            elem.parentNode.removeChild(elem);
+        }
+};
+
+// dodaj stavku Dorada u shift Reports
+export const addItemDorada = (n) => {
+    const elem = `<tr class="marker" data-next=${+n + 1}><th class="align-middle w-25" scope="row">Dorada</th><td class="align-middle"><input class="form-control" type="number" placeholder="/" name="dorada${n}_rn"></td><td class="align-middle"><input class="form-control" type="text" placeholder="/" name="dorada${n}_proizvod"></td><td class="align-middle"><input class="form-control" type="number" placeholder="/" name="dorada${n}_duz"></td><td class="align-middle"><input class="form-control" type="text" placeholder="/" name="dorada${n}_nap"></td></tr>`;
+
+    elements.doradaList.insertAdjacentHTML('beforeend', elem);
+};
+
+// obriši stavku Dorada u shift Reports
+export const removeItemDorada = () => {
+    const elem = document.querySelector('#doradaList .marker:last-child');
+        if (elem) {
+            elem.parentNode.removeChild(elem);
+        }
+};
+
+// dodaj stavku Proboj u shift Reports
+export const addItemProboj = (n) => {
+    const elem = `<tr class="marker" data-next=${+n + 1}><th class="align-middle w-25" scope="row">Proboj</th><td class="align-middle"><input class="form-control" type="number" placeholder="/" name="proboj${n}_rn"></td><td class="align-middle w-50"><input class="form-control pedeset" type="text" placeholder="/" name="proboj${n}_proizvod"></td><td class="align-middle"><input class="form-control" type="number" placeholder="/" name="proboj${n}_duz"></td></tr>`;
+
+    elements.probojList.insertAdjacentHTML('beforeend', elem);
+};
+
+// obriši stavku Proboj u shift Reports
+export const removeItemProboj = () => {
+    const elem = document.querySelector('#probojList .marker:last-child');
+        if (elem) {
+            elem.parentNode.removeChild(elem);
+        }
+};

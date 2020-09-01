@@ -3,7 +3,7 @@ import '@babel/polyfill';
 import {getProduct, updateProduct, deleteReport} from './ajaxRequests';
 import errorHandler from './errorHandler';
 import {showMessage, deleteMessage} from './alertMessage';
-import {elements, updateReportsUI, updateProductUI, addItem, delItem, updateTotalLength} from './userInterface';
+import {elements, updateReportsUI, updateProductUI, addItem, delItem, updateTotalLength, addWorker, removeWorker, addItemDorada, removeItemDorada, addItemProboj, removeItemProboj} from './userInterface';
 
 
 
@@ -163,7 +163,6 @@ if (elements.expReportsForm) {
         // obriši poruku ako postoji
         deleteMessage();
         let n = document.querySelector('#drumList>div:last-child').dataset.next;
-        console.log(n);
         if (n <= 20) {
             addItem(n);
         } else {
@@ -187,4 +186,76 @@ if (elements.expReportsForm) {
         updateTotalLength();                
         
     });
+}
+
+// SHIFT REPORTS FORMA
+if (elements.shiftReportsForm) {
+    // dodaj radnika
+    elements.addWorkerButton.addEventListener('click', e => {
+        e.preventDefault();
+        // obriši poruku ako postoji
+        deleteMessage();
+        let n = document.querySelector('#workersList>tr:last-child').dataset.next;
+        if (n <= 11) {
+            addWorker(n);
+        } else {
+            showMessage('Najviše možete da dodate 10 radnika', 'error');
+        }
+    })
+
+    // obriši radnika
+    elements.removeWorkerButton.addEventListener('click', e => {
+        e.preventDefault();
+        // obriši poruku ako postoji
+        deleteMessage();
+        // obrisi stavku
+        removeWorker();
+        
+    })
+
+    // dodaj stavku Dorada
+    elements.addItemDoradaButton.addEventListener('click', e => {
+        e.preventDefault();
+        // obriši poruku ako postoji
+        deleteMessage();
+        let n = document.querySelector('#doradaList>tr:last-child').dataset.next;
+        if (n <= 11) {
+            addItemDorada(n);
+        } else {
+            showMessage('Najviše možete da dodate 10 stavke', 'error');
+        }
+    })
+
+    // obriši stavku Dorada
+    elements.removeItemDoradaButton.addEventListener('click', e => {
+        e.preventDefault();
+        // obriši poruku ako postoji
+        deleteMessage();
+        // obrisi stavku
+        removeItemDorada();
+        
+    })
+
+    // dodaj stavku Proboj
+    elements.addItemProbojButton.addEventListener('click', e => {
+        e.preventDefault();
+        // obriši poruku ako postoji
+        deleteMessage();
+        let n = document.querySelector('#probojList>tr:last-child').dataset.next;
+        if (n <= 11) {
+            addItemProboj(n);
+        } else {
+            showMessage('Najviše možete da dodate 10 stavke', 'error');
+        }
+    })
+
+    // obriši stavku Proboj
+    elements.removeItemProbojButton.addEventListener('click', e => {
+        e.preventDefault();
+        // obriši poruku ako postoji
+        deleteMessage();
+        // obrisi stavku
+        removeItemProboj();
+        
+    })
 }

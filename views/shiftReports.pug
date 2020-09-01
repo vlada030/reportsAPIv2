@@ -21,164 +21,176 @@ block secondaryNavBar
             include layouts/secondaryMenuShift.pug
     
 block content
+
+    if errorMessage
+        .alert.alert--error.d-print-none
+            p #{errorMessage}
+            p.close &times;
+
+    if successMessage
+        .alert.alert--success.d-print-none
+            p #{successMessage}
+            p.close &times;
+
     section#report.py-2
-    form(action='#')
-        .container.bg-light
-            // prvi red
-            h2.text-center.py-5
-                | Smenski izveštaj o radu završne kontrole energetskih kablova
-            // drugi red
-            .row.align-items-center.pb-5
-                .col-8.d-flex.flex-column.flex-lg-row.align-items-center.justify-content-center.mx-auto.centriraj
-                    span.lead.mr-3.mb-2 ZA DAN : 
-                    span#date.lead.mr-3.mb-2
-                    label.lead.mr-3.mb-2(for='shift') SMENA:
-                    select#shift.form-control.lead.mb-2.w-25
-                        option(value='prva', selected) prva
-                        option(value='druga') druga
-            .row.p-2
-                table.table.table-responsive.table-bordered.table-hover.mt-4
-                    thead.thead-dark
-                        tr
-                            th.align-middle.text-center(scope='col') Šifra poslova
-                            th.align-middle.text-center(scope='col') 1.1
-                            th.align-middle.text-center(scope='col') 1.2
-                            th.align-middle.text-center(scope='col') 1.3
-                            th.align-middle.text-center(scope='col') 2.1
-                            th.align-middle.text-center(scope='col') 2.2
-                            th.align-middle.text-center(scope='col') 2.3
-                            th.align-middle.text-center(scope='col') 3.1
-                            th.align-middle.text-center(scope='col') 3.2
-                            th.align-middle.text-center(scope='col') 3.3
-                            th.align-middle.text-center(scope='col') 3.4
-                            th.align-middle.text-center(scope='col') 3.5
-                            th.align-middle.text-center(scope='col') Zbir
-                    tbody
-                        tr
-                            th.align-middle(scope='row') PROSTOR I
-                            +list('pr1', 11)
-                        tr
-                            th.align-middle(scope='row') PROSTOR II
-                            +list('pr2', 11)
-                        tr
-                            th.align-middle(scope='row') PAKOVANJE
-                            +list('pak', 11)
-                        tr
-                            th.align-middle(scope='row') KORONA
-                            +list('kor', 11)
-                        tr
-                            th.align-middle(scope='row') PORED PROSTORA
-                            +list('pp', 11)
-                        tr
-                            th.align-middle(scope='row') TELEFONIJA
-                            +list('tel', 11)
-            .row.p-2
-                table.table.table-responsive.table-bordered.table-hover.mt-4
-                    thead.thead-dark
-                        tr
-                            th.align-middle(scope='col') Ime i prezime
-                            th.align-middle.text-center(scope='col') h
-                            th.align-middle.text-center(scope='col') 4.1
-                            th.align-middle.text-center(scope='col') 4.2
-                            th.align-middle.text-center(scope='col') 4.3
-                            th.align-middle.text-center(scope='col') 5.1
-                            th.align-middle.text-center(scope='col') 5.2
-                            th.align-middle.text-center(scope='col') 5.3
-                            th.align-middle.text-center(scope='col') 6.1
-                            th.align-middle.text-center(scope='col') 6.2
-                            th.align-middle.text-center(scope='col') 6.3
-                            th.align-middle.text-center(scope='col') Zbir
-                            th.align-middle.text-center(scope='col') Suma
-                    tbody#workersList
-                        tr
-                            th.align-middle.w-25(scope='row')
-                                select#kontrolor.form-control.mb-1(name='')
-                                    option(value='M. Vučković') M. Vučković
-                                    option(value='B. Marković') B. Marković
-                                    option(value='D. Aranđelović') D. Aranđelović
-                                    option(value='A. Dimitrijević') A. Dimitrijević
-                                .d-flex.flex-row
-                                    input.form-control.col-4(type='number', placeholder='K')
-                                    input.form-control.col-4(type='number', placeholder='R')
-                                    input.form-control.col-4(type='number', placeholder='D')
-                            +list('radnik', 11)
-                        tr
-                            th.align-middle.w-25(scope='row')
-                                select#kontrolor.form-control.mb-1(name='')
-                                    option(value='M. Vučković') M. Vučković
-                                    option(value='B. Marković') B. Marković
-                                    option(value='D. Aranđelović') D. Aranđelović
-                                    option(value='A. Dimitrijević') A. Dimitrijević
-                                    option(value='V. Nešković') V. Nešković
-                                    option(value='G. Jovanović') G. Jovanović
-                                    option(value='G. Pavlović') G. Pavlović
-                                    option(value='M. Lilić') M. Lilić
-                                    option(value='D. Đorđević') D. Đorđević
-                                    option(value='M. Nikolić') M. Nikolić
-                                    option(value='D. Rudović') D. Rudović
-                                .d-flex.flex-row
-                                    input.form-control.col-4(type='number', placeholder='K')
-                                    input.form-control.col-4(type='number', placeholder='R')
-                                    input.form-control.col-4(type='number', placeholder='D')
-                            td.align-middle
-                                input.form-control(type='number', placeholder='/')
-                            td.align-middle(colspan='11')
-                                textarea.form-control(id='#', cols='30', rows='2', placeholder='napomena...')
-            .row.p-2.d-print-none
-                button#addWorker.btn.btn-outline-success.mr-1.ml-auto Dodaj radnika
-                button#removeWorker.btn.btn-outline-danger.mr-auto Ukloni radnika
-            .row.p-2
-                table.table.table-bordered.table-hover.mt-4.smanji
-                    thead.thead-dark
-                        tr
-                            th.align-middle.w-25(scope='col') Status
-                            th.align-middle.text-center(scope='col') Broj&nbsp;RN
-                            th.align-middle.text-center.w-25(scope='col') Proizvod
-                            th.align-middle.text-center(scope='col') Dužina
-                            th.align-middle.text-center.w-25(scope='col') Napomena
-                    tbody#doradaLista
-                        tr
-                            th.align-middle.w-25(scope='row') Dorada
-                            td.align-middle
-                                input.form-control(type='number', placeholder='/')
-                            td.align-middle
-                                input.form-control(type='text', placeholder='/')
-                            td.align-middle
-                                input.form-control(type='number', placeholder='/')
-                            td.align-middle
-                                input.form-control(type='text', placeholder='/')
-            .row.p-2.d-print-none
-                button#addDorada.btn.btn-outline-success.mr-1.ml-auto Dodaj stavku
-                button#removeDorada.btn.btn-outline-danger.mr-auto Ukloni stavku
-            .row.p-2.smanji
-                table.table.table-bordered.table-hover.mt-4.smanji
-                    thead.thead-dark.d-print-none
-                        tr
-                            th.align-middle.w-25(scope='col') Status
-                            th.align-middle.text-center(scope='col') Broj RN
-                            th.align-middle.text-center.w-50(scope='col') Proizvod
-                            th.align-middle.text-center(scope='col') Dužina
-                    tbody#probojLista
-                        tr
-                            th.align-middle.w-25(scope='row') Proboj
-                            td.align-middle
-                                input.form-control(type='number', placeholder='/')
-                            td.align-middle.w-50
-                                input.form-control.pedeset(type='text', placeholder='/')
-                            td.align-middle
-                                input.form-control(type='number', placeholder='/')
-            .row.p-2.d-print-none
-                button#addProboj.btn.btn-outline-success.mr-1.ml-auto Dodaj stavku
-                button#removeProboj.btn.btn-outline-danger.mr-auto Ukloni stavku
-            .row.p-2
-                p.col-6.text-left.lead QS 06.10.03.03/01
-                p.col-6.text-right.lead Poslovođa smenske kontrole
-        .text-center.py-4.d-print-none
+        form(action='#' method='POST')#shiftReportsForm
+            .container.bg-light
+                // prvi red
+                h2.text-center.py-5
+                    | Smenski izveštaj o radu završne kontrole energetskih kablova
+                // drugi red
+                .row.align-items-center.pb-5
+                    .col-8.d-flex.flex-column.flex-lg-row.align-items-center.justify-content-center.mx-auto.centriraj
+                        span.lead.mr-3.mb-2 ZA DAN : 
+                        span#date.lead.mr-3.mb-2
+                        label.lead.mr-3.mb-2(for='shift') SMENA:
+                        select#shift.form-control.lead.mb-2.w-25
+                            option(value='prva', selected) prva
+                            option(value='druga') druga
+                .row.p-2
+                    table.table.table-responsive.table-bordered.table-hover.mt-4
+                        thead.thead-dark
+                            tr
+                                th.align-middle.text-center(scope='col') Šifra poslova
+                                th.align-middle.text-center(scope='col') 1.1
+                                th.align-middle.text-center(scope='col') 1.2
+                                th.align-middle.text-center(scope='col') 1.3
+                                th.align-middle.text-center(scope='col') 2.1
+                                th.align-middle.text-center(scope='col') 2.2
+                                th.align-middle.text-center(scope='col') 2.3
+                                th.align-middle.text-center(scope='col') 3.1
+                                th.align-middle.text-center(scope='col') 3.2
+                                th.align-middle.text-center(scope='col') 3.3
+                                th.align-middle.text-center(scope='col') 3.4
+                                th.align-middle.text-center(scope='col') 3.5
+                                th.align-middle.text-center(scope='col') Zbir
+                        tbody
+                            tr
+                                th.align-middle(scope='row') PROSTOR I
+                                +list('pr1', 11)
+                            tr
+                                th.align-middle(scope='row') PROSTOR II
+                                +list('pr2', 11)
+                            tr
+                                th.align-middle(scope='row') PAKOVANJE
+                                +list('pak', 11)
+                            tr
+                                th.align-middle(scope='row') KORONA
+                                +list('kor', 11)
+                            tr
+                                th.align-middle(scope='row') PORED PROSTORA
+                                +list('pp', 11)
+                            tr
+                                th.align-middle(scope='row') TELEFONIJA
+                                +list('tel', 11)
+                .row.p-2
+                    table.table.table-responsive.table-bordered.table-hover.mt-4
+                        thead.thead-dark
+                            tr
+                                th.align-middle(scope='col') Ime i prezime
+                                th.align-middle.text-center(scope='col') h
+                                th.align-middle.text-center(scope='col') 4.1
+                                th.align-middle.text-center(scope='col') 4.2
+                                th.align-middle.text-center(scope='col') 4.3
+                                th.align-middle.text-center(scope='col') 5.1
+                                th.align-middle.text-center(scope='col') 5.2
+                                th.align-middle.text-center(scope='col') 5.3
+                                th.align-middle.text-center(scope='col') 6.1
+                                th.align-middle.text-center(scope='col') 6.2
+                                th.align-middle.text-center(scope='col') 6.3
+                                th.align-middle.text-center(scope='col') Zbir
+                                th.align-middle.text-center(scope='col') Suma
+                        tbody#workersList
+                            tr(data-next=2)
+                                th.align-middle.w-25(scope='row')
+                                    select.form-control.mb-1(name='radnik1_ime')
+                                        option(value='M. Vučković') M. Vučković
+                                        option(value='B. Marković') B. Marković
+                                        option(value='D. Aranđelović') D. Aranđelović
+                                        option(value='A. Dimitrijević') A. Dimitrijević
+                                    .d-flex.flex-row
+                                        input.form-control.col-4(type='number', placeholder='K' name='radnik1_k')
+                                        input.form-control.col-4(type='number', placeholder='R' name='radnik1_r')
+                                        input.form-control.col-4(type='number', placeholder='D' name='radnik1_d')
+                                +list('radnik', 11)
+                            tr.marker(data-next=3)
+                                th.align-middle.w-25(scope='row')
+                                    select.form-control.mb-1(name='radnik2_ime')
+                                        option(value='M. Vučković') M. Vučković
+                                        option(value='B. Marković') B. Marković
+                                        option(value='D. Aranđelović') D. Aranđelović
+                                        option(value='A. Dimitrijević') A. Dimitrijević
+                                        option(value='V. Nešković') V. Nešković
+                                        option(value='G. Jovanović') G. Jovanović
+                                        option(value='G. Pavlović') G. Pavlović
+                                        option(value='M. Lilić') M. Lilić
+                                        option(value='D. Đorđević') D. Đorđević
+                                        option(value='M. Nikolić') M. Nikolić
+                                        option(value='D. Rudović') D. Rudović
+                                    .d-flex.flex-row
+                                        input.form-control.col-4(type='number', placeholder='K' name='radnik2_k')
+                                        input.form-control.col-4(type='number', placeholder='R' name='radnik2_r')
+                                        input.form-control.col-4(type='number', placeholder='D' name='radnik2_d')
+                                td.align-middle
+                                    input.form-control(type='number', placeholder='/' name='radnik2_vreme')
+                                td.align-middle(colspan='11')
+                                    textarea.form-control(cols='30', rows='2', placeholder='napomena...' name='radnik2_nap')
+                .row.p-2.d-print-none
+                    button#addWorker.btn.btn-outline-success.mr-1.ml-auto Dodaj radnika
+                    button#removeWorker.btn.btn-outline-danger.mr-auto Ukloni radnika
+                .row.p-2
+                    table.table.table-bordered.table-hover.mt-4.smanji
+                        thead.thead-dark
+                            tr
+                                th.align-middle.w-25(scope='col') Status
+                                th.align-middle.text-center(scope='col') Broj&nbsp;RN
+                                th.align-middle.text-center.w-25(scope='col') Proizvod
+                                th.align-middle.text-center(scope='col') Dužina
+                                th.align-middle.text-center.w-25(scope='col') Napomena
+                        tbody#doradaList
+                            tr(data-next=2)
+                                th.align-middle.w-25(scope='row') Dorada
+                                td.align-middle
+                                    input.form-control(type='number', placeholder='/' name='dorada1_rn')
+                                td.align-middle
+                                    input.form-control(type='text', placeholder='/' name='dorada1_proizvod')
+                                td.align-middle
+                                    input.form-control(type='number', placeholder='/' name='dorada1_duz')
+                                td.align-middle
+                                    input.form-control(type='text', placeholder='/' name='dorada1_nap')
+                .row.p-2.d-print-none
+                    button#addItemDorada.btn.btn-outline-success.mr-1.ml-auto Dodaj stavku
+                    button#removeItemDorada.btn.btn-outline-danger.mr-auto Ukloni stavku
+                .row.p-2.smanji
+                    table.table.table-bordered.table-hover.mt-4.smanji
+                        thead.thead-dark.d-print-none
+                            tr
+                                th.align-middle.w-25(scope='col') Status
+                                th.align-middle.text-center(scope='col') Broj RN
+                                th.align-middle.text-center.w-50(scope='col') Proizvod
+                                th.align-middle.text-center(scope='col') Dužina
+                        tbody#probojList
+                            tr(data-next=2)
+                                th.align-middle.w-25(scope='row') Proboj
+                                td.align-middle
+                                    input.form-control(type='number', placeholder='/' name='proboj1_rn')
+                                td.align-middle.w-50
+                                    input.form-control.pedeset(type='text', placeholder='/' name='proboj1_proizvod')
+                                td.align-middle
+                                    input.form-control(type='number', placeholder='/' name='proboj1_duz')
+                .row.p-2.d-print-none
+                    button#addItemProboj.btn.btn-outline-success.mr-1.ml-auto Dodaj stavku
+                    button#removeItemProboj.btn.btn-outline-danger.mr-auto Ukloni stavku
+                .row.p-2
+                    p.col-6.text-left.lead QS 06.10.03.03/01
+                    p.col-6.text-right.lead Poslovođa smenske kontrole
+            .text-center.py-4.d-print-none
 
-            input(type='hidden', name='_csrf', value=csrfToken)
+                input(type='hidden', name='_csrf', value=csrfToken)
+                button.btn.btn-warning.btn-lg.m-0.mr-sm-4#savePDF(onclick="event.preventDefault(); window.print();" disabled=report ? false : true) Štampaj PDF
+                button(type='submit' disabled=report ? false : true).btn.btn-warning.btn-lg.m-0.mr-sm-4#save Sačuvaj
+                button(onclick='').btn.btn-warning.btn-lg Obriši polja
 
-            button.btn.btn-warning.btn-lg.m-0.mr-sm-4(onclick='window.print()') Sačuvaj PDF
-            input.btn.btn-warning.btn-lg(type='reset', value='Obriši sva polja')
 
 block footer
     include layouts/footer.pug
