@@ -1,3 +1,5 @@
+const {validationResult} = require('express-validator');
+
 const ShiftReport = require('../models/ShiftReport');
 
 const ErrorResponse = require('../utils/errorResponse');
@@ -24,11 +26,28 @@ exports.getShiftReportsHTML = (req, res, next) => {
 exports.createShiftReport = asyncHandler( async(req, res, next) => {
 
     req.body.createdByUser = req.user.id;
+
+    // cupanje errors iz express-validator
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty) {
+        return res.status(422).render("shiftReports", {
+            title: "Smenski izveštaj o radu",
+            path: "shift",
+            userName: req.session.name,
+            errorMessage: errors.array()[0].msg,
+            report: req.body            
+        })
+    }
+
     const report = await ShiftReport.create(req.body);
 
-    res.status(201).json({
-        success: true,
-        data: report
+    res.status(422).render("shiftReports", {
+        title: "Smenski izveštaj o radu",
+        path: "shift",
+        userName: req.session.name,
+        successMessage: 'Izveštaj je uspešno kreiran',
+        report: req.body            
     })
 });
 

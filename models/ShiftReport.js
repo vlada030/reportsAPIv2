@@ -460,16 +460,10 @@ const shiftReportsSchema = new mongoose.Schema({
         max: [100, 'Najveca vrednost je 100']
     },
 
-    radnik1_vreme: {
-        type: Number,
-        min: [0, 'Broj ne moze biti negativan'],
-        max: [12, 'Najveca vrednost je 12 sati']
-    },
-
     radnik1_0: {
         type: Number,
         min: [0, 'Broj ne moze biti negativan'],
-        max: [200, 'Najveca vrednost je 100']
+        max: [12, 'Najveca vrednost je 12 sati']
     },
 
     radnik1_1: {
@@ -523,10 +517,16 @@ const shiftReportsSchema = new mongoose.Schema({
     radnik1_9: {
         type: Number,
         min: [0, 'Broj ne moze biti negativan'],
-        max: [2000, 'Najveca vrednost je 100']
+        max: [200, 'Najveca vrednost je 100']
     },
 
     radnik1_10: {
+        type: Number,
+        min: [0, 'Broj ne moze biti negativan'],
+        max: [2000, 'Najveca vrednost je 100']
+    },
+
+    radnik1_11: {
         type: Number,
         min: [0, 'Broj ne moze biti negativan'],
         max: [2000, 'Najveca vrednost je 100']

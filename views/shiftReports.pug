@@ -33,8 +33,8 @@ block content
             p.close &times;
 
     section#report.py-2
-        form(action='#' method='POST')#shiftReportsForm
-            .container.bg-light
+        .container.bg-light
+            form(action='/api/v2/reports/shift' method='POST' novalidate)#shiftReportsForm
                 // prvi red
                 h2.text-center.py-5
                     | Smenski izveštaj o radu završne kontrole energetskih kablova
@@ -44,7 +44,7 @@ block content
                         span.lead.mr-3.mb-2 ZA DAN : 
                         span#date.lead.mr-3.mb-2
                         label.lead.mr-3.mb-2(for='shift') SMENA:
-                        select#shift.form-control.lead.mb-2.w-25
+                        select#shift.form-control.lead.mb-2.w-25(name='smena')
                             option(value='prva', selected) prva
                             option(value='druga') druga
                 .row.p-2
@@ -112,7 +112,7 @@ block content
                                         input.form-control.col-4(type='number', placeholder='K' name='radnik1_k')
                                         input.form-control.col-4(type='number', placeholder='R' name='radnik1_r')
                                         input.form-control.col-4(type='number', placeholder='D' name='radnik1_d')
-                                +list('radnik', 11)
+                                +list('radnik1', 11)
                             tr.marker(data-next=3)
                                 th.align-middle.w-25(scope='row')
                                     select.form-control.mb-1(name='radnik2_ime')
@@ -163,7 +163,7 @@ block content
                     button#removeItemDorada.btn.btn-outline-danger.mr-auto Ukloni stavku
                 .row.p-2.smanji
                     table.table.table-bordered.table-hover.mt-4.smanji
-                        thead.thead-dark.d-print-none
+                        thead.thead-dark
                             tr
                                 th.align-middle.w-25(scope='col') Status
                                 th.align-middle.text-center(scope='col') Broj RN
@@ -184,12 +184,14 @@ block content
                 .row.p-2
                     p.col-6.text-left.lead QS 06.10.03.03/01
                     p.col-6.text-right.lead Poslovođa smenske kontrole
-            .text-center.py-4.d-print-none
+                .text-center.py-4.d-print-none
 
-                input(type='hidden', name='_csrf', value=csrfToken)
-                button.btn.btn-warning.btn-lg.m-0.mr-sm-4#savePDF(onclick="event.preventDefault(); window.print();" disabled=report ? false : true) Štampaj PDF
-                button(type='submit' disabled=report ? false : true).btn.btn-warning.btn-lg.m-0.mr-sm-4#save Sačuvaj
-                button(onclick='').btn.btn-warning.btn-lg Obriši polja
+                    input(type='hidden', name='_csrf', value=csrfToken)
+                    //- button.btn.btn-warning.btn-lg.m-0.mr-sm-4#savePDF(onclick="event.preventDefault(); window.print();" disabled=report ? false : true) Štampaj PDF
+                    //- button(type='submit' disabled=report ? false : true).btn.btn-warning.btn-lg.m-0.mr-sm-4#save Sačuvaj
+                    button.btn.btn-warning.btn-lg.m-0.mr-sm-4#savePDF(onclick="event.preventDefault(); window.print();") Štampaj PDF
+                    button(type='submit').btn.btn-warning.btn-lg.m-0.mr-sm-4#save Sačuvaj
+                    button(onclick='').btn.btn-warning.btn-lg Obriši polja
 
 
 block footer

@@ -155,7 +155,7 @@ exports.getProductJSON = asyncHandler(async (req, res, next) => {
 exports.createProduct = asyncHandler( async (req, res, next) => {
     
     req.body.createdByUser = req.user.id;
-    console.log(JSON.stringify(req.body))
+    
     // cupanje errors iz express-validatora
     const errors = validationResult(req);
     console.log(errors)
