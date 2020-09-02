@@ -4,7 +4,7 @@ ul.navbar-nav.mr-auto#optionsNav
             a(href='/api/v2/reports/shift').btn.btn-secondary Kreiraj izveštaj
 
         li.nav-item.mr-2.mb-2.mb-lg-0
-            a(href='#').btn.btn-secondary Svi izveštaji
+            a(href='/api/v2/reports/shift/allReports').btn.btn-secondary Svi izveštaji
 
         li.nav-item.mr-2.mb-2.mb-lg-0
             if (report)
@@ -23,7 +23,7 @@ ul.navbar-nav.mr-auto#optionsNav
                             
                             .modal-footer
                                 button(type="button" data-dismiss="modal").btn.btn-secondary Otkaži
-                                button(data-reportID= 'unesi ID' type="button" data-dismiss="modal").btn.btn-warning#eraseReport Izbriši
+                                button(data-reportID=report._id data-report='shift' type="button" data-dismiss="modal").btn.btn-warning#eraseReport Izbriši
             else
                 button(type="button" data-toggle="modal" data-target="#myModal" disabled).btn.btn-secondary Obriši izveštaj 
 

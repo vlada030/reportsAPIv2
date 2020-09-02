@@ -4,12 +4,13 @@ mixin list1(a)
     -var arr = [1,2,3,4,5,6,7,8,9,10,11]
     each number in arr
         td.align-middle
-            input.form-control(name=a + '-' + number, type='number', placeholder='/')
+            input.form-control(name=a + '-' + number, type='number', placeholder='/' value= report ? report[string] : '')
 
 mixin list(a,b)
    -for (var x = 0; x <= b; x++)
     td.align-middle
-            input.form-control(name=a + '_' + x, type='number', placeholder='/')
+        -var string = a + '_' + x;
+        input.form-control(name=string, type='number', placeholder='/' value= report ? report[string] : '')
 
 block primaryNavBar
     include layouts/primaryNavBarAll.pug
@@ -45,8 +46,8 @@ block content
                         span#date.lead.mr-3.mb-2
                         label.lead.mr-3.mb-2(for='shift') SMENA:
                         select#shift.form-control.lead.mb-2.w-25(name='smena')
-                            option(value='prva', selected) prva
-                            option(value='druga') druga
+                            option(value='prva' selected= report&&report.smena==='prva' ? true : false ) prva
+                            option(value='druga' selected= report&&report.smena==='druga' ? true : false ) druga
                 .row.p-2
                     table.table.table-responsive.table-bordered.table-hover.mt-4
                         thead.thead-dark
@@ -113,28 +114,41 @@ block content
                                         input.form-control.col-4(type='number', placeholder='R' name='radnik1_r')
                                         input.form-control.col-4(type='number', placeholder='D' name='radnik1_d')
                                 +list('radnik1', 11)
-                            tr.marker(data-next=3)
-                                th.align-middle.w-25(scope='row')
-                                    select.form-control.mb-1(name='radnik2_ime')
-                                        option(value='M. Vučković') M. Vučković
-                                        option(value='B. Marković') B. Marković
-                                        option(value='D. Aranđelović') D. Aranđelović
-                                        option(value='A. Dimitrijević') A. Dimitrijević
-                                        option(value='V. Nešković') V. Nešković
-                                        option(value='G. Jovanović') G. Jovanović
-                                        option(value='G. Pavlović') G. Pavlović
-                                        option(value='M. Lilić') M. Lilić
-                                        option(value='D. Đorđević') D. Đorđević
-                                        option(value='M. Nikolić') M. Nikolić
-                                        option(value='D. Rudović') D. Rudović
-                                    .d-flex.flex-row
-                                        input.form-control.col-4(type='number', placeholder='K' name='radnik2_k')
-                                        input.form-control.col-4(type='number', placeholder='R' name='radnik2_r')
-                                        input.form-control.col-4(type='number', placeholder='D' name='radnik2_d')
-                                td.align-middle
-                                    input.form-control(type='number', placeholder='/' name='radnik2_vreme')
-                                td.align-middle(colspan='11')
-                                    textarea.form-control(cols='30', rows='2', placeholder='napomena...' name='radnik2_nap')
+                            if report
+                                -var n = 2;
+                                each val, key in report
+                                    -var radnik=`radnik${n}_ime`
+                                    -var k=`radnik${n}_k`
+                                    -var r=`radnik${n}_r`
+                                    -var d=`radnik${n}_d`
+                                    -var vreme=`radnik${n}_vreme`
+                                    -var napomena=`radnik${n}_nap`
+
+                                    if key.startsWith(radnik) && val
+                                        
+                                        tr.marker(data-next=3)
+                                            th.align-middle.w-25(scope='row')
+                                                select.form-control.mb-1(name=radnik)
+                                                    option(value='M. Vučković' selected= val==='M. Vučković' ? true : false) M. Vučković
+                                                    option(value='B. Marković' selected= val==='B. Marković' ? true : false) B. Marković
+                                                    option(value='D. Aranđelović' selected= val==='D. Aranđelović' ? true : false) D. Aranđelović
+                                                    option(value='A. Dimitrijević'  selected= val==='A. Dimitrijević' ? true : false) A. Dimitrijević
+                                                    option(value='V. Nešković' selected= val==='V. Nešković' ? true : false) V. Nešković
+                                                    option(value='G. Jovanović' selected= val==='G. Jovanović' ? true : false) G. Jovanović
+                                                    option(value='G. Pavlović' selected= val==='G. Pavlović' ? true : false) G. Pavlović
+                                                    option(value='M. Lilić' selected= val==='M. Lilić' ? true : false) M. Lilić
+                                                    option(value='D. Đorđević' selected= val==='D. Đorđević' ? true : false) D. Đorđević
+                                                    option(value='M. Nikolić' selected= val==='M. Nikolić' ? true : false) M. Nikolić
+                                                    option(value='D. Rudović' selected= val==='D. Rudović' ? true : false) D. Rudović
+                                                .d-flex.flex-row
+                                                    input.form-control.col-4(type='number', placeholder='K' name=k value=report[k] || '')
+                                                    input.form-control.col-4(type='number', placeholder='R' name=r value=report[r] || '')
+                                                    input.form-control.col-4(type='number', placeholder='D' name=d  value=report[d] || '')
+                                            td.align-middle
+                                                input.form-control(type='number', placeholder='/' name=vreme value=report[vreme] || '')
+                                            td.align-middle(colspan='11')
+                                                textarea.form-control(cols='30', rows='2', placeholder='napomena...' name=napomena value=report[napomena] || '')
+                                            -n++
                 .row.p-2.d-print-none
                     button#addWorker.btn.btn-outline-success.mr-1.ml-auto Dodaj radnika
                     button#removeWorker.btn.btn-outline-danger.mr-auto Ukloni radnika
@@ -151,13 +165,33 @@ block content
                             tr(data-next=2)
                                 th.align-middle.w-25(scope='row') Dorada
                                 td.align-middle
-                                    input.form-control(type='number', placeholder='/' name='dorada1_rn')
+                                    input.form-control(type='number', placeholder='/' name='dorada1_rn' value=report ? report.dorada1_rn : '')
                                 td.align-middle
-                                    input.form-control(type='text', placeholder='/' name='dorada1_proizvod')
+                                    input.form-control(type='text', placeholder='/' name='dorada1_proizvod'  value=report ? report.dorada1_proizvod : '')
                                 td.align-middle
-                                    input.form-control(type='number', placeholder='/' name='dorada1_duz')
+                                    input.form-control(type='number', placeholder='/' name='dorada1_duz'  value=report ? report.dorada1_duz : '')
                                 td.align-middle
-                                    input.form-control(type='text', placeholder='/' name='dorada1_nap')
+                                    input.form-control(type='text', placeholder='/' name='dorada1_nap'  value=report ? report.dorada1_nap : '')
+                            if report
+                                -var n = 2;
+                                each val, key in report
+                                    -var rn=`dorada${n}_rn`
+                                    -var proizvod=`dorada${n}_proizvod`
+                                    -var duz=`dorada${n}_duz`
+                                    -var nap=`dorada${n}_nap`
+                                    
+                                    if key.startsWith(rn) && val
+                                        tr(data-next= n + 1)
+                                            th.align-middle.w-25(scope='row') Dorada
+                                            td.align-middle
+                                                input.form-control(type='number', placeholder='/' name=rn value=report[rn] || '')
+                                            td.align-middle
+                                                input.form-control(type='text', placeholder='/' name=proizvod value=report[proizvod] || '')
+                                            td.align-middle
+                                                input.form-control(type='number', placeholder='/' name=duz value=report[duz] || '')
+                                            td.align-middle
+                                                input.form-control(type='text', placeholder='/' name=nap value=report[nap] || '')
+                                            -n++
                 .row.p-2.d-print-none
                     button#addItemDorada.btn.btn-outline-success.mr-1.ml-auto Dodaj stavku
                     button#removeItemDorada.btn.btn-outline-danger.mr-auto Ukloni stavku
@@ -173,11 +207,30 @@ block content
                             tr(data-next=2)
                                 th.align-middle.w-25(scope='row') Proboj
                                 td.align-middle
-                                    input.form-control(type='number', placeholder='/' name='proboj1_rn')
+                                    input.form-control(type='number', placeholder='/' name='proboj1_rn' value=report ? report.proboj1_rn : '')
                                 td.align-middle.w-50
-                                    input.form-control.pedeset(type='text', placeholder='/' name='proboj1_proizvod')
+                                    input.form-control.pedeset(type='text', placeholder='/' name='proboj1_proizvod' value=report ? report.proboj1_proizvod : '')
                                 td.align-middle
-                                    input.form-control(type='number', placeholder='/' name='proboj1_duz')
+                                    input.form-control(type='number', placeholder='/' name='proboj1_duz' value=report ? report.proboj1_duz : '')
+
+                            if report   
+                                -var n = 2;
+                                each val, key in report
+                                    -var rn=`proboj${n}_rn`
+                                    -var proizvod=`proboj${n}_proizvod`
+                                    -var duz=`dorada${n}_duz`
+                                    
+                                    if key.startsWith(rn) && val
+                                        tr(data-next= n + 1)
+                                            th.align-middle.w-25(scope='row') Proboj
+                                            td.align-middle
+                                                input.form-control(type='number', placeholder='/' name=rn value=report[rn] || '')
+                                            td.align-middle.w-50
+                                                input.form-control.pedeset(type='text', placeholder='/' name='proboj1_proizvod' value=report[proizvod] || '')
+                                            td.align-middle
+                                                input.form-control(type='number', placeholder='/' name='proboj1_duz' value=report[duz] || '')
+                                            -n++
+
                 .row.p-2.d-print-none
                     button#addItemProboj.btn.btn-outline-success.mr-1.ml-auto Dodaj stavku
                     button#removeItemProboj.btn.btn-outline-danger.mr-auto Ukloni stavku

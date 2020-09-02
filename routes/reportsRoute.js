@@ -6,7 +6,7 @@ const {getDomReportsHTML, getAllDomReportsHTML, createDomReport, getAllDomReport
 
 const { getExpReportsHTML, createExpReport, getAllExpReports, getAllExpReportsHTML, getExpReport, updateExpReport, deleteExpReport } = require('../controllers/expReportsController');
 
-const {getShiftReportsHTML, createShiftReport, getAllShiftReports, getShiftReport, updateShiftReport, deleteShiftReport} = require('../controllers/shiftReportsController');
+const {getShiftReportsHTML, createShiftReport, getAllShiftReports, getAllShiftReportsHTML, getShiftReport, updateShiftReport, deleteShiftReport} = require('../controllers/shiftReportsController');
 
 const {protect} = require('../middleware/auth');
 const advancedResults = require('../middleware/advancedResults');
@@ -118,6 +118,7 @@ router.route('/exp/:id').get(getExpReport).delete(protect, deleteExpReport).put(
 
 router.route('/shift').get(getShiftReportsHTML).post(protect, createShiftReport);
 router.route('/shift/all').get(protect, advancedResults(ShiftReport, {path: 'createdByUser', select: 'name'}), getAllShiftReports);
+router.route('/shift/allReports').get(getAllShiftReportsHTML);
 router.route('/shift/:id').get(protect, getShiftReport).put(protect, updateShiftReport).delete(protect, deleteShiftReport);
 
 module.exports = router;

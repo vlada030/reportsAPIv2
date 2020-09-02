@@ -8415,7 +8415,7 @@ var getProduct = /*#__PURE__*/function () {
 exports.getProduct = getProduct;
 
 var deleteReport = /*#__PURE__*/function () {
-  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(value) {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(value, kindofReport) {
     var url, result;
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
@@ -8424,6 +8424,8 @@ var deleteReport = /*#__PURE__*/function () {
             // ako je value MIS broj duzina je 7, druga vrednost je ObjectId koja je razlicita od 7
             if (value.length === 7) {
               url = "".concat(baseURL, "/api/v2/reports/dom/").concat(value);
+            } else if (kindofReport === "shift") {
+              url = "".concat(baseURL, "/api/v2/reports/shift/").concat(value);
             } else {
               url = "".concat(baseURL, "/api/v2/reports/exp/").concat(value);
             }
@@ -8446,7 +8448,7 @@ var deleteReport = /*#__PURE__*/function () {
     }, _callee2);
   }));
 
-  return function deleteReport(_x2) {
+  return function deleteReport(_x2, _x3) {
     return _ref2.apply(this, arguments);
   };
 }();
@@ -8479,7 +8481,7 @@ var updateProduct = /*#__PURE__*/function () {
     }, _callee3);
   }));
 
-  return function updateProduct(_x3, _x4) {
+  return function updateProduct(_x4, _x5) {
     return _ref3.apply(this, arguments);
   };
 }();
@@ -9236,46 +9238,50 @@ window.addEventListener('click', function (e) {
 
 window.addEventListener('click', /*#__PURE__*/function () {
   var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(e) {
-    var eraseID;
+    var eraseID, reportId, kindOfReport;
     return regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
             if (!e.target.matches('#eraseReport')) {
-              _context3.next = 13;
+              _context3.next = 15;
               break;
             }
 
             _context3.prev = 1;
             eraseID = e.target;
-            console.log(eraseID.dataset.reportid);
-            _context3.next = 6;
-            return (0, _ajaxRequests.deleteReport)(eraseID.dataset.reportid);
+            reportId = eraseID.dataset.reportid;
+            kindOfReport = eraseID.dataset.report || '';
+            console.log(reportId, kindOfReport);
+            _context3.next = 8;
+            return (0, _ajaxRequests.deleteReport)(reportId, kindOfReport);
 
-          case 6:
+          case 8:
             (0, _alertMessage.showMessage)('Izveštaj je uspešno obrisan.', 'success');
             window.setTimeout(function () {
-              // MIS broj ima 7 cifre za dom report, exp je ObjectId
-              if (eraseID.dataset.reportid === 7) {
+              // MIS broj ima 7 cifre za dom report, exp je ObjectId, shift isto ima ObjectId
+              if (reportId.length === 7) {
                 location.assign('/api/v2/reports/dom');
+              } else if (kindOfReport === 'shift') {
+                location.assign('/api/v2/reports/shift');
               } else {
                 location.assign('/api/v2/reports/exp');
               }
             }, 1500);
-            _context3.next = 13;
+            _context3.next = 15;
             break;
 
-          case 10:
-            _context3.prev = 10;
+          case 12:
+            _context3.prev = 12;
             _context3.t0 = _context3["catch"](1);
             (0, _errorHandler.default)(_context3.t0);
 
-          case 13:
+          case 15:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[1, 10]]);
+    }, _callee3, null, [[1, 12]]);
   }));
 
   return function (_x3) {
@@ -9472,7 +9478,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50438" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51413" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

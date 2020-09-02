@@ -103,15 +103,21 @@ window.addEventListener('click',async (e) => {
     if (e.target.matches('#eraseReport')) {
         try {
             const eraseID = e.target;
-            console.log(eraseID.dataset.reportid);
-            await deleteReport(eraseID.dataset.reportid);
+            const reportId = eraseID.dataset.reportid;
+            const kindOfReport = eraseID.dataset.report || '';
+            console.log(reportId, kindOfReport);
+
+            await deleteReport(reportId, kindOfReport);
             showMessage('Izveštaj je uspešno obrisan.', 'success');
+
             window.setTimeout(() => {
-                // MIS broj ima 7 cifre za dom report, exp je ObjectId
-                if (eraseID.dataset.reportid === 7) {
+                // MIS broj ima 7 cifre za dom report, exp je ObjectId, shift isto ima ObjectId
+                if (reportId.length === 7) {
                     location.assign('/api/v2/reports/dom');            
+                } else if (kindOfReport==='shift') {
+                    location.assign('/api/v2/reports/shift');
                 } else {
-                    location.assign('/api/v2/reports/exp');
+                    location.assign('/api/v2/reports/exp');                    
                 }
             }, 1500)
             

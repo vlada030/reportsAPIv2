@@ -42,7 +42,7 @@ exports.createShiftReport = asyncHandler( async(req, res, next) => {
 
     const report = await ShiftReport.create(req.body);
 
-    res.status(422).render("shiftReports", {
+    res.status(201).render("shiftReports", {
         title: "Smenski izveštaj o radu",
         path: "shift",
         userName: req.session.name,
@@ -62,16 +62,44 @@ exports.getShiftReport = asyncHandler( async(req, res, next) => {
         path: 'createdByUser',
         select: 'name'
     });
+
+    console.log(report)
  
     if (!report) {
-        return next(new ErrorResponse(`Izabrani izvestaj ne postoji`, 400));
+        return res.status(404).render("shiftReports", {
+            title: "Smenski izveštaj o radu",
+            path: "shift",
+            userName: req.session.name,
+            errorMessage: 'Traženi izveštaj ne postoji ili je izbrisan.',
+            report            
+        });
     }
  
-    res.status(200).json({
-        success: true,
-        data: report
+    res.status(200).render("shiftReports", {
+        title: "Smenski izveštaj o radu",
+        path: "shift",
+        userName: req.session.name,
+        report            
     });
  });
+
+// @desc   Shift Reports - all
+// @route  GET /api/v2/reports/shift/allReports
+// @access Private
+ exports.getAllShiftReportsHTML = asyncHandler(async(req, res) => {
+    const reports = await ShiftReport.find().populate({
+        path: 'createdByUser',
+        select: 'name'
+    });
+    //console.log(reports);
+
+    res.status(200).render("shiftReportsAll", {
+        title: "Smenski izveštaj o radu",
+        path: "shift",
+        userName: req.session.name,
+        reports
+    });
+});
 
 // @desc   Get All Reports
 // @route  GET /api/v2/reports/shift/all

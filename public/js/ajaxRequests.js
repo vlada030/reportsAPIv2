@@ -17,11 +17,13 @@ export const getProduct = async ( value ) => {
     return result;     
 }
 
-export const deleteReport = async ( value ) => {
+export const deleteReport = async ( value, kindofReport) => {
     let url;
     // ako je value MIS broj duzina je 7, druga vrednost je ObjectId koja je razlicita od 7
     if (value.length === 7) {
         url = `${baseURL}/api/v2/reports/dom/${value}`;
+    } else if (kindofReport === "shift") {
+        url = `${baseURL}/api/v2/reports/shift/${value}`;
     } else {
         url = `${baseURL}/api/v2/reports/exp/${value}`;
     }

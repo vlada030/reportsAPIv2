@@ -1,0 +1,37 @@
+extends layouts/main-layout.pug
+
+mixin list1(a)
+    -var arr = [1,2,3,4,5,6,7,8,9,10,11]
+    each number in arr
+        td.align-middle
+            input.form-control(name=a + '-' + number, type='number', placeholder='/')
+
+mixin list(a,b)
+   -for (var x = 0; x <= b; x++)
+    td.align-middle
+        -var value = a + '_' + x;
+        input.form-control(name=value, type='number', placeholder='/' value= report ? report.value : '/')
+
+block primaryNavBar
+    include layouts/primaryNavBarAll.pug
+
+block secondaryNavBar
+    include layouts/secondaryNavBar.pug 
+
+        block secondaryMenu
+            include layouts/secondaryMenuShift.pug
+    
+block content
+    .container.my-3.w-100
+        .row.w-100
+            .list-group.w-100
+                -var No = 1
+                each report in reports
+                    a(href=`../shift/${report._id}`).list-group-item.list-group-item-action.d-flex.justify-content-between
+                        span.w-25.px-2=`${No}.`
+                        -var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                        span.w-25.px-2=`Kreiran: ${report.createdAt.toLocaleString('sr-sr', options)}`
+                        span.w-25.px-2=`Smena: ${report.smena}`
+                        span.w-25.px-2=`Kontrolor: ${report.createdByUser.name}`
+                        
+                    - No++ 
