@@ -130,7 +130,7 @@ router
                         );
                     }
                 } else if (key.endsWith('nap') || key.endsWith('proizvod')) {
-                    if (req.body[key].length > 2) {
+                    if (req.body[key].length > 200) {
                         throw new Error(
                             "Polja napomene i naziv proizvoda mogu da sadrže najviše 200 karaktera"
                         );

@@ -771,11 +771,12 @@ const shiftReportsSchema = new mongoose.Schema({
     dorada1_proizvod: {
         type: String,
         trim: true,
-        maxlength: [100, 'Radni nalog sadrzi najvise 8 cifre']
+        maxlength: [100, 'Naziv proizvoda sadrzi najvise 100 karaktera']
     },
 
     dorada1_duz: {
-        type: Number
+        type: Number,
+        maxlength: [5, 'Pojedinacna duzina proizvoda sadrzi najvise 5 cifre']
     },
 
     dorada1_nap: {
@@ -792,11 +793,12 @@ const shiftReportsSchema = new mongoose.Schema({
     dorada2_proizvod: {
         type: String,
         trim: true,
-        maxlength: [100, 'Radni nalog sadrzi najvise 8 cifre']
+        maxlength: [100, 'Naziv proizvoda sadrzi najvise 100 karaktera']
     },
 
     dorada2_duz: {
-        type: Number
+        type: Number,
+        maxlength: [5, 'Pojedinacna duzina proizvoda sadrzi najvise 5 cifre']
     },
 
     dorada2_nap: {
@@ -813,11 +815,12 @@ const shiftReportsSchema = new mongoose.Schema({
     dorada3_proizvod: {
         type: String,
         trim: true,
-        maxlength: [100, 'Radni nalog sadrzi najvise 8 cifre']
+        maxlength: [100, 'Naziv proizvoda sadrzi najvise 100 karaktera']
     },
 
     dorada3_duz: {
-        type: Number
+        type: Number,
+        maxlength: [5, 'Pojedinacna duzina proizvoda sadrzi najvise 5 cifre']
     },
 
     dorada3_nap: {
@@ -834,11 +837,12 @@ const shiftReportsSchema = new mongoose.Schema({
     dorada4_proizvod: {
         type: String,
         trim: true,
-        maxlength: [100, 'Radni nalog sadrzi najvise 8 cifre']
+        maxlength: [100, 'Naziv proizvoda sadrzi najvise 100 karaktera']
     },
 
     dorada4_duz: {
-        type: Number
+        type: Number,
+        maxlength: [5, 'Pojedinacna duzina proizvoda sadrzi najvise 5 cifre']
     },
 
     dorada4_nap: {
@@ -855,11 +859,12 @@ const shiftReportsSchema = new mongoose.Schema({
     dorada5_proizvod: {
         type: String,
         trim: true,
-        maxlength: [100, 'Radni nalog sadrzi najvise 8 cifre']
+        maxlength: [100, 'Naziv proizvoda sadrzi najvise 100 karaktera']
     },
 
     dorada5_duz: {
-        type: Number
+        type: Number,
+        maxlength: [5, 'Pojedinacna duzina proizvoda sadrzi najvise 5 cifre']
     },
 
     dorada5_nap: {
@@ -876,11 +881,12 @@ const shiftReportsSchema = new mongoose.Schema({
     dorada6_proizvod: {
         type: String,
         trim: true,
-        maxlength: [100, 'Radni nalog sadrzi najvise 8 cifre']
+        maxlength: [100, 'Naziv proizvoda sadrzi najvise 100 karaktera']
     },
 
     dorada6_duz: {
-        type: Number
+        type: Number,
+        maxlength: [5, 'Pojedinacna duzina proizvoda sadrzi najvise 5 cifre']
     },
 
     dorada6_nap: {
@@ -897,11 +903,12 @@ const shiftReportsSchema = new mongoose.Schema({
     dorada7_proizvod: {
         type: String,
         trim: true,
-        maxlength: [100, 'Radni nalog sadrzi najvise 8 cifre']
+        maxlength: [100, 'Naziv proizvoda sadrzi najvise 100 karaktera']
     },
 
     dorada7_duz: {
-        type: Number
+        type: Number,
+        maxlength: [5, 'Pojedinacna duzina proizvoda sadrzi najvise 5 cifre']
     },
 
     dorada7_nap: {
@@ -918,11 +925,12 @@ const shiftReportsSchema = new mongoose.Schema({
     dorada8_proizvod: {
         type: String,
         trim: true,
-        maxlength: [100, 'Radni nalog sadrzi najvise 8 cifre']
+        maxlength: [100, 'Naziv proizvoda sadrzi najvise 100 karaktera']
     },
 
     dorada8_duz: {
-        type: Number
+        type: Number,
+        maxlength: [5, 'Pojedinacna duzina proizvoda sadrzi najvise 5 cifre']
     },
 
     dorada8_nap: {
@@ -939,11 +947,12 @@ const shiftReportsSchema = new mongoose.Schema({
     dorada9_proizvod: {
         type: String,
         trim: true,
-        maxlength: [100, 'Radni nalog sadrzi najvise 8 cifre']
+        maxlength: [100, 'Naziv proizvoda sadrzi najvise 100 karaktera']
     },
 
     dorada9_duz: {
-        type: Number
+        type: Number,
+        maxlength: [5, 'Pojedinacna duzina proizvoda sadrzi najvise 5 cifre']
     },
 
     dorada9_nap: {
@@ -960,11 +969,12 @@ const shiftReportsSchema = new mongoose.Schema({
     dorada10_proizvod: {
         type: String,
         trim: true,
-        maxlength: [100, 'Radni nalog sadrzi najvise 8 cifre']
+        maxlength: [100, 'Naziv proizvoda sadrzi najvise 100 karaktera']
     },
 
     dorada10_duz: {
-        type: Number
+        type: Number,
+        maxlength: [5, 'Pojedinacna duzina proizvoda sadrzi najvise 5 cifre']
     },
 
     dorada10_nap: {
@@ -981,11 +991,18 @@ const shiftReportsSchema = new mongoose.Schema({
     proboj1_proizvod: {
         type: String,
         trim: true,
-        maxlength: [100, 'Radni nalog sadrzi najvise 8 cifre']
+        maxlength: [100, 'Naziv proizvoda sadrzi najvise 100 karaktera']
     },
 
-    proboj2_duz: {
-        type: Number
+    proboj1_duz: {
+        type: Number,
+        maxlength: [5, 'Pojedinacna duzina proizvoda sadrzi najvise 5 cifre']       
+    },
+
+    proboj1_nap: {
+        type: String,
+        trim: true,
+        maxlength: [250, 'Polje napomena sadrzi najvise 250 karaktera']
     },
 
     proboj2_rn: {
@@ -996,15 +1013,18 @@ const shiftReportsSchema = new mongoose.Schema({
     proboj2_proizvod: {
         type: String,
         trim: true,
-        maxlength: [100, 'Radni nalog sadrzi najvise 8 cifre']
+        maxlength: [100, 'Naziv proizvoda sadrzi najvise 100 karaktera']
     },
 
     proboj2_duz: {
-        type: Number
+        type: Number,
+        maxlength: [5, 'Pojedinacna duzina proizvoda sadrzi najvise 5 cifre']       
     },
 
-    proboj3_duz: {
-        type: Number
+    proboj2_nap: {
+        type: String,
+        trim: true,
+        maxlength: [250, 'Polje napomena sadrzi najvise 250 karaktera']
     },
 
     proboj3_rn: {
@@ -1015,15 +1035,18 @@ const shiftReportsSchema = new mongoose.Schema({
     proboj3_proizvod: {
         type: String,
         trim: true,
-        maxlength: [100, 'Radni nalog sadrzi najvise 8 cifre']
+        maxlength: [100, 'Naziv proizvoda sadrzi najvise 100 karaktera']
     },
 
     proboj3_duz: {
-        type: Number
+        type: Number,
+        maxlength: [5, 'Pojedinacna duzina proizvoda sadrzi najvise 5 cifre']       
     },
 
-    proboj4_duz: {
-        type: Number
+    proboj3_nap: {
+        type: String,
+        trim: true,
+        maxlength: [250, 'Polje napomena sadrzi najvise 250 karaktera']
     },
 
     proboj4_rn: {
@@ -1034,15 +1057,18 @@ const shiftReportsSchema = new mongoose.Schema({
     proboj4_proizvod: {
         type: String,
         trim: true,
-        maxlength: [100, 'Radni nalog sadrzi najvise 8 cifre']
+        maxlength: [100, 'Naziv proizvoda sadrzi najvise 100 karaktera']
     },
 
     proboj4_duz: {
-        type: Number
+        type: Number,
+        maxlength: [5, 'Pojedinacna duzina proizvoda sadrzi najvise 5 cifre']       
     },
 
-    proboj5_duz: {
-        type: Number
+    proboj4_nap: {
+        type: String,
+        trim: true,
+        maxlength: [250, 'Polje napomena sadrzi najvise 250 karaktera']
     },
 
     proboj5_rn: {
@@ -1053,15 +1079,18 @@ const shiftReportsSchema = new mongoose.Schema({
     proboj5_proizvod: {
         type: String,
         trim: true,
-        maxlength: [100, 'Radni nalog sadrzi najvise 8 cifre']
+        maxlength: [100, 'Naziv proizvoda sadrzi najvise 100 karaktera']
     },
 
     proboj5_duz: {
-        type: Number
+        type: Number,
+        maxlength: [5, 'Pojedinacna duzina proizvoda sadrzi najvise 5 cifre']       
     },
 
-    proboj6_duz: {
-        type: Number
+    proboj5_nap: {
+        type: String,
+        trim: true,
+        maxlength: [250, 'Polje napomena sadrzi najvise 250 karaktera']
     },
 
     proboj6_rn: {
@@ -1072,11 +1101,18 @@ const shiftReportsSchema = new mongoose.Schema({
     proboj6_proizvod: {
         type: String,
         trim: true,
-        maxlength: [100, 'Radni nalog sadrzi najvise 8 cifre']
+        maxlength: [100, 'Naziv proizvoda sadrzi najvise 100 karaktera']
     },
 
     proboj6_duz: {
-        type: Number
+        type: Number,
+        maxlength: [5, 'Pojedinacna duzina proizvoda sadrzi najvise 5 cifre']       
+    },
+
+    proboj6_nap: {
+        type: String,
+        trim: true,
+        maxlength: [250, 'Polje napomena sadrzi najvise 250 karaktera']
     },
 
     createdByUser: {
