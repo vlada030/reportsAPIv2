@@ -8788,7 +8788,7 @@ var removeItemDorada = function removeItemDorada() {
 exports.removeItemDorada = removeItemDorada;
 
 var addItemProboj = function addItemProboj(n) {
-  var elem = "<tr class=\"marker\" data-next=".concat(+n + 1, "><th class=\"align-middle w-25\" scope=\"row\">Proboj</th><td class=\"align-middle\"><input class=\"form-control\" type=\"number\" placeholder=\"/\" name=\"proboj").concat(n, "_rn\"></td><td class=\"align-middle w-50\"><input class=\"form-control pedeset\" type=\"text\" placeholder=\"/\" name=\"proboj").concat(n, "_proizvod\"></td><td class=\"align-middle\"><input class=\"form-control\" type=\"number\" placeholder=\"/\" name=\"proboj").concat(n, "_duz\"></td></tr>");
+  var elem = "<tr class=\"marker\" data-next=".concat(+n + 1, "><th class=\"align-middle w-25\" scope=\"row\">Proboj</th><td class=\"align-middle\"><input class=\"form-control\" type=\"number\" placeholder=\"/\" name=\"proboj").concat(n, "_rn\"></td><td class=\"align-middle\"><input class=\"form-control pedeset\" type=\"text\" placeholder=\"/\" name=\"proboj").concat(n, "_proizvod\"></td><td class=\"align-middle\"><input class=\"form-control\" type=\"number\" placeholder=\"/\" name=\"proboj").concat(n, "_duz\"></td><td class=\"align-middle\"><input class=\"form-control\" type=\"text\" placeholder=\"/\" name=\"proboj").concat(n, "_nap\"></td></tr>");
   elements.probojList.insertAdjacentHTML('beforeend', elem);
 }; // obriši stavku Proboj u shift Reports
 
@@ -9478,7 +9478,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51413" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49289" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

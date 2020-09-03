@@ -200,7 +200,7 @@ export const removeItemDorada = () => {
 
 // dodaj stavku Proboj u shift Reports
 export const addItemProboj = (n) => {
-    const elem = `<tr class="marker" data-next=${+n + 1}><th class="align-middle w-25" scope="row">Proboj</th><td class="align-middle"><input class="form-control" type="number" placeholder="/" name="proboj${n}_rn"></td><td class="align-middle w-50"><input class="form-control pedeset" type="text" placeholder="/" name="proboj${n}_proizvod"></td><td class="align-middle"><input class="form-control" type="number" placeholder="/" name="proboj${n}_duz"></td></tr>`;
+    const elem = `<tr class="marker" data-next=${+n + 1}><th class="align-middle w-25" scope="row">Proboj</th><td class="align-middle"><input class="form-control" type="number" placeholder="/" name="proboj${n}_rn"></td><td class="align-middle"><input class="form-control pedeset" type="text" placeholder="/" name="proboj${n}_proizvod"></td><td class="align-middle"><input class="form-control" type="number" placeholder="/" name="proboj${n}_duz"></td><td class="align-middle"><input class="form-control" type="text" placeholder="/" name="proboj${n}_nap"></td></tr>`;
 
     elements.probojList.insertAdjacentHTML('beforeend', elem);
 };

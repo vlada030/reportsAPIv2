@@ -116,7 +116,49 @@ router.route('/exp/all').get(protect,advancedResults(ExpReport, {path: 'createdB
 router.route('/exp/allReports').get(getAllExpReportsHTML);
 router.route('/exp/:id').get(getExpReport).delete(protect, deleteExpReport).put(protect, updateExpReport);
 
-router.route('/shift').get(getShiftReportsHTML).post(protect, createShiftReport);
+router
+    .route("/shift")
+    .get(getShiftReportsHTML)
+    .post(
+        protect,
+        body().custom((value, { req }) => {
+            for (const key in req.body) {
+                if (key.startsWith("radnik1_0") || key.endsWith("vreme")) {
+                    if (!(req.body[key] >= 1 && req.body[key] <= 12)) {
+                        throw new Error(
+                            "Vreme radnika provedeno na radu je između 1 - 12 sati"
+                        );
+                    }
+                } else if (key.endsWith('nap') || key.endsWith('proizvod')) {
+                    if (req.body[key].length > 2) {
+                        throw new Error(
+                            "Polja napomene i naziv proizvoda mogu da sadrže najviše 200 karaktera"
+                        );
+                    }
+                } else if (key.endsWith('duz') || key.endsWith('rn')) {
+                    if (req.body[key].toString().length > 8) {
+                        throw new Error(
+                            "Polja radni nalog i dužina proizvoda mogu da sadrže najviše 8 cifre"
+                        );
+                    }
+                } else if (
+                    key.startsWith("pr") ||
+                    key.startsWith("kor") ||
+                    key.startsWith("pp") ||
+                    key.startsWith("tel") ||
+                    key.startsWith("pak") ||
+                    key.startsWith("radnik1")
+                ) {
+                    if (req.body[key] > 250 || req.body[key] < 0) {
+                        throw new Error(
+                            "Unešeni brojevi ne smeju biti negativni i veći od 250"
+                        );
+                    }
+                }  
+        }
+            return true;
+        }), createShiftReport
+    );
 router.route('/shift/all').get(protect, advancedResults(ShiftReport, {path: 'createdByUser', select: 'name'}), getAllShiftReports);
 router.route('/shift/allReports').get(getAllShiftReportsHTML);
 router.route('/shift/:id').get(protect, getShiftReport).put(protect, updateShiftReport).delete(protect, deleteShiftReport);

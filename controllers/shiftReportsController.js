@@ -29,8 +29,9 @@ exports.createShiftReport = asyncHandler( async(req, res, next) => {
 
     // cupanje errors iz express-validator
     const errors = validationResult(req);
+    console.log(errors);
 
-    if (!errors.isEmpty) {
+    if (!errors.isEmpty()) {
         return res.status(422).render("shiftReports", {
             title: "Smenski izveštaj o radu",
             path: "shift",

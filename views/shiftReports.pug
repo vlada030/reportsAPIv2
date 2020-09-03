@@ -199,42 +199,48 @@ block content
                     table.table.table-bordered.table-hover.mt-4.smanji
                         thead.thead-dark
                             tr
-                                th.align-middle.w-25(scope='col') Status
-                                th.align-middle.text-center(scope='col') Broj RN
-                                th.align-middle.text-center.w-50(scope='col') Proizvod
-                                th.align-middle.text-center(scope='col') Dužina
+                                //- th.align-middle.w-25(scope='col') Status
+                                //- th.align-middle.text-center(scope='col') Broj RN
+                                //- th.align-middle.text-center.w-25(scope='col') Proizvod
+                                //- th.align-middle.text-center(scope='col') Dužina
+                                //- th.align-middle.text-center.w-25(scope='col') Napomena
                         tbody#probojList
                             tr(data-next=2)
                                 th.align-middle.w-25(scope='row') Proboj
                                 td.align-middle
                                     input.form-control(type='number', placeholder='/' name='proboj1_rn' value=report ? report.proboj1_rn : '')
-                                td.align-middle.w-50
-                                    input.form-control.pedeset(type='text', placeholder='/' name='proboj1_proizvod' value=report ? report.proboj1_proizvod : '')
+                                td.align-middle.w-25
+                                    input.form-control(type='text', placeholder='/' name='proboj1_proizvod' value=report ? report.proboj1_proizvod : '')
                                 td.align-middle
                                     input.form-control(type='number', placeholder='/' name='proboj1_duz' value=report ? report.proboj1_duz : '')
+                                td.align-middle.w-25
+                                    input.form-control(type='text', placeholder='/' name='proboj1_nap'  value=report ? report.proboj1_nap : '')
 
                             if report   
                                 -var n = 2;
                                 each val, key in report
                                     -var rn=`proboj${n}_rn`
                                     -var proizvod=`proboj${n}_proizvod`
-                                    -var duz=`dorada${n}_duz`
+                                    -var duz=`proboj${n}_duz`
+                                    -var nap=`proboj${n}_nap`
                                     
                                     if key.startsWith(rn) && val
                                         tr(data-next= n + 1)
                                             th.align-middle.w-25(scope='row') Proboj
                                             td.align-middle
                                                 input.form-control(type='number', placeholder='/' name=rn value=report[rn] || '')
-                                            td.align-middle.w-50
-                                                input.form-control.pedeset(type='text', placeholder='/' name='proboj1_proizvod' value=report[proizvod] || '')
                                             td.align-middle
-                                                input.form-control(type='number', placeholder='/' name='proboj1_duz' value=report[duz] || '')
+                                                input.form-control(type='text', placeholder='/' name=proizvod value=report[proizvod] || '')
+                                            td.align-middle
+                                                input.form-control(type='number', placeholder='/' name=duz value=report[duz] || '')
+                                            td.align-middle
+                                                input.form-control(type='number', placeholder='/' name=nap value=report[nap] || '')
                                             -n++
 
                 .row.p-2.d-print-none
                     button#addItemProboj.btn.btn-outline-success.mr-1.ml-auto Dodaj stavku
                     button#removeItemProboj.btn.btn-outline-danger.mr-auto Ukloni stavku
-                .row.p-2
+                .row.p-2.mt-4
                     p.col-6.text-left.lead QS 06.10.03.03/01
                     p.col-6.text-right.lead Poslovođa smenske kontrole
                 .text-center.py-4.d-print-none
