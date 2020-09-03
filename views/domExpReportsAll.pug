@@ -15,7 +15,7 @@ block content
                 -var No = 1
                 if path === 'dom'
                     each report in reports
-                        a(href=`../dom/${report.MISBroj}`).list-group-item.list-group-item-action.d-flex.justify-content-between
+                        a(href=`../dom?id=${report.MISBroj}`).list-group-item.list-group-item-action.d-flex.justify-content-between
                             span.w-25.px-2=`${No}.`
                             span.w-25.px-2=`MIS Broj: ${report.MISBroj}`
                             span.w-25.px-2=`Nalog: ${report.radniNalog}` 
@@ -24,7 +24,7 @@ block content
                         - No++   
                 else 
                     each report in reports
-                        a(href=`../exp/${report._id}`).list-group-item.list-group-item-action.d-flex.justify-content-between
+                        a(href=`../exp?id=${report._id}`).list-group-item.list-group-item-action.d-flex.justify-content-between
                             span.w-25.px-2=`${No}.`
                             span.w-25.px-2=report.proizvod.proizvod
                             span.w-25.px-2=`Ukupna duzina: ${report.ukupnaDuz}m`

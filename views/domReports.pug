@@ -13,10 +13,10 @@ block secondaryNavBar
             ul.navbar-nav.ml-auto
                 li.nav-item.mr-2
                     if lang === 'eng'
-                        a(href='/api/v2/reports/dom?lang=ser').btn.btn-outline-info Promeni jezik 
+                        a(href=`/api/v2/reports/dom?id=${report ? report.MISBroj : ''}&lang=ser`).btn.btn-outline-info Promeni jezik 
                             img(src='/img/sr.png', alt='sr').icon
                     else
-                        a(href='/api/v2/reports/dom?lang=eng').btn.btn-outline-info Promeni jezik 
+                        a(href=`/api/v2/reports/dom?id=${report ? report.MISBroj : ''}&lang=eng`).btn.btn-outline-info Promeni jezik 
                             img(src='/img/en.png', alt='en').icon 
 
 block content
@@ -194,7 +194,7 @@ block content
 
             include layouts/testsTable.pug
 
-            .row.mt-4.sign
+            .row.sign
                 .col-4.ml-auto
                     .row
                         include layouts/documentSign.pug

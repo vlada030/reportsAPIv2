@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+
 const ExpReport = require('../models/ExpReport');
 const Product = require('../models/Product');
 
@@ -6,20 +8,69 @@ const ErrorResponse = require('../utils/errorResponse');
 
 const {validationResult} = require('express-validator');
 
-// @desc   Get Export Reports HTML
-// @route  GET /api/v2/reports/exp
+// @desc   Get Report
+// @route  GET /api/v2/reports/exp?id=id&lang=lang
 // @access Private
 
-exports.getExpReportsHTML = (req, res, next) => {
-    const lang = req.query.lang || 'ser';
+exports.getExpReport = asyncHandler( async(req, res, next) => {
+    const reportId = mongoose.Types.ObjectId(req.query.id);
+    const lang = req.query.lang || "ser";
+
+    // ako postoji id onda se ucitava postojeci izvestaj u suprotnom izvestaj treba da se kreira
+    // isto se odnosi i na report
+    let report = null;
+    console.log(reportId);
+    if (reportId) {
+        report = await ExpReport.findById(reportId).populate({
+                path: "createdByUser",
+                select: "name",
+            })
+            .populate({
+                path: "updatedByUser",
+                select: "name",
+            })
+            .populate("proizvod");
+
+        console.log(report);
+    
+        if (!report) {
+            //return next(new ErrorResponse(`Izabrani izvestaj ne postoji`, 400));
+            return res.status(404).render("expReports", {
+                title: "Izveštaji za inostrano tržište",
+                path: "exp",
+                lang,
+                userName: req.session.name,
+                readonlyInputStatus: false,
+                errorMessage: 'Traženi izveštaj ne postoji ili je izbrisan.'
+            });
+        }
+    }
+
 
     res.status(200).render("expReports", {
         title: "Izveštaji za inostrano tržište",
         path: "exp",
         lang,
-        userName: req.session.name
+        userName: req.session.name,
+        report,
+        readonlyInputStatus: false,
     });
-};
+});
+
+// @desc   Get Export Reports HTML
+// @route  GET /api/v2/reports/exp
+// @access Private
+
+// exports.getExpReportsHTML = (req, res, next) => {
+//     const lang = req.query.lang || 'ser';
+
+//     res.status(200).render("expReports", {
+//         title: "Izveštaji za inostrano tržište",
+//         path: "exp",
+//         lang,
+//         userName: req.session.name
+//     });
+// };
 
 // @desc   Export Reports - All
 // @route  GET /api/v2/reports/exp/allReports
@@ -75,7 +126,7 @@ exports.createExpReport = asyncHandler( async(req, res, next) => {
         path: "exp",
         lang,
         userName: req.session.name,
-        report: req.body,
+        report,
         successMessage: 'Izveštaj je uspešno kreiran',
         readonlyInputStatus: false
     })
@@ -95,46 +146,6 @@ exports.getAllExpReports = asyncHandler( async(req, res, next) => {
    res.status(200).json(res.advancedResults);
 });
 
-// @desc   Get Report
-// @route  GET /api/v2/reports/exp/:id
-// @access Private
-
-exports.getExpReport = asyncHandler( async(req, res, next) => {
-    const lang = req.query.lang || "ser";
-    const report = await ExpReport.findById(req.params.id)
-        .populate({
-            path: "createdByUser",
-            select: "name",
-        })
-        .populate({
-            path: "updatedByUser",
-            select: "name",
-        })
-        .populate("proizvod");
-
-    if (!report) {
-        //return next(new ErrorResponse(`Izabrani izvestaj ne postoji`, 400));
-        return res.status(404).render("expReports", {
-            title: "Izveštaji za inostrano tržište",
-            path: "exp",
-            lang: "ser",
-            userName: req.session.name,
-            readonlyInputStatus: false,
-            errorMessage: 'Traženi izveštaj ne postoji ili je izbrisan.'
-        });
-    }
-
-    //console.log(report)
-
-    res.status(200).render("expReports", {
-        title: "Izveštaji za inostrano tržište",
-        path: "exp",
-        lang,
-        userName: req.session.name,
-        report,
-        readonlyInputStatus: false,
-    });
-});
 
 // @desc   Update Report
 // @route  PUT /api/v2/reports/exp/:id

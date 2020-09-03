@@ -13,10 +13,10 @@ block secondaryNavBar
             ul.navbar-nav.ml-auto
                 li.nav-item.mr-2
                     if lang === 'eng'
-                        a(href='/api/v2/reports/exp?lang=ser').btn.btn-outline-info Promeni jezik 
+                        a(href=`/api/v2/reports/exp?id=${report ? report._id : ''}&lang=ser`).btn.btn-outline-info Promeni jezik 
                             img(src='/img/sr.png', alt='sr').icon
                     else
-                        a(href='/api/v2/reports/exp?lang=eng').btn.btn-outline-info Promeni jezik 
+                        a(href=`/api/v2/reports/exp?id=${report ? report._id : ''}&lang=eng`).btn.btn-outline-info Promeni jezik 
                             img(src='/img/en.png', alt='en').icon
 
 block content

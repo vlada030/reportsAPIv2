@@ -6,21 +6,75 @@ const ErrorResponse = require("../utils/errorResponse");
 
 const {validationResult} = require('express-validator');
 
-// @desc   Domestic Reports
-// @route  GET /api/v2/reports/dom
+// @desc   Get Report
+// @route  GET /api/v2/reports/dom?id=MISBroj&lang=lang
 // @access Private
 
-exports.getDomReportsHTML = asyncHandler((req, res) => {
+exports.getDomReport = asyncHandler(async (req, res, next) => {
+    const MISBroj = req.query.id
     const lang = req.query.lang || 'ser';
 
-    res.status(200).render("domReports", {
+    // ako postoji MISBroj onda se ucitava postojeci izvestaj u suprotnom izvestaj treba da se kreira
+    // isto se odnosi i na report
+    let report = null;
+
+    if (MISBroj) {
+        report = await DomReport.findOne({ MISBroj })
+            .populate({
+                path: "createdByUser",
+                select: "name",
+            })
+            .populate({
+                path: "updatedByUser",
+                select: "name",
+            })
+            .populate("proizvod"); // popunjava virtuals polje
+    
+        if (!report) {
+            // return next(
+            //     new ErrorResponse(
+            //         `Izveštaj sa MIS brojem ${MISBroj} ne postoji`,
+            //         400
+            //     ));
+            return res.status(404).render("domReports", {
+                title: "Izveštaji za domaće tržište",
+                path: "dom",
+                lang,
+                userName: req.session.name,
+                readonlyInputStatus: false,
+                errorMessage: 'Traženi izveštaj ne postoji ili je izbrisan.'
+            });
+        }
+    }
+
+    res.status(200).render('domReports', {
         title: "Izveštaji za domaće tržište",
         path: "dom",
         lang,
         userName: req.session.name,
-        readonlyInputStatus: false        
-    });
+        report,
+        readonlyInputStatus: false   
+    })
+    
 });
+
+// OVO JE ZAMENJENO SA KODOM IZNAD
+
+// @desc   Domestic Reports
+// @route  GET /api/v2/reports/dom
+// @access Private
+
+// exports.getDomReportHTML = asyncHandler((req, res) => {
+//     const lang = req.query.lang || 'ser';
+
+//     res.status(200).render("domReports", {
+//         title: "Izveštaji za domaće tržište",
+//         path: "dom",
+//         lang,
+//         userName: req.session.name,
+//         readonlyInputStatus: false        
+//     });
+// });
 
 // @desc   Domestic Reports - All
 // @route  GET /api/v2/reports/dom/allReports
@@ -98,51 +152,6 @@ exports.createDomReport = asyncHandler(async (req, res, next) => {
 
 exports.getAllDomReports = asyncHandler(async (req, res, next) => {
     res.status(200).json(res.advancedResults);
-});
-
-// @desc   Get Report
-// @route  GET /api/v2/reports/dom/:id
-// @access Private
-
-exports.getDomReport = asyncHandler(async (req, res, next) => {
-    const MISBroj = req.params.id;
-
-    const report = await DomReport.findOne({ MISBroj })
-        .populate({
-            path: "createdByUser",
-            select: "name",
-        })
-        .populate({
-            path: "updatedByUser",
-            select: "name",
-        })
-        .populate("proizvod"); // popunjava virtuals polje
-
-    if (!report) {
-        // return next(
-        //     new ErrorResponse(
-        //         `Izveštaj sa MIS brojem ${MISBroj} ne postoji`,
-        //         400
-        //     ));
-        return res.status(404).render("domReports", {
-            title: "Izveštaji za domaće tržište",
-            path: "dom",
-            lang: "ser",
-            userName: req.session.name,
-            readonlyInputStatus: false,
-            errorMessage: 'Traženi izveštaj ne postoji ili je izbrisan.'
-        });
-    }
-
-    res.status(200).render('domReports', {
-        title: "Izveštaji za domaće tržište",
-        path: "dom",
-        lang: 'ser',
-        userName: req.session.name,
-        report,
-        readonlyInputStatus: true   
-    })
-    
 });
 
 // @desc   Update Report

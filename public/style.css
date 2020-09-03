@@ -152,8 +152,8 @@ small {
       }
 
     body {
-        /* display:table;
-        table-layout:fixed; */
+        display:table;
+        table-layout:fixed;
         /* width: 210mm;
         height: 282mm; */
         /* padding-top:0.8cm;

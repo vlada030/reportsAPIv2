@@ -48,7 +48,7 @@ exports.createShiftReport = asyncHandler( async(req, res, next) => {
         path: "shift",
         userName: req.session.name,
         successMessage: 'Izveštaj je uspešno kreiran',
-        report: req.body            
+        report            
     })
 });
 

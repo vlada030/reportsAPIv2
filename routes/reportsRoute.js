@@ -2,7 +2,7 @@ const express = require('express');
 
 const {body} = require('express-validator'); 
 
-const {getDomReportsHTML, getAllDomReportsHTML, createDomReport, getAllDomReports, getDomReport, updateDomReport, deleteDomReport} = require('../controllers/domReportsController');
+const {getDomReportHTML, getAllDomReportsHTML, createDomReport, getAllDomReports, getDomReport, updateDomReport, deleteDomReport} = require('../controllers/domReportsController');
 
 const { getExpReportsHTML, createExpReport, getAllExpReports, getAllExpReportsHTML, getExpReport, updateExpReport, deleteExpReport } = require('../controllers/expReportsController');
 
@@ -18,7 +18,7 @@ const router = express.Router();
 
 router
     .route("/dom")
-    .get(getDomReportsHTML)
+    .get(getDomReport)
     .post(
         protect,[
         body("sifra", "Šifra se sastoji od 7 cifara")
@@ -69,7 +69,7 @@ router.route('/dom/:id').get(getDomReport).delete(protect, deleteDomReport).put(
 
 router
     .route("/exp")
-    .get(getExpReportsHTML)
+    .get(getExpReport)
     .post(
         protect,
         [
