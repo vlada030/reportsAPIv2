@@ -13,6 +13,7 @@ exports.getCreateProductHTML = (req, res, next) => {
     res.status(200).render("product", {
         title: "Dodaj novi proizvod",
         path: "product",
+        product: {},
         userName: req.session.name
     });
 };
@@ -27,6 +28,7 @@ exports.getUpdateProductHTML = asyncHandler((req, res, next) => {
         title: "Izmeni proizvod",
         path: "product",
         userName: req.session.name,
+        product: {},
         isProductCodeIdExist: true
     });
 });
@@ -223,7 +225,9 @@ exports.updateProduct = asyncHandler(async (req, res, next) => {
         //     context: 'query'
         
     });
-    
+
+    //product = decimal128ToStringOutput(product);
+    console.log(product);
     res.status(200).json({
         success: true,
         data: product
