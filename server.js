@@ -10,6 +10,10 @@ const csrf = require('csurf');
 const flash = require('connect-flash');
 const formidableMiddleware = require('express-formidable');
 const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require('helmet');
+const xss = require('xss-clean');
+const rateLimit = require('express-rate-limit');
+const hpp = require('hpp');
 const cors = require('cors');
 
 //import custom error handlera
@@ -108,28 +112,41 @@ app.use(flash());
 // Mongo sanitize - No-SQL injection
 app.use(mongoSanitize());
 
+// dodatno setovanje security headera
+//app.use(helmet());
+
+// prevencija XSS - input sadrzi script tag ili html koji se kasnije prilikom prikazivanja moze ucitati u stranu, pre routa se poziva
+app.use(xss());
+
+// ogranicavanje broja requesta serveru
+// Enable if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
+// see https://expressjs.com/en/guide/behind-proxies.html
+//app.set('trust proxy', 1);
+ 
+const limiter = rateLimit({
+    windowMs: 10 * 60 * 1000, // 10 minutes
+    max: 400 // limit each IP to 100 requests per windowMs
+  });
+   
+//  apply to all requests
+app.use(limiter);
+
+// spreci HPP (http parameter polution)
+app.use(hpp());
+
 // CORS
 //app.use(cors());
 app.use(cors({
     // zbog axiosa corsu mora da se doda credentials
     //origin: ['http://localhost:5000', 'http://127.0.0.1:5000','https://localhost:5000', 'https://127.0.0.1:5000'],
     // origin: true,
-    // methods: ['GET', 'PUT'],
+    // methods: ['GET', 'PUT'],     
     // credentials: true
 }));
 
 // pravljenje static foldera
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-// app.use((req, res) => {
-//     for (const key in req.body) {
-//         if (key.startsWith('dobos')) {
-//             console.log(`Key ${key} ima vrednost ${req.body[key]}`)
-            
-//         }
-//     };
-// });
 // postavljanje routa
 app.use('/api/v2/reports', reportsRoute);
 app.use('/api/v2/products', productsRoute);
