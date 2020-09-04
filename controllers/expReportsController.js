@@ -1,5 +1,3 @@
-const mongoose = require('mongoose');
-
 const ExpReport = require('../models/ExpReport');
 const Product = require('../models/Product');
 
@@ -13,7 +11,7 @@ const {validationResult} = require('express-validator');
 // @access Private
 
 exports.getExpReport = asyncHandler( async(req, res, next) => {
-    const reportId = mongoose.Types.ObjectId(req.query.id);
+    const reportId = req.query.id;
     const lang = req.query.lang || "ser";
 
     // ako postoji id onda se ucitava postojeci izvestaj u suprotnom izvestaj treba da se kreira
