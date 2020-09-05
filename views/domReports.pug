@@ -1,0 +1,202 @@
+extends layouts/main-layout.pug   
+
+block primaryNavBar
+    include layouts/primaryNavBarAll.pug
+
+block secondaryNavBar
+    include layouts/secondaryNavBar.pug    
+    
+        block secondaryMenu
+            include layouts/secondaryMenuReport.pug
+
+        block language 
+            ul.navbar-nav.ml-auto
+                li.nav-item.mr-2
+                    if lang === 'eng'
+                        a(href=`/api/v2/reports/dom?id=${report ? report.MISBroj : ''}&lang=ser`).btn.btn-outline-info Promeni jezik 
+                            img(src='/img/sr.png', alt='sr').icon
+                    else
+                        a(href=`/api/v2/reports/dom?id=${report ? report.MISBroj : ''}&lang=eng`).btn.btn-outline-info Promeni jezik 
+                            img(src='/img/en.png', alt='en').icon 
+
+block content
+        
+    if errorMessage
+        .alert.alert--error.d-print-none
+            p #{errorMessage}
+            p.close &times;
+
+    if successMessage
+        .alert.alert--success.d-print-none
+            p #{successMessage}
+            p.close &times;
+
+    section#report.mt-2.mb-4
+        .container.bg-light
+            //- prvi red
+            .row.align-items-center.py-3.footer
+                .col-3.text-center KONTROLA KVALITETA
+                    p QS 06.10.03.00/03
+                .col-6.text-center.lead.font-weight-normal TF Kable Fabrika kablova Zaječar D.O.O.
+                .col-3.text-center Datum: 
+                    span#date 
+
+            hr.mb-5
+            //- drugi red
+            .row.mb-5.pb-5
+                .col.d-flex.wrap-nowrap.align-items-center.justify-content-center
+                    if lang === 'eng'
+                        h2.text-center.mr-4 Routine&nbsp;Test&nbsp;Report
+                    else
+                        h2.text-center.mr-4 Izveštaj o rutinskom ispitivanju
+
+                    input(type='number' style='width:3rem' name='rb' form='domesticForm' value=report ? report.rb : 1).form-control#ordinalNumber
+                    p.m-0 
+                        | &nbsp;/&nbsp;
+                        span.year 
+
+            .row
+                .col-10.mx-auto
+                    form.border.border-dark.p-3#domesticForm(action='/api/v2/reports/dom' method='POST' novalidate)                        
+                        .row.font-weight-bold.mb-3.d-print-none     
+                            .col-lg-6
+                                .row.align-items-center
+                                    .col-4 
+                                        label Šifra :
+                                    .col-8
+                                        input(type='number' placeholder='Unesi 7-cifreni broj' value=report ? report.sifra : '' readonly=readonlyInputStatus name='sifra').form-control.font-weight-bold#productCode
+                                        small Error message 
+                        //- cetvrti red
+                        .row.font-weight-bold.mb-2
+                            .col-lg-6
+                                .row
+                                    if lang === 'eng'
+                                        .col-4 Cable Type
+                                    else   
+                                        .col-4 Tip Kabla 
+                                    .col-7
+                                        p#cableType.ml-2=report ? report.proizvod.proizvod : '/'
+                                    
+                            .col-lg-6
+                                .row
+                                    if lang === 'eng'
+                                        .col-4 Rated Voltage
+                                    else   
+                                        .col-4 Nazivni Napon
+                                    
+                                    .col-4
+                                        p#ratedVoltage.ml-1=report ? report.proizvod.napon : '/'
+
+                        //- peti red 
+                        .row.font-weight-bold.mb-2.stampa
+                            .col-lg-6
+                                .form-group.row.align-items-center
+                                    .col-4
+                                        if lang === 'eng'
+                                            label(for='workOrder') Work Order:
+                                        else   
+                                            label(for='workOrder') Radni nalog:
+                                         
+                                    .col-8
+                                        input(type='number', placeholder='Unesi 8-cifreni broj' value=report ? report.radniNalog : '' readonly=readonlyInputStatus name='radniNalog').form-control.font-weight-bold#workOrder
+                                        small Error message
+                                    
+                            .col-lg-6
+                                .form-group.row.align-items-center
+                                    .col-4
+                                        if lang === 'eng'
+                                            label(for='num') Drum Number:
+                                        else   
+                                            label(for='num') Broj kalema:
+                                        
+                                    .col-4
+                                        input(type='text', placeholder='7-cifreni broj' value=report ? report.MISBroj : '' readonly=readonlyInputStatus name='MISBroj').form-control.font-weight-bold#misNumber
+                                        small Error message
+                                    .col-4
+                                        select.form-control.font-weight-bold#drumSize(disabled=readonlyInputStatus name='velDob')
+                                            option(value='TK06T' selected= report&&report.velDob==='TK06T' ? true : false) TK06T
+                                            option(value='TK07T' selected= report&&report.velDob==='TK07T' ? true : false) TK07T
+                                            option(value='TK08T' selected= report&&report.velDob==='TK08T' ? true : false) TK08T
+                                            option(value='TK08AT' selected= report&&report.velDob==='TK08AT' ? true : false) TK08AT
+                                            option(value='TK090T' selected= report&&report.velDob==='TK090T' ? true : false) TK090T
+                                            option(value='TK100T' selected= report&&report.velDob==='TK100T' ? true : false) TK100T
+                                            option(value='TK10AT' selected= report&&report.velDob==='TK10AT' ? true : false) TK10AT
+                                            option(value='TK120T' selected= report&&report.velDob==='TK120T' ? true : false) TK120T
+                                            option(value='TK140T' selected= report&&report.velDob==='TK140T' ? true : false) TK140T
+                                            option(value='TK160T' selected= report&&report.velDob==='TK160T' ? true : false) TK160T
+                                            option(value='TK180T' selected= report&&report.velDob==='TK180T' ? true : false) TK180T
+                                            option(value='TK200T' selected= report&&report.velDob==='TK200T' ? true : false) TK200T
+                                            option(value='TK20AT' selected= report&&report.velDob==='TK20AT' ? true : false) TK20AT
+                                            option(value='TK210T' selected= report&&report.velDob==='TK210T' ? true : false) TK210T
+                                            option(value='TK220T' selected= report&&report.velDob==='TK220T' ? true : false) TK220T
+                                            option(value='TK240T' selected= report&&report.velDob==='TK240T' ? true : false) TK240T
+                                            option(value='pallet' selected= report&&report.velDob==='pallet' ? true : false) Pallet
+                        //- sesti red
+                        .row.font-weight-bold.mb-2.stampa
+                            .col-lg-6
+                                .form-group.row.align-items-center
+                                    .col-4
+                                        if lang === 'eng'
+                                            label(for='length') Cable Length:
+                                        else   
+                                            label(for='length') Dužina:                                        
+
+                                    .input-group.col-5
+                                        input(type='number' value=report ? report.duzina : '' readonly=readonlyInputStatus name='duzina').form-control.text-right.font-weight-bold#length
+                                        .input-group-append
+                                            span.input-group-text m
+                                        small Error message
+                            .col-lg-6
+                                .form-group.row.align-items-center
+                                    .col-4
+                                        if lang === 'eng'
+                                            label(for='weight') Weight (bruto/neto):
+                                        else   
+                                            label(for='weight') Težina (bruto/neto):                                       
+
+                                    .input-group.col-4
+                                        input(type='number' value=report ? report.bruto : '' readonly=readonlyInputStatus name='bruto').form-control.text-right.font-weight-bold.pr-2#bruto
+                                        .input-group-append
+                                            span.input-group-text kg
+                                        small Error message
+
+                                    .input-group.col-4
+                                        input(type='number' value=report ? report.neto : '' readonly=readonlyInputStatus name='neto').form-control.text-right.font-weight-bold.pr-2#neto
+                                        .input-group-append
+                                            span.input-group-text kg
+                                        small Error message
+                        //- sedmi red
+                        .row.font-weight-bold
+                            .col-6
+                                .row
+                                    if lang === 'eng'
+                                        .col-4 Norm:
+                                    else   
+                                        .col-4 Standard: 
+                                                             
+                                    .col-8
+                                        p.ml-2#standard=report ? report.proizvod.propis : '/'
+
+                            .col-6
+                                .row
+                                    if lang === 'eng'
+                                        .col-4 Color:
+                                    else   
+                                        .col-4 Boja: 
+                                    .col-8
+                                        p.ml-2#productColor=report ? report.proizvod.boja : '/'
+                        //- osmi red
+                        .text-center.py-2.d-print-none
+                            input(type='hidden', name='_csrf', value=csrfToken)
+                            button.btn.btn-warning.btn-lg.m-0.mr-sm-4#savePDF(onclick="event.preventDefault(); window.print();" disabled=report ? false : true) Štampaj PDF
+                            button(type='submit' disabled=report ? false : true).btn.btn-warning.btn-lg.m-0.mr-sm-4#save Sačuvaj
+                            button(onclick='resetDomReportsForm()').btn.btn-warning.btn-lg Obriši polja
+
+            include layouts/testsTable.pug
+
+            .row.sign
+                .col-4.ml-auto
+                    .row
+                        include layouts/documentSign.pug
+block footer
+    include layouts/footer.pug

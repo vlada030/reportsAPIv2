@@ -1,0 +1,67 @@
+mixin infoModal(label)
+    button(type="button" data-toggle="modal" data-target="#infoModal").btn.btn-secondary=label
+
+    .modal.fade#infoModal(tabindex="-1" data-backdrop="static" data-keyboard="false")
+        .modal-dialog
+            .modal-content
+                .modal-header.bg-warning
+                    h5.modal-title.myModalLabel Obaveštenje
+                    button(type="button" data-dismiss="modal" aria-label="Close").close
+                        span &times;
+                    
+                .modal-body
+                    p Opcija je u razvoju...
+                
+                .modal-footer
+                    button(type="button" data-dismiss="modal").btn.btn-secondary Otkaži
+ul.navbar-nav.mr-auto#optionsNav
+    if isAuthenticated
+        li.nav-item.mr-2.mb-2.mb-lg-0
+            a(href=`/api/v2/reports/${path}`).btn.btn-secondary Kreiraj izveštaj
+
+        li.nav-item.mr-2.mb-2.mb-lg-0
+            if (report)
+                button(type="button" data-toggle="modal" data-target="#myModal").btn.btn-secondary Obriši izveštaj
+
+                .modal.fade#myModal(tabindex="-1" data-backdrop="static" data-keyboard="false")
+                    .modal-dialog
+                        .modal-content
+                            .modal-header.bg-warning
+                                h5.modal-title.myModalLabel Brisanje izveštaja
+                                button(type="button" data-dismiss="modal" aria-label="Close").close
+                                    span &times;
+                                
+                            .modal-body
+                                p Potvrdi brisanje?
+                            
+                            .modal-footer
+                                button(type="button" data-dismiss="modal").btn.btn-secondary Otkaži
+                                button(data-reportID= report.MISBroj ?  report.MISBroj : report._id type="button" data-dismiss="modal").btn.btn-warning#eraseReport Izbriši
+            else
+                button(type="button" data-toggle="modal" data-target="#myModal" disabled).btn.btn-secondary Obriši izveštaj         
+            
+        li.nav-item.mr-2.mb-2.mb-lg-0
+            a(href=`/api/v2/reports/${path}/allReports`).btn.btn-secondary Svi izveštaji
+
+        li.nav-item.mr-2.mb-2.mb-lg-0
+            //a(href=`#`).btn.btn-secondary Prethodni Izveštaj
+            +infoModal('Prethodni Izveštaj')
+        li.nav-item.mb-2.mb-lg-0
+            //a(href=`#`).btn.btn-secondary Sledeći Izveštaj
+            +infoModal('Sledeći Izveštaj')
+
+    else
+        li.nav-item.mr-2.mb-2.mb-lg-0(data-toggle='tooltip', title='Morate prvo da se prijavite!', data-placement='bottom')
+            a(href='#').btn.btn-secondary.disabled Kreiraj izveštaj
+
+        li.nav-item.mr-2.mb-2.mb-lg-0(data-toggle='tooltip', title='Morate prvo da se prijavite!', data-placement='bottom')
+            a(href='#').btn.btn-secondary.disabled Obriši Izveštaj
+
+        li.nav-item.mr-2.mb-2.mb-lg-0(data-toggle='tooltip', title='Morate prvo da se prijavite!', data-placement='bottom')
+            a(href='#').btn.btn-secondary.disabled Svi izveštaji
+
+        li.nav-item.mr-2.mb-2.mb-lg-0(data-toggle='tooltip', title='Morate prvo da se prijavite!', data-placement='bottom')
+            a(href='#').btn.btn-secondary.disabled Prethodni Izveštaj
+
+        li.nav-item.mb-2.mb-lg-0(data-toggle='tooltip', title='Morate prvo da se prijavite!', data-placement='bottom')
+            a(href='#').btn.btn-secondary.disabled Sledeći Izveštaj

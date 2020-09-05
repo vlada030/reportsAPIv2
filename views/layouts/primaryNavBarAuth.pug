@@ -1,0 +1,26 @@
+nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.py-2
+    .container
+        a.navbar-brand(href='/api/v2/reports/dom')
+            h3
+                i.fa.fa-files-o
+                |   REPORTS
+        
+        button.navbar-toggler#hamb(data-toggle='collapse', data-target='#myCollapse')
+            p.m-auto#nav-icon3
+                span                
+                span                
+                span                
+                span                
+                        
+        #myCollapse.collapse.navbar-collapse
+            ul.navbar-nav.ml-auto
+                li.nav-item
+
+                    block link
+
+hr.m-0.border.border-secondary.mb-4
+
+if errorMessage
+    .alert.alert--error
+        p #{errorMessage}
+        p.close &times;

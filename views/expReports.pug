@@ -1,0 +1,204 @@
+extends layouts/main-layout.pug
+
+block primaryNavBar
+    include layouts/primaryNavBarAll.pug
+
+block secondaryNavBar
+    include layouts/secondaryNavBar.pug    
+    
+        block secondaryMenu
+            include layouts/secondaryMenuReport.pug
+
+        block language 
+            ul.navbar-nav.ml-auto
+                li.nav-item.mr-2
+                    if lang === 'eng'
+                        a(href=`/api/v2/reports/exp?id=${report ? report._id : ''}&lang=ser`).btn.btn-outline-info Promeni jezik 
+                            img(src='/img/sr.png', alt='sr').icon
+                    else
+                        a(href=`/api/v2/reports/exp?id=${report ? report._id : ''}&lang=eng`).btn.btn-outline-info Promeni jezik 
+                            img(src='/img/en.png', alt='en').icon
+
+block content
+
+    if errorMessage
+        .alert.alert--error.d-print-none
+            p #{errorMessage}
+            p.close &times;
+
+    if successMessage
+        .alert.alert--success.d-print-none
+            p #{successMessage}
+            p.close &times;
+
+    section.py-2#report
+        .container.bg-light
+            //- prvi red
+            .row.align-items-center.pt-4.footer
+                .col-2
+                    img(src='/img/TFKable.jpg', alt='TFKable').img-fluid
+                .col-8.text-center
+                    p Društvo sa ograničenom odgovornošću
+                    p.lead.font-weight-normal TF Kable Fabrika kablova Zaječar
+                    p.text-muted ISO 9001
+                        span.ml-4 ISO 14001
+                .col-2.d-flex.justify-content-center
+                    img(src='/img/TF FKZ.jpg', alt='TF FKZ', style='height: 7rem; width:auto;').img-fluid
+            hr
+            //- drugi red
+            .text-center.text-muted.aprDetails.mb-5
+                p Negotinski put bb, 19000 Zaječar, Srbija, tel. 019/444-333, fax. 019/421-720, e-mail:office.fkz@tfkable.com, http://www.fkz.rs
+                p APR: BD. 6152/2005, MB: 07147350; reg. br.: 11607147350, PIB: 100576854; ŠD: 2732; Rn.:265-1100310004033-75 Raiffeisen banka a.d. Beograd 
+            //- treci red 
+
+            .row.mb-5.pb-5
+                .col.d-flex.wrap-nowrap.align-items-center.justify-content-center
+                    if lang==='eng'
+                        h2.text-center.mr-4 Routine Test Report
+                    else 
+                        h2.text-center.mr-4 Izveštaj o rutinskom ispitivanju
+
+                    input(type='number' style='width:3rem' form='expReportsForm' name='rb' value=report ? report.rb : 1).form-control#ordinalNumber
+                    p.m-0 
+                        | &nbsp;/&nbsp;
+                        span.year
+
+            .row
+                .col-10.mx-auto
+                    form.border.border-dark.p-3#expReportsForm(action='/api/v2/reports/exp' method='POST' novalidate)
+                        //- cetvrti red
+                        .row.font-weight-bold.mb-2.d-print-none
+                            .col-8
+                                .row.align-items-center
+                                    .col-5 
+                                        label Šifra proizvoda:
+                                    .col-7
+                                        input(type='text', placeholder='Unesi 7-cifreni broj' name='sifra' value=report ? report.sifra : '').form-control.font-weight-bold#productCode
+                                        small Error message
+
+                        //- peti red
+                        .row.font-weight-bold.mb-2
+                            .col-8
+                                .row
+                                    if lang === 'eng'
+                                        .col-5 Cable Type
+                                    else   
+                                        .col-5 Tip Kabla
+
+                                    .col-7
+                                        p.ml-2#cableType=report ? report.proizvod.proizvod : '/'
+
+                        //- sesti red
+                        .row.font-weight-bold.mb-2
+                            .col-8
+                                .row
+                                    if lang === 'eng'
+                                        .col-5 Rated Voltage
+                                    else   
+                                        .col-5 Nazivni Napon
+
+                                    .col-7
+                                        p.ml-2#ratedVoltage=report ? report.proizvod.napon : '/'
+
+                        //- sedmi red
+                        .row.font-weight-bold.mb-3
+                            .col-8
+                                .row.align-items-center
+                                    if lang === 'eng'
+                                        .col-5 
+                                            label Manufacture Year:
+                                    else   
+                                        .col-5 
+                                            label Godina proizvodnje:
+                                    
+                                    .col-7
+                                        input(type='text', placeholder='Unesi 4-cifreni broj' name='godina' value= report ? report.godina : '').form-control.font-weight-bold#yearManufacture
+                                        small Error message
+
+                        //- osmi red
+                        .row.font-weight-bold.mb-2
+                            .col-8
+                                .row
+                                    if lang === 'eng'
+                                        .col-5 Norm:
+                                    else   
+                                        .col-5 Standard:
+                                    .col-7
+                                        p.ml-2#standard=report ? report.proizvod.propis : '/'
+
+                        //- deveti red
+                        .row.font-weight-bold.mb-2
+                            .col-8
+                                .row
+                                    if lang === 'eng'
+                                        .col-5 
+                                            label Drum Number:
+                                    else   
+                                        .col-5 
+                                            label Broj doboša:
+                                    
+                                    .col-7#drumList
+                                        if report 
+                                            -var n = 1;
+                                            each val, key in report
+                                                if key.startsWith('dobos') && val
+                                                    -var dobos=`dobos_${n}`
+                                                    -var duzina=`duzina_${n}`
+                                                
+                                                    .row.mb-2(data-next=n+1).marker
+                                                        .col-6
+                                                            input(type='text' name=dobos value=report ? val : '/'  placeholder='broj doboša').form-control.text-right.font-weight-bold.item
+                                                            small Error message
+
+                                                        .col-6.input-group
+                                                            input(type='number' name=duzina value=report ? report[duzina] : 0 placeholder='/').form-control.text-right.font-weight-bold
+                                                            .input-group-append
+                                                                span.input-group-text m
+                                                    -n++
+                                        else
+                                            .row.mb-2(data-next=2)
+                                                .col-6
+                                                    input(type='text' name=`dobos_1` value='/'  placeholder='broj doboša').form-control.text-right.font-weight-bold.item
+                                                    small Error message
+
+                                                .col-6.input-group
+                                                    input(type='number' name=`duzina_1` value=0 placeholder='/').form-control.text-right.font-weight-bold
+                                                    .input-group-append
+                                                        span.input-group-text m        
+                            .col-2
+                                button.btn.btn-outline-success.d-print-none#addItem Dodaj doboš
+                            .col-2
+                                button.btn.btn-outline-danger.d-print-none#delItem Ukloni doboš
+
+                        //- deseti red 
+                        .row.font-weight-bold.mb-4
+                            .col-8
+                                .row
+                                    if lang === 'eng'
+                                        .col-5 Total Length:
+                                    else   
+                                        .col-5 Ukupna dužina:
+                                    
+                                    .col-7.input-group
+                                        input(type='number' name='ukupnaDuz' value=report ? report.ukupnaDuz : 0 placeholder='/').form-control.text-right.font-weight-bold#totalLength
+                                        .input-group-append
+                                            span.input-group-text m
+                        .text-center.mb-4.d-print-none
+                            input(type='hidden', name='_csrf', value=csrfToken)
+                            button.btn.btn-warning.btn-lg.m-0.mr-sm-4#savePDF(onclick="event.preventDefault(); window.print();" disabled=report ? false : true) Štampaj PDF
+                            button(type='submit' disabled=report ? false : true).btn.btn-warning.btn-lg.m-0.mr-sm-4#save Sačuvaj
+                            input(type='reset', value='Obriši sva polja', form='inoForm').btn.btn-warning.btn-lg
+
+            include layouts/testsTable.pug
+            
+            .row.my-5
+                .col-3.text-center 
+                    | DATUM: 
+                    span#date
+
+                .col-4.ml-auto.sign
+
+                    include layouts/documentSign.pug 
+
+block footer
+    include layouts/footer.pug

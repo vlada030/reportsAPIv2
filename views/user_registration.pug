@@ -1,0 +1,45 @@
+extends layouts/main-layout.pug
+
+block primaryNavBar
+    include layouts/primaryNavBarAuth.pug
+
+        block link
+            a.nav-link(href='../auth/login') PRIJAVA
+
+block content
+    main.h-100
+        .container.h-100
+            .row.h-100
+                .col-md-6.mx-auto
+                    .card
+                        .card-header
+                            h4
+                                i.far.fa-user
+                                |   Korisnički panel
+                        .card-body
+                            form#authForm(action='/api/v2/auth/register', method='POST')
+                                .form-group
+                                    label(for='name') Korisničko ime
+                                    input#name.form-control.mt-1.mb-1(name='name', type='text', value=oldInput.name, placeholder='npr. Jelena', autofocus)
+
+                                .form-group
+                                    label(for='email') Email
+                                    input#email.form-control.mt-1.mb-1(name='email', type='email', value=oldInput.email, placeholder='example@mail.com')
+
+                                .form-group
+                                    label(for='password') Šifra
+                                    input#password.form-control.mt-1.mb-1(name='password', type='password', value=oldInput.password, placeholder='*******')
+
+                                .form-group.mb-4
+                                    label(for='confirmPassword') Ponovite šifru
+                                    input#confirmPassword.form-control.mt-1.mb-1(type='password', name='confirmPassword', value=oldInput.confirmPassword, placeholder='*******')
+                                //- .form-group.mb-4
+                                //-     label Odaberite profilnu sliku
+                                //-     .custom-file.mt-1.mb-1                          
+                                //-         input#customFile.custom-file-input(type='file', accept='image/*')
+                                //-         label.custom-file-label(for='customFile') Opciono polje &#42;
+                                input(type='hidden', name='_csrf', value=csrfToken)
+                                button.btn.btn-info.btn-block.mt-3(type='submit')  Pošalji
+
+block footer
+    include layouts/fixed_footer.pug

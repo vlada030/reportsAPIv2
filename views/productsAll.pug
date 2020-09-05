@@ -1,0 +1,27 @@
+extends layouts/main-layout.pug
+
+block primaryNavBar
+    include layouts/primaryNavBarAll.pug
+
+block secondaryNavBar
+    include layouts/secondaryNavBar.pug
+        block secondaryMenu
+            include layouts/secondaryMenuProduct.pug
+
+block content
+    .container.my-3.w-100
+        .row.w-100
+            .list-group.w-100
+                -var No = 1
+                each product in products
+
+                    a(href=`/api/v2/products/${product.sifra}`).list-group-item.list-group-item-action.d-flex.justify-content-start
+                        span.w-25.px-2=`${No}.`
+                        span.w-25.px-2=product.sifra
+                        span.w-25.px-2=product.proizvod
+                        span.w-25.text-right.px-2=product.napon
+                        span.w-25.text-right.px-2=product.propis
+                    -No++
+    
+block footer    
+    include layouts/fixed_footer.pug
