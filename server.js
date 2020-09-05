@@ -84,10 +84,6 @@ app.use(express.json());
 // pozivanje cookie parsera da bi u cookie mogao sa se ubaci token
 //app.use(cookieParser());
 
-// pozivanje morgan loggera
-if (process.env.NODE_ENV === 'development') {
-    app.use(morgan('dev'));
-}
 // da se nebi opetercivala memorija noda, snimanje session u MongoDb
 const storeSession = new MongoDbSessionStore({
     uri: process.env.MONGO_URI,
