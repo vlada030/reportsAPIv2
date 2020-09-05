@@ -1,7 +1,7 @@
 {
   "name": "reportsapi",
   "version": "1.0.0",
-  "description": "prodyct codes, test reports",
+  "description": "product codes, test reports",
   "main": "server.js",
   "scripts": {
     "start": "cross-env NODE_ENV=production node server.js",
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vlada030/reportsAPI.git"
+    "url": "git+https://github.com/vlada030/reportsAPIv2.git"
   },
   "author": "Vladimir Nikodijevic",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/vlada030/reportsAPI/issues"
+    "url": "https://github.com/vlada030/reportsAPIv2/issues"
   },
-  "homepage": "https://github.com/vlada030/reportsAPI#readme",
+  "homepage": "https://github.com/vlada030/reportsAPIv2#readme",
   "dependencies": {
     "@babel/polyfill": "^7.11.5",
     "@sendgrid/mail": "^7.2.5",
