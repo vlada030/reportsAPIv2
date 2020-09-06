@@ -10,7 +10,7 @@ export default error => {
     if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
-        console.log(error.response);
+        //console.log(error.response);
 
         if (error.response.status === 500) {
             console.log('Greška u konekciji sa serverom');
@@ -25,7 +25,7 @@ export default error => {
         }
          else {
             //console.log(error.response.status);
-            console.log(error.response.data.error);
+            //console.log(error.response.data.error);
             showMessage(error.response.data.error, 'error')
 
         }
@@ -33,12 +33,12 @@ export default error => {
         // The request was made but no response was received
         // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
         // http.ClientRequest in node.js
-        console.log(error.request);
+        //console.log(error.request);
         console.log('Greška u konekciji sa serverom');
         showMessage('Greška u konekciji sa serverom', 'error');
     } else {
         // Something happened in setting up the request that triggered an Error
-        console.log(error.message);
+        //console.log(error.message);
         showMessage(error.message, 'error');
     }
 }

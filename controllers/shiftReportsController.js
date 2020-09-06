@@ -29,7 +29,7 @@ exports.createShiftReport = asyncHandler( async(req, res, next) => {
 
     // cupanje errors iz express-validator
     const errors = validationResult(req);
-    console.log(errors);
+    //console.log(errors);
 
     if (!errors.isEmpty()) {
         return res.status(422).render("shiftReports", {
@@ -64,7 +64,7 @@ exports.getShiftReport = asyncHandler( async(req, res, next) => {
         select: 'name'
     });
 
-    console.log(report)
+    //console.log(report)
  
     if (!report) {
         return res.status(404).render("shiftReports", {

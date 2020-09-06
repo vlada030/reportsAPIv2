@@ -60,7 +60,7 @@ exports.register = asyncHandler(async (req, res, next) => {
     const {name, email, password, confirmPassword} = req.body;
 
     const errors = validationResult(req);
-    console.log(errors)
+    //console.log(errors)
     
     // validacija preko express-validatora
     // implementirano pamcenje prethodnog unosa
@@ -393,7 +393,7 @@ exports.logout = asyncHandler(async (req, res, next) => {
         
     // brisanje session
     req.session.destroy(err => {
-        console.log(err);
+        //console.log(err);
         res.redirect('/api/v2/reports/dom');
     });
 }); 
@@ -421,7 +421,7 @@ exports.logoutAll = asyncHandler(async (req, res, next) => {
     
     // brisanje session
     req.session.destroy(err => {
-        console.log(err);
+        //console.log(err);
         res.redirect('/api/v2/reports/dom');
     });
 

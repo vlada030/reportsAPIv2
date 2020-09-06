@@ -5,7 +5,9 @@ axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[nam
 
 
 //axios.defaults.withCredentials = true;
-const baseURL = 'http://127.0.0.1:5000';
+//const baseURL = 'http://127.0.0.1:5000';
+// posto su FE i BE na istom sajtu ovo u sustini moze da se izabci
+const baseURL = '';
 
 export const getProduct = async ( value ) => {
         

@@ -17,7 +17,7 @@ exports.getExpReport = asyncHandler( async(req, res, next) => {
     // ako postoji id onda se ucitava postojeci izvestaj u suprotnom izvestaj treba da se kreira
     // isto se odnosi i na report
     let report = null;
-    console.log(reportId);
+
     if (reportId) {
         report = await ExpReport.findById(reportId).populate({
                 path: "createdByUser",
@@ -28,8 +28,6 @@ exports.getExpReport = asyncHandler( async(req, res, next) => {
                 select: "name",
             })
             .populate("proizvod");
-
-        console.log(report);
     
         if (!report) {
             //return next(new ErrorResponse(`Izabrani izvestaj ne postoji`, 400));
@@ -98,10 +96,8 @@ exports.createExpReport = asyncHandler( async(req, res, next) => {
     const proizvod = await Product.findOne({sifra: req.body.sifra});
     req.body.proizvod = proizvod;
 
-    //console.log(req.body);
     // cupanje errors iz express-validatora
     const errors = validationResult(req);
-    console.log(errors)
     
     // validacija preko express-validatora
     // implementirano pamcenje prethodnog unosa

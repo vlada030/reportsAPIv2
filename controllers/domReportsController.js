@@ -106,7 +106,7 @@ exports.createDomReport = asyncHandler(async (req, res, next) => {
 
     // cupanje errors iz express-validatora
     const errors = validationResult(req);
-    console.log(errors)
+    //console.log(errors)
     
     // validacija preko express-validatora
     // implementirano pamcenje prethodnog unosa
