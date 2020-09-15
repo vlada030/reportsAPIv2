@@ -38,16 +38,16 @@ router
         register
     );
 router.route("/login").get(getLoginUserHTML).post(login);
-router.route("/me").get(protect, getMe).delete(protect, deleteMe);
+router.route("/me").get( getMe).delete(deleteMe);
 router
     .route("/me/avatar")
-    .get(protect, getAvatar)
-    .post(protect, uploadUserPhoto, updateAvatar)
-    .delete(protect, deleteAvatar);
+    .get(getAvatar)
+    .post(uploadUserPhoto, updateAvatar)
+    .delete(deleteAvatar);
 router.post("/logout", protect, logout);
 router.post("/logoutAll", protect, logoutAll);
-router.put("/update", protect, updateDetails);
-router.put("/updatepassword", protect, updatePassword);
+router.put("/update", updateDetails);
+router.put("/updatepassword", updatePassword);
 router.post("/resetpassword", forgotPassword);
 router.put("/resetpassword/:resettoken", resetPassword);
 

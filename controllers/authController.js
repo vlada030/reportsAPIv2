@@ -10,20 +10,41 @@ const { sendWelcomeEmail, sendCancelEmail, sendResetPasswordEmail } = require('.
 const sharp = require('sharp');
 const multer = require('multer');
 
+// disk storage ukoliko fajl direktno snimamo u public folder
+const multerStorage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, "/public/img/users");
+    },
+    filename: function (req, file, cb) {
+        const ext = file.mimetype.split("/")[1];
+
+        cb(null, `user-${req.user.id}-${Date.now()}.${ext}`);
+    },
+});
+
+// filtriranje input fajla
+const multerFilter = (req, file, cb) => {
+    if (!file.originalname.toLowerCase().match(/\.(png|jpg|jpeg|bmp)$/)) {
+        return cb(
+            new ErrorResponse(
+                "Izabrani fajl nije slika, ponovite unos i izaberite sliku",
+                400
+            ),
+            false
+        );
+    }
+    // ovo je default ako je validacija true
+    cb(null, true);
+};
+
 const upload = multer({
     // kada je ovo podeseno ONDA SE NE VIDI FAJL u req.file i plus posto se ceo kod aploaduje na heroku, AWS, prilikom svakog pokretanja app ceo file sistem SE BRISE zato moraju slike da se sacuvaju u db    
     //dest: 'avatar/'
     limits: {
         fileSize: 10*1024*1024
     },
-    fileFilter(req, file, cb) {
-
-        if (!file.originalname.toLowerCase().match(/\.(png|jpg|jpeg|bmp)$/)) {
-            return cb(new ErrorResponse('Izabrani fajl nije slika, ponovite unos i izaberite sliku', 400))
-        }
-        // ovo je default ako je validacija true
-        cb(undefined, true);
-    }        
+    storage: multerStorage,
+    fileFilter: multerFilter
 });
 
 // middleware za upload avatar slike
@@ -91,7 +112,7 @@ exports.register = asyncHandler(async (req, res, next) => {
     });
 
     // slanje welcome emaila nakon uspesnog snimanja 
-    //sendWelcomeEmail(user.name, user.email);
+    sendWelcomeEmail(user.name, user.email);
 
     // umesto ovoga ispod stavlja se response koji u sebi ukljucuju cookie
     await sendTokenResponse(user, 200, res, req);
@@ -436,17 +457,18 @@ exports.deleteMe = asyncHandler(async (req, res, next) => {
     await User.findByIdAndDelete(req.user.id);
 
     // postavljanje cookija na vrednost none
-    res.cookie('token', 'none', {
-        expires: new Date(Date.now() + 10 * 1000),
-        httpOnly: true
-    });
+    // res.cookie('token', 'none', {
+    //     expires: new Date(Date.now() + 10 * 1000),
+    //     httpOnly: true
+    // });
 
     // slanje emaila sa potvrdom brisanja svog accounta
     sendCancelEmail(req.user.name, req.user.email);
 
-    res.status(200).json({
-        success: true,
-        data: {}
+    // brisanje session
+    req.session.destroy(err => {
+        //console.log(err);
+        res.status(200).redirect('/api/v2/auth/login');
     });
 
 }); 
