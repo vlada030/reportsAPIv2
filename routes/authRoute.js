@@ -17,6 +17,8 @@ router
                 .not()
                 .isEmpty()
                 .withMessage("Unesite korisničko ime")
+                .isLength({ max: 15 })
+                .withMessage("Korisničko ime može sadržati najviše 15 karaktera")
                 .trim(),
             check("email")
                 .isEmail()

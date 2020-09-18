@@ -123,8 +123,10 @@ exports.updateShiftReport = asyncHandler( async(req, res, next) => {
     if (!report) {
         return next(new ErrorResponse('Zahtevani izvestaj ne postoji', 400));
     }
-   
-    req.body.updatedByUser = req.user.id;
+    
+    if (req.user.id !== report.createdByUser.toString()) {
+        return next(new ErrorResponse(`Možete vršiti izmene samo na izveštaju koji ste vi kreirali`, 403));
+    }
 
     report = await ShiftReport.findByIdAndUpdate(req.params.id, req.body, {
         runValidators: false,
