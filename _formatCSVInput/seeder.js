@@ -3,8 +3,8 @@ const dotenv = require('dotenv');
 const colors = require('colors');
 const mongoose = require('mongoose');
 
-const Product = require('./models/Product');
-const normalize = require('./normalize');
+const Product = require('../models/Product');
+const normalize = require('../normalize');
 
 dotenv.config({
     path: './config/config.env'

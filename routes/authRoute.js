@@ -1,7 +1,7 @@
 const express = require('express');
 const { check, body} = require('express-validator');
 
-const {register, login, getMe, deleteMe, logout, logoutAll, getRegisterUserHTML, getLoginUserHTML, updateDetails, updatePassword, forgotPassword, updateAvatar, deleteAvatar, resetPassword, uploadUserPhoto, getAvatar} = require('../controllers/authController');
+const {register, login, getMe, deleteMe, logout, logoutAll, getRegisterUserHTML, getLoginUserHTML, updateDetails, updatePassword, forgotPassword, updateAvatar, deleteAvatar, resetPassword, uploadUserPhoto} = require('../controllers/authController');
 
 const router = express.Router();
 
@@ -40,17 +40,56 @@ router
         register
     );
 router.route("/login").get(getLoginUserHTML).post(login);
-router.route("/me").get( getMe).delete(deleteMe);
-router
-    .route("/me/avatar")
-    .get(getAvatar)
-    .post(uploadUserPhoto, updateAvatar)
-    .delete(deleteAvatar);
 router.post("/logout", protect, logout);
 router.post("/logoutAll", protect, logoutAll);
-router.put("/update", updateDetails);
-router.put("/updatepassword", updatePassword);
+
+router.route("/me").get(protect, getMe).delete(protect, deleteMe);
+router
+    .route("/me/avatar")
+    .post(protect, uploadUserPhoto, updateAvatar)
+    .delete(protect, deleteAvatar);
+
+router.put(
+    "/update",
+    protect,
+    [
+        body("name")
+            .optional()
+            .isLength({ max: 15 })
+            .withMessage("Korisničko ime može sadržati najviše 15 karaktera")
+            .trim(),
+        check("email")
+            .optional()
+            .isEmail()
+            .withMessage("Unesite ispravnu email adresu")
+            .normalizeEmail(),
+    ],
+    updateDetails
+);
+
+router.put(
+    "/updatepassword",
+    protect,
+    [
+        body(
+            "password",
+            "Šifra treba da sadrži slova i brojeve, 7 - 15 karaktera"
+        ).isLength({ min: 7, max: 15 }),
+    ],
+    updatePassword
+);
+
 router.post("/resetpassword", forgotPassword);
-router.put("/resetpassword/:resettoken", resetPassword);
+
+router.put(
+    "/resetpassword/:resettoken",
+    [
+        body(
+            "password",
+            "Šifra treba da sadrži slova i brojeve, 7 - 15 karaktera"
+        ).isLength({ min: 7, max: 15 })
+    ],
+    resetPassword
+);
 
 module.exports = router;

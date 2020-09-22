@@ -36,6 +36,7 @@ exports.getExpReport = asyncHandler( async(req, res, next) => {
                 path: "exp",
                 lang,
                 userName: req.session.name,
+                avatarUrl: req.session.avatarUrl,
                 readonlyInputStatus: false,
                 errorMessage: 'Traženi izveštaj ne postoji ili je izbrisan.'
             });
@@ -48,6 +49,7 @@ exports.getExpReport = asyncHandler( async(req, res, next) => {
         path: "exp",
         lang,
         userName: req.session.name,
+        avatarUrl: req.session.avatarUrl,
         report,
         readonlyInputStatus: false,
     });
@@ -80,6 +82,7 @@ exports.getAllExpReportsHTML = asyncHandler(async(req, res) => {
         title: "Izveštaji za inostrano tržište",
         path: "exp",
         userName: req.session.name,
+        avatarUrl: req.session.avatarUrl,
         reports
     });
 });
@@ -107,6 +110,7 @@ exports.createExpReport = asyncHandler( async(req, res, next) => {
             path: "exp",
             lang,
             userName: req.session.name,
+            avatarUrl: req.session.avatarUrl,
             errorMessage: errors.array()[0].msg,
             report: req.body,
             readonlyInputStatus: false
@@ -120,6 +124,7 @@ exports.createExpReport = asyncHandler( async(req, res, next) => {
         path: "exp",
         lang,
         userName: req.session.name,
+        avatarUrl: req.session.avatarUrl,
         report,
         successMessage: 'Izveštaj je uspešno kreiran',
         readonlyInputStatus: false
@@ -180,6 +185,7 @@ exports.deleteExpReport = asyncHandler( async(req, res, next) => {
         path: "exp",
         lang,
         userName: req.session.name,
+        avatarUrl: req.session.avatarUrl,
         successMessage: 'Izveštaj je izbrisan'
     });
 });

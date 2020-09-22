@@ -14,6 +14,7 @@ exports.getCreateProductHTML = (req, res, next) => {
         title: "Dodaj novi proizvod",
         path: "product",
         product: {},
+        avatarUrl: req.session.avatarUrl,
         userName: req.session.name
     });
 };
@@ -28,6 +29,7 @@ exports.getUpdateProductHTML = asyncHandler((req, res, next) => {
         title: "Izmeni proizvod",
         path: "product",
         userName: req.session.name,
+        avatarUrl: req.session.avatarUrl,
         product: {},
         isProductCodeIdExist: true
     });
@@ -44,6 +46,7 @@ exports.getAllProductsHTML = asyncHandler(async(req, res, next) => {
         title: "Postojeće šifre proizvoda",
         path: "product",
         userName: req.session.name,
+        avatarUrl: req.session.avatarUrl,
         products
     });
 });
@@ -119,6 +122,7 @@ exports.getProduct = asyncHandler(async (req, res, next) => {
         title: "Izmeni proizvod",
         path: "product",
         userName: req.session.name,
+        avatarUrl: req.session.avatarUrl,
         product: convertedProduct[0]
     }); 
 });
@@ -169,6 +173,7 @@ exports.createProduct = asyncHandler( async (req, res, next) => {
             title: "Dodaj novi proizvod",
             path: "product",
             userName: req.session.name,
+            avatarUrl: req.session.avatarUrl,
             errorMessage: errors.array()[0].msg,
             product: req.body
             
@@ -181,6 +186,7 @@ exports.createProduct = asyncHandler( async (req, res, next) => {
         title: "Dodaj novi proizvod",
         path: "product",
         userName: req.session.name,
+        avatarUrl: req.session.avatarUrl,
         product: req.body,
         successMessage: 'Proizvod je uspešno sačuvan'
     });

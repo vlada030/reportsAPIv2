@@ -15,6 +15,7 @@ exports.getShiftReportsHTML = (req, res, next) => {
         title: "Smenski izveštaj o radu",
         path: "shift",
         isAuthenticated: req.session.isLoggedIn,
+        avatarUrl: req.session.avatarUrl,
         userName: req.session.name
     });
 };
@@ -36,6 +37,7 @@ exports.createShiftReport = asyncHandler( async(req, res, next) => {
             title: "Smenski izveštaj o radu",
             path: "shift",
             userName: req.session.name,
+            avatarUrl: req.session.avatarUrl,
             errorMessage: errors.array()[0].msg,
             report: req.body            
         })
@@ -47,6 +49,7 @@ exports.createShiftReport = asyncHandler( async(req, res, next) => {
         title: "Smenski izveštaj o radu",
         path: "shift",
         userName: req.session.name,
+        avatarUrl: req.session.avatarUrl,
         successMessage: 'Izveštaj je uspešno kreiran',
         report            
     })
@@ -71,6 +74,7 @@ exports.getShiftReport = asyncHandler( async(req, res, next) => {
             title: "Smenski izveštaj o radu",
             path: "shift",
             userName: req.session.name,
+            avatarUrl: req.session.avatarUrl,
             errorMessage: 'Traženi izveštaj ne postoji ili je izbrisan.',
             report            
         });
@@ -80,6 +84,7 @@ exports.getShiftReport = asyncHandler( async(req, res, next) => {
         title: "Smenski izveštaj o radu",
         path: "shift",
         userName: req.session.name,
+        avatarUrl: req.session.avatarUrl,
         report            
     });
  });
@@ -98,6 +103,7 @@ exports.getShiftReport = asyncHandler( async(req, res, next) => {
         title: "Smenski izveštaj o radu",
         path: "shift",
         userName: req.session.name,
+        avatarUrl: req.session.avatarUrl,
         reports
     });
 });

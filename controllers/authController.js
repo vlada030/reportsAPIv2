@@ -213,11 +213,23 @@ exports.getMe = asyncHandler(async (req, res) => {
 // @access  Private
 
 exports.updateDetails = asyncHandler(async (req, res, next) => {
-    const { name, email } = req.body;
+
+    const  errors = validationResult(req);
+    const errorsString = errors.array().reduce((acc, val) => {
+        acc += `${val.msg}; `;
+        return acc
+    }, '');
+        
+    // validacija preko express-validatora
+    if (!errors.isEmpty()) {
+        return res.status(400).json({
+            success: false,
+            error: errorsString
+        })
+    }
     
-    const user = await User.findByIdAndUpdate(req.user.id, {name, email}, {
+    const user = await User.findByIdAndUpdate(req.user.id, req.body, {
         new: true,
-        runValidators: true
     });  
     
     res.status(200).json({
@@ -225,7 +237,7 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
         data: user
     });    
     
-}); 
+});  
 
 // @desc    Update loged user password 
 // @route   PUT /api/v2/auth/updatePassword
@@ -237,14 +249,13 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
 
     // pozivamo methods iz User modela
     if (!(await user.passwordMatchCheck(req.body.currentPassword))) {
-        return next(new ErrorResponse('Postojeca sifra neispravna', 401));
+        return next(new ErrorResponse('Unesite ispravnu sadašnju šifru', 401));
     }
 
     user.password = req.body.newPassword;
-    // snimamo sa validateBeforeSave: true
 
-    // izbrisi postojeci token iz tokens array
-    user.tokens = user.tokens.filter(token => token.token !== req.session.token);
+    // izbrisi sve tokene iz tokens array
+    user.tokens = [];
 
     await user.save();
     // prilikom promene ili resetovanja sifre VRACA SE TOKEN - pravilo
@@ -269,7 +280,7 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
     // snimanje hashovanog tokena i vremena isteka
     await user.save();
 
-    const resetUrl = `${req.protocol}://${req.get('host')}/api/v2/auth/resetpassword/${resetToken}`;
+    const resetUrl = `${req.protocol}://${req.get('host')}/api/v1/auth/resetpassword/${resetToken}`;
 
     //slanje emaila sa linkom za reset
     try {
@@ -301,6 +312,21 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
 // @access  Public
 
 exports.resetPassword = asyncHandler(async (req, res, next) => {
+    // validacija input password
+    const  errors = validationResult(req);
+    const errorsString = errors.array().reduce((acc, val) => {
+        acc += `${val.msg}; `;
+        return acc
+    }, '');
+        
+    // validacija preko express-validatora
+    if (!errors.isEmpty()) {
+        return res.status(400).json({
+            success: false,
+            error: errorsString
+        })
+    }
+
     const resetPasswordToken = crypto.createHash('sha256').update(req.params.resettoken).digest('hex');
 
     const user = await User.findOne({
@@ -309,7 +335,7 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
     });
 
     if (!user) {
-        return next(new ErrorResponse('Neispravan token', 400));
+        return next(new ErrorResponse('Neispravan token. Obratite pažnju da imate 10 minuta od momenta pristizanja emaila da resetujete zaboravljenu šifru.', 400));
     }
     // da bi ovo radilo ovako MORA da se UPOTREBI findOne jer find vraca Array 
     user.password = req.body.password;
@@ -331,13 +357,18 @@ exports.updateAvatar = asyncHandler(async (req, res, next) => {
     if (!req.file) {
         return next(new ErrorResponse('Niste izabrali avatar sliku', 400));
     }
+
+    //const ext = req.file.mimetype.split("/")[1];
+    const url = `users/user-${req.user.id}-${Date.now()}.jpeg`;
     
     //req.user.avatar = req.file.buffer;
+
     // dodavanje sharp modula za narmalizaciju slike resize / png i vracanje u buffer format zbog snimanja u db
-    const buffer = await sharp(req.file.buffer).resize({width: 250, height: 250}).png().toBuffer();
+    // sharp modula za narmalizaciju slike resize / jpeg, prihvata se kao buffer i nakon obrade snima se u fajl
+    await sharp(req.file.buffer).resize({width: 500, height: 500}).toFormat('jpeg').jpeg({quality: 90}).toFile(`public/${url}`);
 
     //const user = await req.user.save();
-    const user = await User.findByIdAndUpdate(req.user.id, {avatar: buffer}, {
+    const user = await User.findByIdAndUpdate(req.user.id, {avatar: url}, {
         new: true
     });
 
@@ -346,49 +377,46 @@ exports.updateAvatar = asyncHandler(async (req, res, next) => {
         data: user
     });    
     
-}); 
+});
 
-// @desc    Get user avatar
-// @route   GET /api/v2/users/me/avatar
-// @access  Private
-
-exports.getAvatar = asyncHandler(async (req, res, next) => {
-
-    const user = await User.findById(req.user.id).select('+avatar');
-
-    if (!user) {
-        return next(new ErrorResponse(`Korisnik sa trazenim id ${req.user.id} ne postoji`, 400));
-    }
-
-    if (!user.avatar) {
-        return next(new ErrorResponse(`Korisnik sa trazenim id ${req.user.id} nema avatar sliku`, 400));
-    }
-    // nije bitna originalna extenzija slike bmp/jpg/jpeg/png
-    // u svakom slučaju preko sharp modula postavili smo da slika uvek bude png
-    res.set('Content-Type', 'image/png');
- 
-    res.status(200).send(user.avatar);         
- }); 
 
 // @desc    Delete user avatar
 // @route   DELETE /api/v2/auth/me/avatar
 // @access  Private
 
 exports.deleteAvatar = asyncHandler(async (req, res, next) => {
-        
-   req.user.avatar = void 0;
+    let user = await User.findById(req.user.id);
+
+    if (!user) {
+        return next(new ErrorResponse(`Korisnik sa trazenim id ${req.user.id} ne postoji`, 400));
+    }
+
+    const removeFromPublic = req.user.avatar;
+
+    // vrati vrednost polja na default
+    req.user.avatar = 'users/user-default.png';
 
     //const user = await req.user.save();
-    const user = await User.findByIdAndUpdate(req.user.id, {avatar: req.user.avatar}, {
+    user = await User.findByIdAndUpdate(req.user.id, {avatar: req.user.avatar}, {
         new: true
     });
+
+    // izbriši avatar iz public foldera osim ako je default
+    if (!removeFromPublic.endsWith('.png')) {
+        fs.unlink(`public/${removeFromPublic}`, (err) => {
+            if (err) {
+                console.log('Slika ne postoji u Public folderu.');
+            } else {
+                console.log('Slika uspešno obrisana iz Public foldera.');
+            }
+       })
+    }
 
     res.status(200).json({
         success: true,
         data: user
-    });    
-    
-}); 
+    });       
+});
 
 // @desc    Log user out & clear cookie 
 // @route   POST /api/v2/auth/logout
@@ -500,6 +528,7 @@ const sendTokenResponse = async (user, statusCode, res, req) => {
     req.session.token = token;
     req.session.isLoggedIn = true;
     req.session.name = user.name;
+    req.session.avatarUrl = user.avatar;
     
     res
     .status(statusCode)

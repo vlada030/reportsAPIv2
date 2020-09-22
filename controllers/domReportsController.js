@@ -41,6 +41,7 @@ exports.getDomReport = asyncHandler(async (req, res, next) => {
                 path: "dom",
                 lang,
                 userName: req.session.name,
+                avatarUrl: req.session.avatarUrl,
                 readonlyInputStatus: false,
                 errorMessage: 'Traženi izveštaj ne postoji ili je izbrisan.'
             });
@@ -52,6 +53,7 @@ exports.getDomReport = asyncHandler(async (req, res, next) => {
         path: "dom",
         lang,
         userName: req.session.name,
+        avatarUrl: req.session.avatarUrl,
         report,
         readonlyInputStatus: false   
     })
@@ -87,6 +89,7 @@ exports.getAllDomReportsHTML = asyncHandler(async(req, res) => {
         title: "Izveštaji za domaće tržište",
         path: "dom",
         userName: req.session.name,
+        avatarUrl: req.session.avatarUrl,
         reports
     });
 });
@@ -116,6 +119,7 @@ exports.createDomReport = asyncHandler(async (req, res, next) => {
             path: "dom",
             lang,
             userName: req.session.name,
+            avatarUrl: req.session.avatarUrl,
             errorMessage: errors.array()[0].msg,
             report: req.body,
             readonlyInputStatus: false
@@ -140,6 +144,7 @@ exports.createDomReport = asyncHandler(async (req, res, next) => {
         path: "dom",
         lang,
         userName: req.session.name,
+        avatarUrl: req.session.avatarUrl,
         successMessage: 'Izveštaj je uspešno snimljen u bazu.',
         report: req.body,
         readonlyInputStatus: false    
@@ -196,6 +201,7 @@ exports.deleteDomReport = asyncHandler(async (req, res, next) => {
         path: "dom",
         lang,
         userName: req.session.name,
+        avatarUrl: req.session.avatarUrl,
         readonlyInputStatus: false,
         successMessage: 'Izveštaj je izbrisan'       
     });
