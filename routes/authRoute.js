@@ -50,7 +50,7 @@ router
     .delete(protect, deleteAvatar);
 
 router.put(
-    "/update",
+    "me/update",
     protect,
     [
         body("name")
@@ -68,7 +68,7 @@ router.put(
 );
 
 router.put(
-    "/updatepassword",
+    "me/updatepassword",
     protect,
     [
         body(

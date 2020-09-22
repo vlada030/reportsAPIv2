@@ -198,13 +198,17 @@ exports.login = asyncHandler(async (req, res, next) => {
 
 exports.getMe = asyncHandler(async (req, res) => {
 
-    const user = await User.findById(req.user.id).populate({
-        path: 'products',
-        select:'proizvod sifra'
-    });
-    res.status(200).json({
-        success: true,
-        data: user
+    // const user = await User.findById(req.user.id).populate({
+    //     path: 'products',
+    //     select:'proizvod sifra'
+    // });
+
+    res.status(200).render("user_panel", {
+        title: "Kornički panel",
+        userName: req.session.name,
+        avatarUrl: req.session.avatarUrl
+
+    
     });
 });
 
