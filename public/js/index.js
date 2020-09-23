@@ -1,6 +1,6 @@
 // bez ovoga ne radi npr async/await... i blokira celu app
 import '@babel/polyfill';
-import {getProduct, updateProduct, deleteReport} from './ajaxRequests';
+import {getProduct, updateProduct, deleteReport, updateUserDetail, updateUserPassword} from './ajaxRequests';
 import errorHandler from './errorHandler';
 import {showMessage, deleteMessage} from './alertMessage';
 import {elements, updateReportsUI, updateProductUI, addItem, delItem, updateTotalLength, addWorker, removeWorker, addItemDorada, removeItemDorada, addItemProboj, removeItemProboj} from './userInterface';
@@ -264,4 +264,72 @@ if (elements.shiftReportsForm) {
         removeItemProboj();
         
     })
+}
+
+// Update User Name
+if (elements.updateNameForm) {
+    elements.submitName.addEventListener('click', async (e) => {
+        e.preventDefault();
+        deleteMessage();
+
+        const name = elements.name.value;
+
+        try {
+            const user = await updateUserDetail({name});
+            showMessage('Korisničko ime uspešno promenjeno. Morate da se ulogujete ponovo da bi primenili izmene.', 'success');
+
+            // window.setTimeout(() => {
+                
+            //     location.assign('/api/v2/auth/me');                    
+                
+            // }, 1500)            
+
+        } catch (error) {
+            errorHandler(error);
+        }
+    });
+}
+
+// Update User Email
+if (elements.updateEmailForm) {
+    elements.submitEmail.addEventListener('click', async (e) => {
+        e.preventDefault();
+        deleteMessage();
+
+        const email = elements.email.value;
+
+        try {
+            const user = await updateUserDetail({email});
+            showMessage('Korisnički email je uspešno promenjen. Morate da se ulogujete ponovo da bi primenili izmene.', 'success');
+
+            // window.setTimeout(() => {
+                
+            //     location.assign('/api/v2/auth/me');                    
+                
+            // }, 1500)            
+
+        } catch (error) {
+            errorHandler(error);
+        }
+    });
+}
+
+// Update User Password
+if (elements.updatePasswordForm) {
+    elements.submitPassword.addEventListener('click', async (e) => {
+        e.preventDefault();
+        deleteMessage();
+
+        const currentPassword = elements.currentPassword.value;
+        const newPassword = elements.newPassword.value;
+
+        try {
+            const user = await updateUserPassword({currentPassword, newPassword});
+            showMessage('Korisnička šifra je uspešno promenjena. Morate da se ulogujete ponovo da bi primenili izmene.', 'success');
+          
+
+        } catch (error) {
+            errorHandler(error);
+        }
+    });
 }

@@ -55,7 +55,22 @@ export const elements = {
     name: document.getElementById('name'),
     email: document.getElementById('email'),
     password: document.getElementById('password'),
-    password2: document.getElementById('password2')
+    password2: document.getElementById('password2'),
+
+    // user panel
+    updateNameForm: document.getElementById('updateName'),
+    updateEmailForm: document.getElementById('updateEmail'),
+    updatePasswordForm: document.getElementById('updatePassword'),
+    updateAvatarForm: document.getElementById('updateAvatar'),
+
+    submitName: document.getElementById('submitName'),
+    submitEmail: document.getElementById('submitEmail'),
+    submitPassword: document.getElementById('submitPassword'),
+    submitAvatar: document.getElementById('submitAvatar'),
+
+    currentPassword: document.getElementById('currentPassword'),
+    newPassword: document.getElementById('newPassword')
+
 };
 
 export const updateReportsUI = (elem) => {

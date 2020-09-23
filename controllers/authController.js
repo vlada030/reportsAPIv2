@@ -206,18 +206,17 @@ exports.getMe = asyncHandler(async (req, res) => {
     res.status(200).render("user_panel", {
         title: "Kornički panel",
         userName: req.session.name,
-        avatarUrl: req.session.avatarUrl
-
+        avatarUrl: req.session.avatarUrl,
+        userEmail: req.session.email
     
     });
 });
 
 // @desc    Update loged user info 
-// @route   PUT /api/v2/auth/updateDetails
+// @route   PUT /api/v2/auth/me/update
 // @access  Private
 
 exports.updateDetails = asyncHandler(async (req, res, next) => {
-
     const  errors = validationResult(req);
     const errorsString = errors.array().reduce((acc, val) => {
         acc += `${val.msg}; `;
@@ -231,9 +230,18 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
             error: errorsString
         })
     }
+
+    const emailExist = await User.findOne({email: req.body.email});
+
+    if (emailExist) {
+        return res.status(400).json({
+            success: false,
+            error: 'Korisnik sa unetim e-mailom postoji'
+        })
+    }
     
     const user = await User.findByIdAndUpdate(req.user.id, req.body, {
-        new: true,
+        new: true
     });  
     
     res.status(200).json({
@@ -244,16 +252,30 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
 });  
 
 // @desc    Update loged user password 
-// @route   PUT /api/v2/auth/updatePassword
+// @route   PUT /api/v2/auth/me/updatePassword
 // @access  Private
 
 exports.updatePassword = asyncHandler(async (req, res, next) => {
+    
+    const  errors = validationResult(req);
+    const errorsString = errors.array().reduce((acc, val) => {
+        acc += `${val.msg}; `;
+        return acc
+    }, '');
         
+    // validacija preko express-validatora
+    if (!errors.isEmpty()) {
+        return res.status(400).json({
+            success: false,
+            error: errorsString
+        })
+    }
+
     const user = await User.findById(req.user.id).select('+password');
 
     // pozivamo methods iz User modela
     if (!(await user.passwordMatchCheck(req.body.currentPassword))) {
-        return next(new ErrorResponse('Unesite ispravnu sadašnju šifru', 401));
+        return next(new ErrorResponse('Unesite ispravnu tekuću šifru', 401));
     }
 
     user.password = req.body.newPassword;
@@ -533,6 +555,7 @@ const sendTokenResponse = async (user, statusCode, res, req) => {
     req.session.isLoggedIn = true;
     req.session.name = user.name;
     req.session.avatarUrl = user.avatar;
+    req.session.email = user.email;    
     
     res
     .status(statusCode)

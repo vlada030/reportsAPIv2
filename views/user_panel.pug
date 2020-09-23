@@ -4,32 +4,72 @@ block primaryNavBar
     include layouts/primaryNavBarAll.pug
 
 block content
+    br
+    br
+    br
     main.py-4
         .container
             .row
                 .col-md-6.mx-auto
                     #accordion
-                        .card
-                            #headingOne.card-header
+                        .card.mb-3
+                            #headingOne.card-header.bg-warning
                                 h5.mb-0
-                                    button.btn.btn-link(data-toggle='collapse', data-target='#collapseOne', aria-expanded='true', aria-controls='collapseOne') Promenite korisničko ime ili email
-                            #collapseOne.collapse.show(aria-labelledby='headingOne', data-parent='#accordion')
+                                    button.btn.collapsed(data-toggle='collapse', data-target='#collapseOne', aria-expanded='true', aria-controls='collapseOne') Promenite korisničko ime
+                            #collapseOne.collapse(aria-labelledby='headingOne', data-parent='#accordion')
                                 .card-body
-                                    | Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                        .card
-                            #headingTwo.card-header
+                                    form#updateName
+                                        .form-group.mb-4
+                                            label(for='name').mb-2 Unesite novo korisničko ime
+                                            input#name.form-control.mt-1.mb-1(name='name', type='text', value=userName)
+                                            br
+
+                                        button.btn.btn-info.btn-block.mt-3(type='submit')#submitName Izmeni
+                        .card.mb-3
+                            #headingFour.card-header.bg-warning
                                 h5.mb-0
-                                    button.btn.btn-link.collapsed(data-toggle='collapse', data-target='#collapseTwo', aria-expanded='false', aria-controls='collapseTwo') Promenite korisničku šifru
+                                    button.btn.collapsed(data-toggle='collapse', data-target='#collapseFour', aria-expanded='true', aria-controls='collapseFour') Promenite korisnički email
+                            #collapseFour.collapse(aria-labelledby='headingFour', data-parent='#accordion')
+                                .card-body
+                                    form#updateEmail
+                                        .form-group
+                                            label(for='email').mb-2 Unesite novi korisnički email
+                                            input#email.form-control.mt-1.mb-1(name='email', type='email', value=userEmail)
+                                            br
+
+                                        button.btn.btn-info.btn-block.mt-3(type='submit')#submitEmail Izmeni
+                        .card.mb-3
+                            #headingTwo.card-header.bg-warning
+                                h5.mb-0
+                                    button.btn.collapsed(data-toggle='collapse', data-target='#collapseTwo', aria-expanded='false', aria-controls='collapseTwo') Promenite korisničku šifru
                             #collapseTwo.collapse(aria-labelledby='headingTwo', data-parent='#accordion')
                                 .card-body
-                                    | Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                        .card
-                            #headingThree.card-header
+                                    form#updatePassword
+                                        .form-group.mb-4
+                                            label.mb-2(for='currentPassword') Unesite postojeću šifru
+                                            input#currentPassword.form-control.mt-1.mb-1(name='currentPassword', type='password')
+
+                                        .form-group
+                                            label.mb-2(for='newPassword') Unesite novu šifru
+                                            input#newPassword.form-control.mt-1.mb-1(name='newPassword', type='password')
+                                            br
+
+                                        button.btn.btn-info.btn-block.mt-3(type='submit')#submitPassword Izmeni
+                        .card.mb-3
+                            #headingThree.card-header.bg-warning
                                 h5.mb-0
-                                    button.btn.btn-link.collapsed(data-toggle='collapse', data-target='#collapseThree', aria-expanded='false', aria-controls='collapseThree') Promenite avatar sliku
+                                    button.btn.collapsed(data-toggle='collapse', data-target='#collapseThree', aria-expanded='false', aria-controls='collapseThree') Promenite avatar sliku
                             #collapseThree.collapse(aria-labelledby='headingThree', data-parent='#accordion')
                                 .card-body
-                                    | Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                                    form#updateAvatar
+                                        .form-group.mb-4
+                                            label.mb-2(for='avatar') Izaberite avatar sliku
+                                            input#avatar.form-control.mt-1.mb-1(name='avatar', type='file')
+
+                                        .form-group.d-flex.align-items-center.justify-content-center
+                                            img.icon.icon--update-avatar(src=`/img/${avatarUrl}`, alt="avatar")
+
+                                        button.btn.btn-info.btn-block.mt-3(type='submit').submitAvatar Izmeni                                     
 
     
 block footer

@@ -27,6 +27,11 @@ body {
     position: relative;
 }
 
+main {
+    min-height: 80vh;
+    
+}
+
 .navbar:nth-child(2) {
     border-bottom: 2px solid rgba(0, 0, 0, 0.2);
 }
@@ -40,6 +45,11 @@ body {
 
 .icon--user {
     border: none;
+}
+
+.icon--update-avatar {
+    width: 8rem;
+    height: 8rem;
 }
 
 

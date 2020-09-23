@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // slanje CSRF tokena uz svaki axios request
-axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');;
+axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
 
 //axios.defaults.withCredentials = true;
@@ -41,6 +41,30 @@ export const updateProduct = async ( value, data ) => {
         
     const result = await axios({
         url: `${baseURL}/api/v2/products/${value}`,
+        method: 'PUT',
+        data           
+    });
+
+    return result;      
+}
+
+// promena User Name / Email
+export const updateUserDetail = async ( data ) => {
+        
+    const result = await axios({
+        url: `${baseURL}/api/v2/auth/me/update`,
+        method: 'PUT',
+        data           
+    });
+
+    return result;      
+}
+
+// promena Passworda
+export const updateUserPassword = async ( data ) => {
+        
+    const result = await axios({
+        url: `${baseURL}/api/v2/auth/me/updatepassword`,
         method: 'PUT',
         data           
     });

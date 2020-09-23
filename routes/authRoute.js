@@ -50,10 +50,10 @@ router
     .delete(protect, deleteAvatar);
 
 router.put(
-    "me/update",
+    "/me/update",
     protect,
     [
-        body("name")
+        check("name")
             .optional()
             .isLength({ max: 15 })
             .withMessage("Korisničko ime može sadržati najviše 15 karaktera")
@@ -68,13 +68,17 @@ router.put(
 );
 
 router.put(
-    "me/updatepassword",
+    "/me/updatepassword",
     protect,
     [
         body(
-            "password",
-            "Šifra treba da sadrži slova i brojeve, 7 - 15 karaktera"
+            "currentPassword",
+            "Polje Postojeća šifra treba da sadrži slova i brojeve, 7 - 15 karaktera"
         ).isLength({ min: 7, max: 15 }),
+        body(
+            "newPassword",
+            "Polje Nova šifra treba da sadrži slova i brojeve, 7 - 15 karaktera"
+        ).isLength({ min: 7, max: 15 })
     ],
     updatePassword
 );
