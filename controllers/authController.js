@@ -114,10 +114,12 @@ exports.register = asyncHandler(async (req, res, next) => {
     // slanje welcome emaila nakon uspesnog snimanja 
     sendWelcomeEmail(user.name, user.email);
 
-    // umesto ovoga ispod stavlja se response koji u sebi ukljucuju cookie
+    // generisi token i session podatke
+    // postavi response status na 200 
     await sendTokenResponse(user, 200, res, req);
-    
-    });
+
+    res.redirect('/api/v2/reports/dom');
+});
     
 // @desc   Get HTML for User login
 // @route  GET /api/v2/auth/login
@@ -186,9 +188,12 @@ exports.login = asyncHandler(async (req, res, next) => {
     });
     }
     
-    // umesto ovoga ispod stavlja se response koji u sebi ukljucuju cookie
+    // generisi token i session podatke
+    // postavi response status na 200 
     await sendTokenResponse(user, 200, res, req);
 
+    res.redirect('/api/v2/reports/dom');
+    
 }); 
 
 
@@ -243,11 +248,13 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
     const user = await User.findByIdAndUpdate(req.user.id, req.body, {
         new: true
     });  
+
+    // generisi novi token i session podatke
+    // postavi response status na 200
+    await sendTokenResponse(user, 200, res, req);
     
-    res.status(200).json({
-        success: true,
-        data: user
-    });    
+    // refresh stranice da se vide izmene
+    res.json({success: true});    
     
 });  
 
@@ -286,7 +293,9 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
     await user.save();
     // prilikom promene ili resetovanja sifre VRACA SE TOKEN - pravilo
     // jer je sada korisnik sa drugom sifrom
-    await sendTokenResponse(user, 200, res, req);        
+    await sendTokenResponse(user, 200, res, req);  
+    
+    res.json({success: true});
 }); 
 
 // @desc    Forgotten password link
@@ -559,5 +568,5 @@ const sendTokenResponse = async (user, statusCode, res, req) => {
     
     res
     .status(statusCode)
-    .redirect('/api/v2/reports/dom')
+    
 };

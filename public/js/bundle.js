@@ -8616,6 +8616,9 @@ var _default = function _default(error) {
     } else if (error.response.status === 404) {
       console.log('Proizvod sa unetom šifrom ne postoji!');
       (0, _alertMessage.showMessage)('Proizvod sa unetom šifrom ne postoji', 'error');
+    } else if (error.response.status === 401) {
+      console.log('Unesite ispravnu tekuću šifru');
+      (0, _alertMessage.showMessage)('Unesite ispravnu tekuću šifru', 'error');
     } else {
       //console.log(error.response.status);
       //console.log(error.response.data.error);
@@ -9551,24 +9554,24 @@ if (_userInterface.elements.updateNameForm) {
 
             case 6:
               user = _context5.sent;
-              (0, _alertMessage.showMessage)('Korisničko ime uspešno promenjeno. Morate da se ulogujete ponovo da bi primenili izmene.', 'success'); // window.setTimeout(() => {
-              //     location.assign('/api/v2/auth/me');                    
-              // }, 1500)            
-
-              _context5.next = 13;
+              (0, _alertMessage.showMessage)('Korisničko ime uspešno promenjeno.', 'success');
+              window.setTimeout(function () {
+                location.assign('/api/v2/auth/me');
+              }, 1500);
+              _context5.next = 14;
               break;
 
-            case 10:
-              _context5.prev = 10;
+            case 11:
+              _context5.prev = 11;
               _context5.t0 = _context5["catch"](3);
               (0, _errorHandler.default)(_context5.t0);
 
-            case 13:
+            case 14:
             case "end":
               return _context5.stop();
           }
         }
-      }, _callee5, null, [[3, 10]]);
+      }, _callee5, null, [[3, 11]]);
     }));
 
     return function (_x5) {
@@ -9597,24 +9600,24 @@ if (_userInterface.elements.updateEmailForm) {
 
             case 6:
               user = _context6.sent;
-              (0, _alertMessage.showMessage)('Korisnički email je uspešno promenjen. Morate da se ulogujete ponovo da bi primenili izmene.', 'success'); // window.setTimeout(() => {
-              //     location.assign('/api/v2/auth/me');                    
-              // }, 1500)            
-
-              _context6.next = 13;
+              (0, _alertMessage.showMessage)('Korisnički email je uspešno promenjen.', 'success');
+              window.setTimeout(function () {
+                location.assign('/api/v2/auth/me');
+              }, 1500);
+              _context6.next = 14;
               break;
 
-            case 10:
-              _context6.prev = 10;
+            case 11:
+              _context6.prev = 11;
               _context6.t0 = _context6["catch"](3);
               (0, _errorHandler.default)(_context6.t0);
 
-            case 13:
+            case 14:
             case "end":
               return _context6.stop();
           }
         }
-      }, _callee6, null, [[3, 10]]);
+      }, _callee6, null, [[3, 11]]);
     }));
 
     return function (_x6) {
@@ -9645,21 +9648,22 @@ if (_userInterface.elements.updatePasswordForm) {
 
             case 7:
               user = _context7.sent;
-              (0, _alertMessage.showMessage)('Korisnička šifra je uspešno promenjena. Morate da se ulogujete ponovo da bi primenili izmene.', 'success');
-              _context7.next = 14;
+              console.log(user);
+              (0, _alertMessage.showMessage)('Korisnička šifra je uspešno promenjena.', 'success');
+              _context7.next = 15;
               break;
 
-            case 11:
-              _context7.prev = 11;
+            case 12:
+              _context7.prev = 12;
               _context7.t0 = _context7["catch"](4);
               (0, _errorHandler.default)(_context7.t0);
 
-            case 14:
+            case 15:
             case "end":
               return _context7.stop();
           }
         }
-      }, _callee7, null, [[4, 11]]);
+      }, _callee7, null, [[4, 12]]);
     }));
 
     return function (_x7) {
@@ -9695,7 +9699,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50295" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49932" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

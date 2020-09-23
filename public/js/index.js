@@ -276,13 +276,13 @@ if (elements.updateNameForm) {
 
         try {
             const user = await updateUserDetail({name});
-            showMessage('Korisničko ime uspešno promenjeno. Morate da se ulogujete ponovo da bi primenili izmene.', 'success');
+            showMessage('Korisničko ime uspešno promenjeno.', 'success');
 
-            // window.setTimeout(() => {
+            window.setTimeout(() => {
                 
-            //     location.assign('/api/v2/auth/me');                    
+                location.assign('/api/v2/auth/me');                    
                 
-            // }, 1500)            
+            }, 1500)            
 
         } catch (error) {
             errorHandler(error);
@@ -300,13 +300,13 @@ if (elements.updateEmailForm) {
 
         try {
             const user = await updateUserDetail({email});
-            showMessage('Korisnički email je uspešno promenjen. Morate da se ulogujete ponovo da bi primenili izmene.', 'success');
+            showMessage('Korisnički email je uspešno promenjen.', 'success');
 
-            // window.setTimeout(() => {
+            window.setTimeout(() => {
                 
-            //     location.assign('/api/v2/auth/me');                    
+                location.assign('/api/v2/auth/me');                    
                 
-            // }, 1500)            
+            }, 1500)            
 
         } catch (error) {
             errorHandler(error);
@@ -325,7 +325,8 @@ if (elements.updatePasswordForm) {
 
         try {
             const user = await updateUserPassword({currentPassword, newPassword});
-            showMessage('Korisnička šifra je uspešno promenjena. Morate da se ulogujete ponovo da bi primenili izmene.', 'success');
+            console.log(user);
+            showMessage('Korisnička šifra je uspešno promenjena.', 'success');
           
 
         } catch (error) {

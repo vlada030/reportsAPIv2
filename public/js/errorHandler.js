@@ -22,6 +22,9 @@ export default error => {
         } else if (error.response.status === 404) {
             console.log('Proizvod sa unetom šifrom ne postoji!')
             showMessage('Proizvod sa unetom šifrom ne postoji', 'error')
+        } else if (error.response.status === 401) {
+            console.log('Unesite ispravnu tekuću šifru')
+            showMessage('Unesite ispravnu tekuću šifru', 'error')
         }
          else {
             //console.log(error.response.status);
