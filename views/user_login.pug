@@ -26,8 +26,24 @@ block content
                                     label(for='password') Šifra
                                     input#password.form-control.mt-1.mb-1(type='password', name='password', value=oldInput.password, placeholder='*******')
 
-                                a.text-muted(href='#')
+                                a.text-muted(href='#' data-toggle="modal" data-target="#exampleModalCenter")
                                     p Zaboravili ste šifru?
+
+                                #exampleModalCenter.modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true')
+                                    .modal-dialog.modal-dialog-centered(role='document')
+                                        .modal-content
+                                            .modal-header
+                                                h5#exampleModalLongTitle.modal-title Zaboravljena šifra
+                                                button.close(type='button' data-dismiss='modal' aria-label='Close')
+                                                    span(aria-hidden='true') ×
+                                            .modal-body 
+                                                form(action="#" method="POST")
+                                                    .form-group
+                                                        label(for='email') Unesite email adresu sa kojom ste se logovali
+                                                        input#forgottenEmail.form-control.mt-1.mb-1(type='email' name='email' autofocus=true)
+                                            .modal-footer
+                                                button.btn.btn-secondary(type='button' data-dismiss='modal') Otkaži
+                                                button.btn.btn-primary(type='button') Pošalji
 
                                 input(type='hidden', name='_csrf', value=csrfToken)
 
