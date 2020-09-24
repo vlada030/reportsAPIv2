@@ -62,14 +62,16 @@ block content
                             #collapseThree.collapse(aria-labelledby='headingThree', data-parent='#accordion')
                                 .card-body
                                     form#updateAvatar
-                                        .form-group.mb-4
-                                            label.mb-2(for='avatar') Izaberite avatar sliku
-                                            input#avatar.form-control.mt-1.mb-1(name='avatar', type='file')
+                                        .form-group.mb-0
+                                            label.mb-2(for='avatar').btn.btn-info.btn-block Izaberite avatar sliku
+                                            input#avatar.form-control.mt-1.mb-1(name='avatar', type='file' accept='image/*')
 
-                                        .form-group.d-flex.align-items-center.justify-content-center
-                                            img.icon.icon--update-avatar(src=`/img/${avatarUrl}`, alt="avatar")
+                                        .form-group.d-flex.align-items-center.justify-content-center.flex-column
+                                            img#avatarImg.icon.icon--update-avatar.mb-3(src=`/img/${avatarUrl}`, alt="avatar")
+                                            p#avatarDesc
 
-                                        button.btn.btn-info.btn-block.mt-3(type='submit').submitAvatar Izmeni                                     
+                                        button.btn.btn-info.btn-block.mt-3(type='submit')#submitAvatar Izmeni                                     
+                                        button.btn.btn-info.btn-block.mt-3(type='submit')#defaultAvatar Obriši Sliku                                     
 
     
 block footer

@@ -112,6 +112,10 @@ label:after {
     /* margin-left: 0.3rem; */
 }
 
+#updateAvatar label:after {
+    content: "";
+}
+
 .alert {
     width: 50%;
     margin: 1rem auto;

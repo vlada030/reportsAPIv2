@@ -67,10 +67,13 @@ export const elements = {
     submitEmail: document.getElementById('submitEmail'),
     submitPassword: document.getElementById('submitPassword'),
     submitAvatar: document.getElementById('submitAvatar'),
+    restoreAvatar: document.getElementById('defaultAvatar'),
 
     currentPassword: document.getElementById('currentPassword'),
-    newPassword: document.getElementById('newPassword')
-
+    newPassword: document.getElementById('newPassword'),
+    avatar: document.getElementById('avatar'),
+    avatarImg: document.getElementById('avatarImg'),
+    avatarDesc: document.getElementById('avatarDesc')
 };
 
 export const updateReportsUI = (elem) => {

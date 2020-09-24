@@ -46,7 +46,7 @@ router.post("/logoutAll", protect, logoutAll);
 router.route("/me").get(protect, getMe).delete(protect, deleteMe);
 router
     .route("/me/avatar")
-    .post(protect, uploadUserPhoto, updateAvatar)
+    .put(protect, uploadUserPhoto, updateAvatar)
     .delete(protect, deleteAvatar);
 
 router.put(

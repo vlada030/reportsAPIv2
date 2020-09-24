@@ -8366,7 +8366,7 @@ module.exports = require('./lib/axios');
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.updateUserPassword = exports.updateUserDetail = exports.updateProduct = exports.deleteReport = exports.getProduct = void 0;
+exports.deleteUserAvatar = exports.updateUserDetail = exports.updateProduct = exports.deleteReport = exports.getProduct = void 0;
 
 var _axios = _interopRequireDefault(require("axios"));
 
@@ -8485,13 +8485,13 @@ var updateProduct = /*#__PURE__*/function () {
   return function updateProduct(_x4, _x5) {
     return _ref3.apply(this, arguments);
   };
-}(); // promena User Name / Email
+}(); // promena User Name / Email / Password / Avatar
 
 
 exports.updateProduct = updateProduct;
 
 var updateUserDetail = /*#__PURE__*/function () {
-  var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(data) {
+  var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(urlPart, data) {
     var result;
     return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) {
@@ -8499,7 +8499,7 @@ var updateUserDetail = /*#__PURE__*/function () {
           case 0:
             _context4.next = 2;
             return (0, _axios.default)({
-              url: "".concat(baseURL, "/api/v2/auth/me/update"),
+              url: "".concat(baseURL, "/api/v2/auth/me/").concat(urlPart),
               method: 'PUT',
               data: data
             });
@@ -8516,16 +8516,16 @@ var updateUserDetail = /*#__PURE__*/function () {
     }, _callee4);
   }));
 
-  return function updateUserDetail(_x6) {
+  return function updateUserDetail(_x6, _x7) {
     return _ref4.apply(this, arguments);
   };
-}(); // promena Passworda
+}(); // Izbriši / postavi default Avatar sliku
 
 
 exports.updateUserDetail = updateUserDetail;
 
-var updateUserPassword = /*#__PURE__*/function () {
-  var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(data) {
+var deleteUserAvatar = /*#__PURE__*/function () {
+  var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
     var result;
     return regeneratorRuntime.wrap(function _callee5$(_context5) {
       while (1) {
@@ -8533,9 +8533,8 @@ var updateUserPassword = /*#__PURE__*/function () {
           case 0:
             _context5.next = 2;
             return (0, _axios.default)({
-              url: "".concat(baseURL, "/api/v2/auth/me/updatepassword"),
-              method: 'PUT',
-              data: data
+              url: "".concat(baseURL, "/api/v2/auth/me/avatar"),
+              method: 'DELETE'
             });
 
           case 2:
@@ -8550,12 +8549,12 @@ var updateUserPassword = /*#__PURE__*/function () {
     }, _callee5);
   }));
 
-  return function updateUserPassword(_x7) {
+  return function deleteUserAvatar() {
     return _ref5.apply(this, arguments);
   };
 }();
 
-exports.updateUserPassword = updateUserPassword;
+exports.deleteUserAvatar = deleteUserAvatar;
 },{"axios":"../../node_modules/axios/index.js"}],"alertMessage.js":[function(require,module,exports) {
 "use strict";
 
@@ -8608,15 +8607,18 @@ var _default = function _default(error) {
     console.log(error.response);
 
     if (error.response.status === 500) {
-      console.log('Greška u konekciji sa serverom');
-      (0, _alertMessage.showMessage)('Greška u konekciji sa serverom', 'error');
+      console.log('Greška sa serverom');
+      (0, _alertMessage.showMessage)('Greška sa serverom', 'error');
+    } else if (error.response.status === 400 && error.response.config.url.endsWith('auth/me/avatar')) {
+      console.log('Izabrani fajl mora da bude slika i veličine do 10MB');
+      (0, _alertMessage.showMessage)('Izabrani fajl mora da bude slika i veličine do 10MB', 'error');
     } else if (error.response.status === 422) {
       console.log('Greska prilikom validacije axios PUT requesta');
       (0, _alertMessage.showMessage)(error.response.data.data, 'error');
-    } else if (error.response.status === 404) {
+    } else if (error.response.status === 404 && error.response.config.url.endsWith('/json')) {
       console.log('Proizvod sa unetom šifrom ne postoji!');
       (0, _alertMessage.showMessage)('Proizvod sa unetom šifrom ne postoji', 'error');
-    } else if (error.response.status === 401) {
+    } else if (error.response.status === 401 && error.response.config.url.endsWith('auth/me/updatepassword')) {
       console.log('Unesite ispravnu tekuću šifru');
       (0, _alertMessage.showMessage)('Unesite ispravnu tekuću šifru', 'error');
     } else {
@@ -8711,8 +8713,12 @@ var elements = {
   submitEmail: document.getElementById('submitEmail'),
   submitPassword: document.getElementById('submitPassword'),
   submitAvatar: document.getElementById('submitAvatar'),
+  restoreAvatar: document.getElementById('defaultAvatar'),
   currentPassword: document.getElementById('currentPassword'),
-  newPassword: document.getElementById('newPassword')
+  newPassword: document.getElementById('newPassword'),
+  avatar: document.getElementById('avatar'),
+  avatarImg: document.getElementById('avatarImg'),
+  avatarDesc: document.getElementById('avatarDesc')
 };
 exports.elements = elements;
 
@@ -9548,7 +9554,7 @@ if (_userInterface.elements.updateNameForm) {
               name = _userInterface.elements.name.value;
               _context5.prev = 3;
               _context5.next = 6;
-              return (0, _ajaxRequests.updateUserDetail)({
+              return (0, _ajaxRequests.updateUserDetail)('update', {
                 name: name
               });
 
@@ -9594,7 +9600,7 @@ if (_userInterface.elements.updateEmailForm) {
               email = _userInterface.elements.email.value;
               _context6.prev = 3;
               _context6.next = 6;
-              return (0, _ajaxRequests.updateUserDetail)({
+              return (0, _ajaxRequests.updateUserDetail)('update', {
                 email: email
               });
 
@@ -9641,7 +9647,7 @@ if (_userInterface.elements.updatePasswordForm) {
               newPassword = _userInterface.elements.newPassword.value;
               _context7.prev = 4;
               _context7.next = 7;
-              return (0, _ajaxRequests.updateUserPassword)({
+              return (0, _ajaxRequests.updateUserDetail)('updatepassword', {
                 currentPassword: currentPassword,
                 newPassword: newPassword
               });
@@ -9668,6 +9674,115 @@ if (_userInterface.elements.updatePasswordForm) {
 
     return function (_x7) {
       return _ref7.apply(this, arguments);
+    };
+  }());
+} // Update User Avatar
+
+
+if (_userInterface.elements.updateAvatarForm) {
+  // FORMATIRANJE CELE FORME
+  _userInterface.elements.avatar.style.opacity = 0;
+
+  _userInterface.elements.avatar.addEventListener('change', function () {
+    // dodeli fajl
+    var file = _userInterface.elements.avatar.files[0]; // update UI
+
+    _userInterface.elements.avatarDesc.innerText = "".concat(file.name, "  ").concat(returnFileSize(file.size));
+    _userInterface.elements.avatarImg.src = URL.createObjectURL(file);
+  }); // preračunaj veličinu fajla pošto je uvek u B
+
+
+  var returnFileSize = function returnFileSize(number) {
+    if (number < 1024) {
+      return number + 'bytes';
+    } else if (number > 1024 && number < 1048576) {
+      return (number / 1024).toFixed(1) + 'KB';
+    } else if (number > 1048576) {
+      return (number / 1048576).toFixed(1) + 'MB';
+    }
+  }; // SUBMIT BUTTON
+
+
+  _userInterface.elements.submitAvatar.addEventListener('click', /*#__PURE__*/function () {
+    var _ref8 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8(e) {
+      var form, user;
+      return regeneratorRuntime.wrap(function _callee8$(_context8) {
+        while (1) {
+          switch (_context8.prev = _context8.next) {
+            case 0:
+              e.preventDefault();
+              (0, _alertMessage.deleteMessage)();
+              form = new FormData();
+              form.append('avatar', _userInterface.elements.avatar.files[0]);
+              _context8.prev = 4;
+              _context8.next = 7;
+              return (0, _ajaxRequests.updateUserDetail)('avatar', form);
+
+            case 7:
+              user = _context8.sent;
+              (0, _alertMessage.showMessage)('Profilna slika je uspešno promenjena.', 'success');
+              window.setTimeout(function () {
+                location.assign('/api/v2/auth/me');
+              }, 1500);
+              _context8.next = 15;
+              break;
+
+            case 12:
+              _context8.prev = 12;
+              _context8.t0 = _context8["catch"](4);
+              (0, _errorHandler.default)(_context8.t0);
+
+            case 15:
+            case "end":
+              return _context8.stop();
+          }
+        }
+      }, _callee8, null, [[4, 12]]);
+    }));
+
+    return function (_x8) {
+      return _ref8.apply(this, arguments);
+    };
+  }()); // RESTORE BUTTON
+
+
+  _userInterface.elements.restoreAvatar.addEventListener('click', /*#__PURE__*/function () {
+    var _ref9 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee9(e) {
+      var user;
+      return regeneratorRuntime.wrap(function _callee9$(_context9) {
+        while (1) {
+          switch (_context9.prev = _context9.next) {
+            case 0:
+              e.preventDefault();
+              (0, _alertMessage.deleteMessage)();
+              _context9.prev = 2;
+              _context9.next = 5;
+              return (0, _ajaxRequests.deleteUserAvatar)();
+
+            case 5:
+              user = _context9.sent;
+              (0, _alertMessage.showMessage)('Profilna slika je izbrisana.', 'success');
+              window.setTimeout(function () {
+                location.assign('/api/v2/auth/me');
+              }, 1500);
+              _context9.next = 13;
+              break;
+
+            case 10:
+              _context9.prev = 10;
+              _context9.t0 = _context9["catch"](2);
+              (0, _errorHandler.default)(_context9.t0);
+
+            case 13:
+            case "end":
+              return _context9.stop();
+          }
+        }
+      }, _callee9, null, [[2, 10]]);
+    }));
+
+    return function (_x9) {
+      return _ref9.apply(this, arguments);
     };
   }());
 }
@@ -9699,7 +9814,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49932" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51857" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

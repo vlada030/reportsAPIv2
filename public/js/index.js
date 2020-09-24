@@ -1,6 +1,6 @@
 // bez ovoga ne radi npr async/await... i blokira celu app
 import '@babel/polyfill';
-import {getProduct, updateProduct, deleteReport, updateUserDetail, updateUserPassword} from './ajaxRequests';
+import {getProduct, updateProduct, deleteReport, updateUserDetail, deleteUserAvatar} from './ajaxRequests';
 import errorHandler from './errorHandler';
 import {showMessage, deleteMessage} from './alertMessage';
 import {elements, updateReportsUI, updateProductUI, addItem, delItem, updateTotalLength, addWorker, removeWorker, addItemDorada, removeItemDorada, addItemProboj, removeItemProboj} from './userInterface';
@@ -275,7 +275,7 @@ if (elements.updateNameForm) {
         const name = elements.name.value;
 
         try {
-            const user = await updateUserDetail({name});
+            const user = await updateUserDetail('update', {name});
             showMessage('Korisničko ime uspešno promenjeno.', 'success');
 
             window.setTimeout(() => {
@@ -299,7 +299,7 @@ if (elements.updateEmailForm) {
         const email = elements.email.value;
 
         try {
-            const user = await updateUserDetail({email});
+            const user = await updateUserDetail('update', {email});
             showMessage('Korisnički email je uspešno promenjen.', 'success');
 
             window.setTimeout(() => {
@@ -324,11 +324,81 @@ if (elements.updatePasswordForm) {
         const newPassword = elements.newPassword.value;
 
         try {
-            const user = await updateUserPassword({currentPassword, newPassword});
+            const user = await updateUserDetail('updatepassword', {currentPassword, newPassword});
             console.log(user);
             showMessage('Korisnička šifra je uspešno promenjena.', 'success');
           
 
+        } catch (error) {
+            errorHandler(error);
+        }
+    });
+}
+
+// Update User Avatar
+if (elements.updateAvatarForm) {
+    // FORMATIRANJE CELE FORME
+    elements.avatar.style.opacity = 0;
+
+    elements.avatar.addEventListener('change', () => {
+        // dodeli fajl
+        const file = elements.avatar.files[0];
+        // update UI
+        elements.avatarDesc.innerText = `${file.name}  ${returnFileSize(file.size)}`;
+        elements.avatarImg.src = URL.createObjectURL(file);
+        
+    })
+    // preračunaj veličinu fajla pošto je uvek u B
+    const returnFileSize = (number) => {
+        if(number < 1024) {
+          return number + 'bytes';
+        } else if(number > 1024 && number < 1048576) {
+          return (number/1024).toFixed(1) + 'KB';
+        } else if(number > 1048576) {
+          return (number/1048576).toFixed(1) + 'MB';
+        }
+    }
+
+    // SUBMIT BUTTON
+    elements.submitAvatar.addEventListener('click', async (e) => {
+        e.preventDefault();
+        deleteMessage();
+
+        let form = new FormData();
+        form.append('avatar', elements.avatar.files[0]);
+
+        try {
+            const user = await updateUserDetail('avatar', form);
+            showMessage('Profilna slika je uspešno promenjena.', 'success');
+
+            window.setTimeout(() => {
+                
+                location.assign('/api/v2/auth/me');                    
+                
+            }, 1500)
+          
+
+        } catch (error) {
+            errorHandler(error);
+        }
+    });
+
+    // RESTORE BUTTON
+
+    elements.restoreAvatar.addEventListener('click', async (e) => {
+        e.preventDefault();
+        deleteMessage();
+
+        try {
+            const user = await deleteUserAvatar();
+
+            showMessage('Profilna slika je izbrisana.', 'success');
+
+            window.setTimeout(() => {
+                
+                location.assign('/api/v2/auth/me');                    
+                
+            }, 1500)
         } catch (error) {
             errorHandler(error);
         }

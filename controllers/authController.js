@@ -1,4 +1,4 @@
-
+const fs = require('fs');
 const crypto = require('crypto');
 const {validationResult} = require('express-validator');
 
@@ -11,16 +11,19 @@ const sharp = require('sharp');
 const multer = require('multer');
 
 // disk storage ukoliko fajl direktno snimamo u public folder
-const multerStorage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, "/public/img/users");
-    },
-    filename: function (req, file, cb) {
-        const ext = file.mimetype.split("/")[1];
+// const multerStorage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//         cb(null, "/public/img/user");
+//     },
+//     filename: function (req, file, cb) {
+//         const ext = file.mimetype.split("/")[1];
 
-        cb(null, `user-${req.user.id}-${Date.now()}.${ext}`);
-    },
-});
+//         cb(null, `user-${req.user.id}-${Date.now()}.${ext}`);
+//     },
+// });
+
+// pošto koristimo sharp, bolje je da sliku preuzima iz memorije
+const multerStorage = multer.memoryStorage();
 
 // filtriranje input fajla
 const multerFilter = (req, file, cb) => {
@@ -383,8 +386,8 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
 
 });
 
-// @desc    Create / Update user avatar
-// @route   POST /api/v2/auth/me/avatar
+// @desc    Update user avatar
+// @route   PUT /api/v2/auth/me/avatar
 // @access  Private
 
 exports.updateAvatar = asyncHandler(async (req, res, next) => {
@@ -392,25 +395,40 @@ exports.updateAvatar = asyncHandler(async (req, res, next) => {
     if (!req.file) {
         return next(new ErrorResponse('Niste izabrali avatar sliku', 400));
     }
+    // zapamti ime slike koje treba da se izbrise nakon update
+    const removeFromPublic = req.user.avatar;
 
     //const ext = req.file.mimetype.split("/")[1];
-    const url = `users/user-${req.user.id}-${Date.now()}.jpeg`;
+    const url = `user/user-${req.user.id}-${Date.now()}.jpeg`;
     
     //req.user.avatar = req.file.buffer;
 
     // dodavanje sharp modula za narmalizaciju slike resize / png i vracanje u buffer format zbog snimanja u db
     // sharp modula za narmalizaciju slike resize / jpeg, prihvata se kao buffer i nakon obrade snima se u fajl
-    await sharp(req.file.buffer).resize({width: 500, height: 500}).toFormat('jpeg').jpeg({quality: 90}).toFile(`public/${url}`);
+    await sharp(req.file.buffer).resize({width: 500, height: 500}).toFormat('jpeg').jpeg({quality: 90}).toFile(`public/img/${url}`);
 
     //const user = await req.user.save();
     const user = await User.findByIdAndUpdate(req.user.id, {avatar: url}, {
         new: true
     });
 
-    res.status(200).json({
-        success: true,
-        data: user
-    });    
+    // izbriši avatar iz public foldera osim ako je default
+    if (!removeFromPublic.endsWith('.png')) {
+        fs.unlink(`public/img/${removeFromPublic}`, (err) => {
+            if (err) {
+                console.log('Slika ne postoji u Public folderu.');
+            } else {
+                console.log('Slika uspešno obrisana iz Public foldera.');
+            }
+       })
+    }
+
+    // generisi novi token i session podatke
+    // postavi response status na 200
+    await sendTokenResponse(user, 200, res, req);
+    
+    // refresh stranice da se vide izmene
+    res.json({success: true});   
     
 });
 
@@ -429,7 +447,7 @@ exports.deleteAvatar = asyncHandler(async (req, res, next) => {
     const removeFromPublic = req.user.avatar;
 
     // vrati vrednost polja na default
-    req.user.avatar = 'users/user-default.png';
+    req.user.avatar = 'user/user-default.png';
 
     //const user = await req.user.save();
     user = await User.findByIdAndUpdate(req.user.id, {avatar: req.user.avatar}, {
@@ -438,7 +456,7 @@ exports.deleteAvatar = asyncHandler(async (req, res, next) => {
 
     // izbriši avatar iz public foldera osim ako je default
     if (!removeFromPublic.endsWith('.png')) {
-        fs.unlink(`public/${removeFromPublic}`, (err) => {
+        fs.unlink(`public/img/${removeFromPublic}`, (err) => {
             if (err) {
                 console.log('Slika ne postoji u Public folderu.');
             } else {
@@ -447,10 +465,12 @@ exports.deleteAvatar = asyncHandler(async (req, res, next) => {
        })
     }
 
-    res.status(200).json({
-        success: true,
-        data: user
-    });       
+    // generisi novi token i session podatke
+    // postavi response status na 200
+    await sendTokenResponse(user, 200, res, req);
+    
+    // refresh stranice da se vide izmene
+    res.json({success: true});        
 });
 
 // @desc    Log user out & clear cookie 

@@ -48,11 +48,11 @@ export const updateProduct = async ( value, data ) => {
     return result;      
 }
 
-// promena User Name / Email
-export const updateUserDetail = async ( data ) => {
+// promena User Name / Email / Password / Avatar
+export const updateUserDetail = async (urlPart, data ) => {
         
     const result = await axios({
-        url: `${baseURL}/api/v2/auth/me/update`,
+        url: `${baseURL}/api/v2/auth/me/${urlPart}`,
         method: 'PUT',
         data           
     });
@@ -60,13 +60,12 @@ export const updateUserDetail = async ( data ) => {
     return result;      
 }
 
-// promena Passworda
-export const updateUserPassword = async ( data ) => {
+// Izbriši / postavi default Avatar sliku
+export const deleteUserAvatar = async () => {
         
     const result = await axios({
-        url: `${baseURL}/api/v2/auth/me/updatepassword`,
-        method: 'PUT',
-        data           
+        url: `${baseURL}/api/v2/auth/me/avatar`,
+        method: 'DELETE'
     });
 
     return result;      
