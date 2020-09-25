@@ -1,7 +1,7 @@
 const express = require('express');
 const { check, body} = require('express-validator');
 
-const {register, login, getMe, deleteMe, logout, logoutAll, getRegisterUserHTML, getLoginUserHTML, updateDetails, updatePassword, forgotPassword, updateAvatar, deleteAvatar, resetPassword, uploadUserPhoto} = require('../controllers/authController');
+const {register, login, getMe, deleteMe, logout, logoutAll, getRegisterUserHTML, getLoginUserHTML, updateDetails, updatePassword, getForgottenPasswordHTML, getOpenForgottenPasswordLinkHTML, forgotPassword, updateAvatar, deleteAvatar, resetPassword, uploadUserPhoto} = require('../controllers/authController');
 
 const router = express.Router();
 
@@ -83,17 +83,19 @@ router.put(
     updatePassword
 );
 
-router.post("/resetpassword", forgotPassword);
+router.route("/resetpassword").get(getForgottenPasswordHTML).post(forgotPassword);
 
-router.put(
-    "/resetpassword/:resettoken",
-    [
-        body(
-            "password",
-            "Šifra treba da sadrži slova i brojeve, 7 - 15 karaktera"
-        ).isLength({ min: 7, max: 15 })
-    ],
-    resetPassword
-);
+router
+    .route("/resetpassword/:resettoken")
+    .get(getOpenForgottenPasswordLinkHTML)
+    .put(
+        [
+            body(
+                "password",
+                "Šifra treba da sadrži slova i brojeve, 7 - 15 karaktera"
+            ).isLength({ min: 7, max: 15 }),
+        ],
+        resetPassword
+    );
 
 module.exports = router;

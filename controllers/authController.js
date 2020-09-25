@@ -160,7 +160,7 @@ exports.login = asyncHandler(async (req, res, next) => {
     if (!email || !password) {
         //return next(new ErrorResponse('Unesite email i šifru', 400));
         //req.flash('error', 'Obavezna polja označena su zvezdicom');
-        res.status(422).render("user_login", {
+        return res.status(422).render("user_login", {
             title: "Prijava korisnika",
             errorMessage: 'Obavezna polja označena su zvezdicom',
             oldInput: {email, password}
@@ -172,7 +172,7 @@ exports.login = asyncHandler(async (req, res, next) => {
     if (!user) {
         // return next(new ErrorResponse('Pogrešno uneti podaci. Invalid credentials.', 401));
         //req.flash('error', 'Pogrešno uneti podaci');
-        res.status(422).render("user_login", {
+        return res.status(422).render("user_login", {
             title: "Prijava korisnika",
             errorMessage: 'Pogrešno uneti podaci',
             oldInput: {email, password}
@@ -184,7 +184,7 @@ exports.login = asyncHandler(async (req, res, next) => {
     if (!isMatch) {
        // return next(new ErrorResponse('Pogrešno uneti podaci. Invalid credentials.', 401));
        //req.flash('error', 'Pogrešno uneti podaci');
-       res.status(422).render("user_login", {
+       return res.status(422).render("user_login", {
         title: "Prijava korisnika",
         errorMessage: 'Pogrešno uneti podaci',
         oldInput: {email, password}
@@ -301,6 +301,17 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
     res.json({success: true});
 }); 
 
+// @desc    Forgotten password HTML
+// @route   GET /api/v2/auth/resetpassword
+// @access  Public
+
+exports.getForgottenPasswordHTML = asyncHandler((req, res) => {
+    
+    res.status(200).render('user_resetpassword_email', {
+        title: "Zaboravljena šifra"
+    })
+});
+
 // @desc    Forgotten password link
 // @route   POST /api/v2/auth/resetpassword
 // @access  Public
@@ -310,7 +321,11 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
     const user = await User.findOne({email: req.body.email});
 
     if (!user) {
-        return next(new ErrorResponse('Ne postoji korisnik sa tom e-mail adresom!', 404));
+        //return next(new ErrorResponse('Ne postoji korisnik sa tom e-mail adresom!', 404));
+        return res.status(404).render('user_resetpassword_email', {
+            title: "Zaboravljena šifra",
+            errorMessage: 'Ne postoji korisnik sa tom e-mail adresom'
+        });
     }
     //generisi reset token i dodavanje useru token / vreme isteka
     const resetToken = user.getResetPasswordToken();
@@ -318,7 +333,9 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
     // snimanje hashovanog tokena i vremena isteka
     await user.save();
 
-    const resetUrl = `${req.protocol}://${req.get('host')}/api/v1/auth/resetpassword/${resetToken}`;
+    const resetUrl = `${req.protocol}://${req.get('host')}/api/v2/auth/resetpassword/${resetToken}`;
+
+    console.log(resetUrl);
 
     //slanje emaila sa linkom za reset
     try {
@@ -329,11 +346,11 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
 
             console.log(`Uspešno poslata poruka na adresu ${user.email}`.green);
 
-            res.status(200).json({
-                success: true,
-                data: 'Email sent'
-            });
-        
+            req.flash('success', 'Link za reset šifre je uspešno poslat. Proverite email')
+            //return res.redirect('/api/v2/auth/register');
+            res.redirect(resetUrl);
+                
+                    
     } catch (error) {
         console.log(`Poruka nije poslata na adresu ${user.email}. Error message: ${error}`.red);
         // resetuj reset polja i snimi ih
@@ -341,8 +358,27 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
         user.resetPasswordExpire = void 0;
         await user.save();
 
-        return next(new ErrorResponse('Došlo je do greške, poruka nije poslata'), 500);
+        //return next(new ErrorResponse('Došlo je do greške, poruka nije poslata'), 500);
+        res.status(500).render('user_resetpassword_email', {
+            title: "Zaboravljena šifra",
+            errorMessage: 'Došlo je do greške, poruka nije poslata, pokušajte ponovo.'
+        });
     }
+});
+
+// @desc    Open Forgotten password link HTML
+// @route   GET /api/v2/auth/resetpassword/:resettoken
+// @access  Public
+
+exports.getOpenForgottenPasswordLinkHTML = asyncHandler((req, res) => {
+    let message = req.flash('success');
+    if (message.length === 0) {
+        message = false
+    }
+    res.status(200).render('user_resetpassword_link', {
+        title: 'Zaboravljena šifra',
+        errorMessage: message
+    });
 });
 
 // @desc    Reset password

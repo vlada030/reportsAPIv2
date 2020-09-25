@@ -12,10 +12,10 @@ block content
             .row.h-100
                 .col-md-6.mx-auto
                     .card
-                        .card-header
+                        .card-header.bg-warning
                             h4
                                 i.far.fa-user
-                                |   Korisnički panel
+                                |   Novi korisnik
                         .card-body
                             form#authForm(action='/api/v2/auth/register', method='POST')
                                 .form-group

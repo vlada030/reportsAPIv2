@@ -12,7 +12,7 @@ block content
             .row.h-100
                 .col-md-6.m-auto
                     .card
-                        .card-header
+                        .card-header.bg-warning
                             h4
                                 i.far.fa-user.mr-2
                                 | Prijava
@@ -26,28 +26,32 @@ block content
                                     label(for='password') Šifra
                                     input#password.form-control.mt-1.mb-1(type='password', name='password', value=oldInput.password, placeholder='*******')
 
-                                a.text-muted(href='#' data-toggle="modal" data-target="#exampleModalCenter")
+                                a.text-muted(href='/api/v2/auth/resetpassword')
                                     p Zaboravili ste šifru?
-
-                                #exampleModalCenter.modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true')
-                                    .modal-dialog.modal-dialog-centered(role='document')
-                                        .modal-content
-                                            .modal-header
-                                                h5#exampleModalLongTitle.modal-title Zaboravljena šifra
-                                                button.close(type='button' data-dismiss='modal' aria-label='Close')
-                                                    span(aria-hidden='true') ×
-                                            .modal-body 
-                                                form(action="#" method="POST")
-                                                    .form-group
-                                                        label(for='email') Unesite email adresu sa kojom ste se logovali
-                                                        input#forgottenEmail.form-control.mt-1.mb-1(type='email' name='email' autofocus=true)
-                                            .modal-footer
-                                                button.btn.btn-secondary(type='button' data-dismiss='modal') Otkaži
-                                                button.btn.btn-primary(type='button') Pošalji
+                                //- a.text-muted(href='#' data-toggle="modal" data-target="#exampleModalCenter")
+                                //-     p Zaboravili ste šifru?
+                                
 
                                 input(type='hidden', name='_csrf', value=csrfToken)
 
-                                button.btn.btn-info.btn-block.mt-3(type='submit') Pošalji
+                                button.btn.btn-info.btn-block.mt-3(type='submit' form='authForm') Pošalji
+
+
+                                //- #exampleModalCenter.modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true')
+                                //-     .modal-dialog.modal-dialog-centered(role='document')
+                                //-         .modal-content
+                                //-             .modal-header.bg-warning
+                                //-                 h5.modal-title Zaboravljena šifra
+                                //-                 button.close(type='button' data-dismiss='modal' aria-label='Close')
+                                //-                     span(aria-hidden='true') ×
+                                //-             .modal-body 
+                                //-                 form(action="/api/v2/auth/resetpassword" method="POST")#proba
+                                //-                     .form-group
+                                //-                         label(for='forgottenEmail') Unesite email adresu sa kojom ste se logovali
+                                //-                         input#forgottenEmail.form-control.mt-1.mb-1(type='email' autofocus=true form='proba')
+                                //-             .modal-footer
+                                //-                 button.btn.btn-secondary(type='button' data-dismiss='modal') Otkaži
+                                //-                 button.btn.btn-primary(type='submit' form='proba') Pošalji
 
 block footer
     include layouts/fixed_footer.pug
