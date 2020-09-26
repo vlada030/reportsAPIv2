@@ -56,8 +56,18 @@ const sendResetPasswordEmail = async (name, email, link) => {
         to: email,
         from: 'vladimir.nikodijevic@tfkable.com',
         subject: 'Link za resetovanje sifre',
-        text: `Poštovani ${name}, U tekstu ispod, nalazi se link za reset zaboravljene šifre koji ste zahtevali. Potreban je PUT request. Link je validan u narednih 10 minuta!
-        ${link}`
+        // text: `Poštovani ${name}, U tekstu ispod, nalazi se link za reset zaboravljene šifre koji ste zahtevali. Potreban je PUT request. Link je validan u narednih 10 minuta!
+        // ${link}`
+        html: `<p>Poštovani ${name},</p> 
+                    <br>
+                    <p>U tekstu ispod nalazi se link za reset zaboravljene šifre koji ste zahtevali.</p>
+                    <p class='lead'>Link je validan u narednih 10 minuta!</p>
+                    <p class='text-muted'>Potreban je PUT request.</p>
+                    <br>
+                    <p>${link}</p>
+                    <br>
+                    <p>Srdačan pozdrav!</p>
+                    <p>Reports Team</p>`
     })
 
 }

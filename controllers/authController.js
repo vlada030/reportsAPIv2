@@ -131,7 +131,9 @@ exports.register = asyncHandler(async (req, res, next) => {
 exports.getLoginUserHTML = (req, res) => {
     //console.log(req.session);
     // ukoliko nema error, message je prazan hiz pa ga pug vidi kao postojeci
-    let message = req.flash('error');
+    
+    let message =  req.flash('error');
+
     if (message.length === 0) {
         message = false
     } 
@@ -185,10 +187,10 @@ exports.login = asyncHandler(async (req, res, next) => {
        // return next(new ErrorResponse('Pogrešno uneti podaci. Invalid credentials.', 401));
        //req.flash('error', 'Pogrešno uneti podaci');
        return res.status(422).render("user_login", {
-        title: "Prijava korisnika",
-        errorMessage: 'Pogrešno uneti podaci',
-        oldInput: {email, password}
-    });
+            title: "Prijava korisnika",
+            errorMessage: 'Pogrešno uneti podaci',
+            oldInput: {email, password}
+        });
     }
     
     // generisi token i session podatke
@@ -324,7 +326,8 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
         //return next(new ErrorResponse('Ne postoji korisnik sa tom e-mail adresom!', 404));
         return res.status(404).render('user_resetpassword_email', {
             title: "Zaboravljena šifra",
-            errorMessage: 'Ne postoji korisnik sa tom e-mail adresom'
+            errorMessage: 'Ne postoji korisnik sa tom e-mail adresom',
+            oldInputEmail: req.body.email
         });
     }
     //generisi reset token i dodavanje useru token / vreme isteka
@@ -346,9 +349,8 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
 
             console.log(`Uspešno poslata poruka na adresu ${user.email}`.green);
 
-            req.flash('success', 'Link za reset šifre je uspešno poslat. Proverite email')
-            //return res.redirect('/api/v2/auth/register');
-            res.redirect(resetUrl);
+            req.flash('error', 'Link za reset šifre je uspešno poslat. Proverite email')
+            res.redirect('/api/v2/auth/login');
                 
                     
     } catch (error) {
@@ -371,7 +373,7 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
 // @access  Public
 
 exports.getOpenForgottenPasswordLinkHTML = asyncHandler((req, res) => {
-    let message = req.flash('success');
+    let message = req.flash('error');
     if (message.length === 0) {
         message = false
     }
@@ -386,6 +388,7 @@ exports.getOpenForgottenPasswordLinkHTML = asyncHandler((req, res) => {
 // @access  Public
 
 exports.resetPassword = asyncHandler(async (req, res, next) => {
+    console.log(req.body)
     // validacija input password
     const  errors = validationResult(req);
     const errorsString = errors.array().reduce((acc, val) => {
@@ -409,9 +412,14 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
     });
 
     if (!user) {
-        return next(new ErrorResponse('Neispravan token. Obratite pažnju da imate 10 minuta od momenta pristizanja emaila da resetujete zaboravljenu šifru.', 400));
+        //return next(new ErrorResponse('Neispravan token. Obratite pažnju da imate 10 minuta od momenta pristizanja emaila da resetujete zaboravljenu šifru.', 400));
+        return res.status(422).render("user_login", {
+            title: "Prijava korisnika",
+            errorMessage: 'Neispravan token. Obratite pažnju da imate 10 minuta od momenta pristizanja emaila da resetujete zaboravljenu šifru.',
+            oldInput: {email: '', password:''}
+        });
     }
-    // da bi ovo radilo ovako MORA da se UPOTREBI findOne jer find vraca Array 
+
     user.password = req.body.password;
     user.resetPasswordToken = void 0;
     user.resetPasswordExpire = void 0;
@@ -419,6 +427,8 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
     await user.save();
 
     await sendTokenResponse(user, 200, res, req);
+
+    res.json({sucess: true});
 
 });
 

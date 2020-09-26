@@ -89,12 +89,12 @@ router
     .route("/resetpassword/:resettoken")
     .get(getOpenForgottenPasswordLinkHTML)
     .put(
-        [
-            body(
-                "password",
-                "Šifra treba da sadrži slova i brojeve, 7 - 15 karaktera"
-            ).isLength({ min: 7, max: 15 }),
-        ],
+        check(
+            "password",
+            "Šifra treba da sadrži slova i brojeve, 7 - 15 karaktera"
+        )
+            .isLength({ min: 7, max: 15 })
+            .isAlphanumeric(),        
         resetPassword
     );
 

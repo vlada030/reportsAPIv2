@@ -73,7 +73,12 @@ export const elements = {
     newPassword: document.getElementById('newPassword'),
     avatar: document.getElementById('avatar'),
     avatarImg: document.getElementById('avatarImg'),
-    avatarDesc: document.getElementById('avatarDesc')
+    avatarDesc: document.getElementById('avatarDesc'),
+
+    // forgotten password form
+    forgottenPasswordForm: document.getElementById('forgottenPassword'),
+    forgottenPassword: document.getElementById('forgottenPasswordInput'),
+    submitForgottenPassword: document.getElementById('submitForgottenPassword')                                
 };
 
 export const updateReportsUI = (elem) => {

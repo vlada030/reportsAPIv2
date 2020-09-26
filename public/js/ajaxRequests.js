@@ -70,3 +70,18 @@ export const deleteUserAvatar = async () => {
 
     return result;      
 }
+
+// Update forgotten password
+export const updateForgottenPassword = async (url, params) => {
+        
+    const result = await axios({
+        url,
+        method: 'PUT',
+        data: {
+            password: params
+        }
+                    
+    });
+
+    return result;      
+}

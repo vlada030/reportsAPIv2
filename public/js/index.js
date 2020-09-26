@@ -1,6 +1,6 @@
 // bez ovoga ne radi npr async/await... i blokira celu app
 import '@babel/polyfill';
-import {getProduct, updateProduct, deleteReport, updateUserDetail, deleteUserAvatar} from './ajaxRequests';
+import {getProduct, updateProduct, deleteReport, updateUserDetail, deleteUserAvatar, updateForgottenPassword} from './ajaxRequests';
 import errorHandler from './errorHandler';
 import {showMessage, deleteMessage} from './alertMessage';
 import {elements, updateReportsUI, updateProductUI, addItem, delItem, updateTotalLength, addWorker, removeWorker, addItemDorada, removeItemDorada, addItemProboj, removeItemProboj} from './userInterface';
@@ -399,6 +399,30 @@ if (elements.updateAvatarForm) {
                 location.assign('/api/v2/auth/me');                    
                 
             }, 1500)
+        } catch (error) {
+            errorHandler(error);
+        }
+    });
+}
+
+// UPDATE FORGOTTEN PASSWORD
+
+if (elements.forgottenPasswordForm) {
+    elements.submitForgottenPassword.addEventListener('click', async (e) => {
+        e.preventDefault();
+        deleteMessage();
+
+        const password = elements.forgottenPassword.value;
+        const currentUrl = window.location.href;
+
+        try {
+            const user = await updateForgottenPassword(currentUrl, password);
+            showMessage('Šifra je uspešno promenjena. Ulogujte se ponovo.', 'success');
+            window.setTimeout(() => {
+                
+                window.close();                    
+                
+            }, 1500);
         } catch (error) {
             errorHandler(error);
         }
