@@ -1,7 +1,13 @@
-extends layouts/main-layout.pug      
+extends layouts/main-layout.pug    
+
+block primaryNavBar
+    include layouts/primaryNavBarAll.pug
         
 block content
     .container
+        br
+        br
+        br
         if error 
             h2.m-3 
                 i.far.fa-sad-tear.mr-3
