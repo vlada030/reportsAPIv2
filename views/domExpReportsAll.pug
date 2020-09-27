@@ -10,7 +10,7 @@ block secondaryNavBar
 
 block content
     .container.my-3.w-100
-        .row.w-100
+        .row.w-100.mb-4
             .list-group.w-100
                 -var No = 1
                 if path === 'dom'
@@ -31,7 +31,25 @@ block content
                             -var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
                             span.w-25.px-2=`Kreiran: ${report.createdAt.toLocaleString('sr-sr', options)}`
                             //- span.w-25.px-2=`Nalog: ${report.radniNalog}` 
-                        - No++          
+                        - No++     
+        nav.pb-3
+            ul.pagination.justify-content-center
+                li.page-item(class='disabled')
+                    button.page-link(data-url="url") Prva
+                li.page-item.mx-2
+                    |   . . .                  
+                li.page-item.active
+                    span.page-link 
+                        |   1
+                        span.sr-only (current)
+                li.page-item
+                    button.page-link(data-url="url") 2
+                li.page-item
+                    button.page-link(data-url="url") 3
+                li.page-item.mx-2
+                    |   . . .                  
+                li.page-item
+                    button.page-link(data-url="url") Poslednja
     
 block footer    
     include layouts/fixed_footer.pug

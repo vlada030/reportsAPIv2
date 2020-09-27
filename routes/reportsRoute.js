@@ -64,7 +64,9 @@ router
         createDomReport
     );
 router.route('/dom/all').get(protect, advancedResults(DomReport, {path: 'createdByUser', select: 'name'}), getAllDomReports);
-router.route('/dom/allReports').get(getAllDomReportsHTML);
+
+router.route('/dom/allReports').get(protect, advancedResults(DomReport, 'proizvod'), getAllDomReportsHTML);
+
 router.route('/dom/:id').get(getDomReport).delete(protect, deleteDomReport).put(protect, updateDomReport);
 
 router

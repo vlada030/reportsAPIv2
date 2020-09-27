@@ -83,7 +83,8 @@ exports.getDomReport = asyncHandler(async (req, res, next) => {
 // @access Private
 
 exports.getAllDomReportsHTML = asyncHandler(async(req, res) => {
-    const reports = await DomReport.find().populate("proizvod");
+    // const reports = await DomReport.find().populate("proizvod");
+    const reports = res.advancedResults.data;
 
     res.status(200).render("domExpReportsAll", {
         title: "Izveštaji za domaće tržište",
