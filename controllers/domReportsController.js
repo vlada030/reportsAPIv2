@@ -84,7 +84,7 @@ exports.getDomReport = asyncHandler(async (req, res, next) => {
 
 exports.getAllDomReportsHTML = asyncHandler(async(req, res) => {
     // const reports = await DomReport.find().populate("proizvod");
-    const reports = res.advancedResults.data;
+    const reports = res.advancedResults;
 
     res.status(200).render("domExpReportsAll", {
         title: "Izveštaji za domaće tržište",
@@ -153,7 +153,7 @@ exports.createDomReport = asyncHandler(async (req, res, next) => {
 });
 
 // @desc   Get All Reports
-// @route  GET /api/v2/reports/dom/all
+// @route  GET /api/v2/reports/dom/json
 // @access Private
 
 exports.getAllDomReports = asyncHandler(async (req, res, next) => {

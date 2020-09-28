@@ -11,10 +11,10 @@ block secondaryNavBar
 block content
     .container.my-3.w-100
         .row.w-100.mb-4
-            .list-group.w-100
+            .list-group.w-100#pageItemsContainer
                 -var No = 1
                 if path === 'dom'
-                    each report in reports
+                    each report in reports.data
                         a(href=`../dom?id=${report.MISBroj}`).list-group-item.list-group-item-action.d-flex.justify-content-between
                             span.w-25.px-2=`${No}.`
                             span.w-25.px-2=`MIS Broj: ${report.MISBroj}`
@@ -23,7 +23,7 @@ block content
                             span.w-25.text-right.px-2=`${report.duzina}m`
                         - No++   
                 else 
-                    each report in reports
+                    each report in reports.data
                         a(href=`../exp?id=${report._id}`).list-group-item.list-group-item-action.d-flex.justify-content-between
                             span.w-25.px-2=`${No}.`
                             span.w-25.px-2=report.proizvod.proizvod
@@ -32,24 +32,34 @@ block content
                             span.w-25.px-2=`Kreiran: ${report.createdAt.toLocaleString('sr-sr', options)}`
                             //- span.w-25.px-2=`Nalog: ${report.radniNalog}` 
                         - No++     
-        nav.pb-3
+        nav.pb-3#paginationElem
             ul.pagination.justify-content-center
                 li.page-item(class='disabled')
-                    button.page-link(data-url="url") Prva
+                    button.page-link(data-url=`/api/v2/reports/dom/json?page=1`)#btnFirstPage Prva
+
                 li.page-item.mx-2
-                    |   . . .                  
+                    |   . . .        
+
                 li.page-item.active
                     span.page-link 
                         |   1
                         span.sr-only (current)
-                li.page-item
-                    button.page-link(data-url="url") 2
-                li.page-item
-                    button.page-link(data-url="url") 3
+                //- li.page-item
+                //-         button.page-link(data-url=`#`) 1
+
+                if (reports.pagination.next.page)         
+                    li.page-item
+                        button.page-link(data-url=`/api/v2/reports/dom/json?page=2`)#btnMiddlePage 2
+
+                if (reports.lastPage >= 3)         
+                    li.page-item
+                        button.page-link(data-url=`/api/v2/reports/dom/json?page=3`)#btnNextPage 3
+
                 li.page-item.mx-2
-                    |   . . .                  
+                    |   . . .   
+
                 li.page-item
-                    button.page-link(data-url="url") Poslednja
+                    button.page-link(data-url=`/api/v2/reports/dom/json?page=${reports.lastPage}`)#btnLastPage Poslednja
     
 block footer    
     include layouts/fixed_footer.pug

@@ -1,9 +1,9 @@
 // bez ovoga ne radi npr async/await... i blokira celu app
 import '@babel/polyfill';
-import {getProduct, updateProduct, deleteReport, updateUserDetail, deleteUserAvatar, updateForgottenPassword} from './ajaxRequests';
+import {getProduct, updateProduct, deleteReport, updateUserDetail, deleteUserAvatar, updateForgottenPassword, getAdvancedResultsData} from './ajaxRequests';
 import errorHandler from './errorHandler';
 import {showMessage, deleteMessage} from './alertMessage';
-import {elements, updateReportsUI, updateProductUI, addItem, delItem, updateTotalLength, addWorker, removeWorker, addItemDorada, removeItemDorada, addItemProboj, removeItemProboj} from './userInterface';
+import {elements, updateReportsUI, updateProductUI, addItem, delItem, updateTotalLength, addWorker, removeWorker, addItemDorada, removeItemDorada, addItemProboj, removeItemProboj, renderPaginatedUI} from './userInterface';
 
 
 
@@ -428,3 +428,31 @@ if (elements.forgottenPasswordForm) {
         }
     });
 }
+
+// PAGINATION CONTROLS
+[
+    elements.btnFirstPage,
+    elements.btnLastPage,
+    elements.btnPrevPage,
+    elements.btnMiddlePage,
+    elements.btnNextPage,
+].forEach((elem) => {
+    if (elem) {
+        elem.addEventListener("click",async function (e) {
+            e.preventDefault();
+            // iscupaj URL
+            let extractedUrl = elem.dataset.url;
+            let pageNumber = extractedUrl.split('page=')[1];
+
+            // pozovi ajax
+            const results = await getAdvancedResultsData(extractedUrl);
+            console.log(results)
+
+            // update UI
+            renderPaginatedUI(results, pageNumber);
+
+
+
+        });
+    }
+});

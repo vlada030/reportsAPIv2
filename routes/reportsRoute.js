@@ -63,7 +63,7 @@ router
             .trim()],
         createDomReport
     );
-router.route('/dom/all').get(protect, advancedResults(DomReport, {path: 'createdByUser', select: 'name'}), getAllDomReports);
+router.route('/dom/json').get(protect, advancedResults(DomReport, 'proizvod'), getAllDomReports);
 
 router.route('/dom/allReports').get(protect, advancedResults(DomReport, 'proizvod'), getAllDomReportsHTML);
 

@@ -78,7 +78,15 @@ export const elements = {
     // forgotten password form
     forgottenPasswordForm: document.getElementById('forgottenPassword'),
     forgottenPassword: document.getElementById('forgottenPasswordInput'),
-    submitForgottenPassword: document.getElementById('submitForgottenPassword')                                
+    submitForgottenPassword: document.getElementById('submitForgottenPassword'),  
+    
+    // pagination elements
+    pageItemsContainer: document.getElementById('pageItemsContainer'),
+    btnFirstPage: document.getElementById('btnFirstPage'),
+    btnLastPage: document.getElementById('btnLastPage'),
+    btnPrevPage: document.getElementById('btnPrevPage'),
+    btnMiddlePage: document.getElementById('btnMiddlePage'),
+    btnNextPage: document.getElementById('btnNextPage')
 };
 
 export const updateReportsUI = (elem) => {
@@ -235,3 +243,18 @@ export const removeItemProboj = () => {
             elem.parentNode.removeChild(elem);
         }
 };
+
+// paginacija, render UI, prikazivanje rezultata strane i dodeljivanje novih adresa buttonima
+export const renderPaginatedUI = (input, page) => {
+    const productsArray = input.data.data;
+
+    elements.pageItemsContainer.innerHTML = '';
+
+    productsArray.forEach((elem, ind) => {
+
+        let no = page * ind;
+        const markup = `<a class="list-group-item list-group-item-action d-flex justify-content-between" href="/api/v2/reports/dom?id=${elem.MISBroj}"><span class="w-25 px-2">${no}</span><span class="w-25 px-2">MIS Broj: ${elem.MISBroj}</span><span class="w-25 px-2">Nalog: ${elem.radniNalog}</span><span class="w-25 px-2">${elem.proizvod.proizvod}</span><span class="w-25 text-right px-2">${elem.duzina}m</span></a>`;
+    
+        elements.pageItemsContainer.insertAdjacentHTML('beforeend', markup);
+    })
+}

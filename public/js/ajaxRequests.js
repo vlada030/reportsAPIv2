@@ -85,3 +85,12 @@ export const updateForgottenPassword = async (url, params) => {
 
     return result;      
 }
+
+// povuci podatke za all listu
+
+export const getAdvancedResultsData = async (url) => {
+    return await axios({
+        url,
+        method: 'get'
+    })
+}
