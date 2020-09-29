@@ -8809,7 +8809,8 @@ var elements = {
   middlePage: document.getElementById('middlePage'),
   nextPage: document.getElementById('nextPage'),
   leftDots: document.getElementById('leftDots'),
-  rightDots: document.getElementById('rightDots')
+  rightDots: document.getElementById('rightDots'),
+  itemsPerPage: document.getElementById('itemsPerPage')
 };
 exports.elements = elements;
 
@@ -8992,12 +8993,12 @@ var renderPaginatedUI = function renderPaginatedUI(input, currentPage, limit, la
   elements.pageItemsContainer.innerHTML = '';
   productsArray.forEach(function (elem, ind) {
     var no = (currentPage - 1) * limit + ind + 1;
-    var markup = "<a class=\"list-group-item list-group-item-action d-flex justify-content-between\" href=\"/api/v2/reports/dom?id=".concat(elem.MISBroj, "\"><span class=\"w-25 px-2\">").concat(no, "</span><span class=\"w-25 px-2\">MIS Broj: ").concat(elem.MISBroj, "</span><span class=\"w-25 px-2\">Nalog: ").concat(elem.radniNalog, "</span><span class=\"w-25 px-2\">").concat(elem.proizvod.proizvod, "</span><span class=\"w-25 text-right px-2\">").concat(elem.duzina, "m</span></a>");
+    var markup = "<a class=\"list-group-item list-group-item-action d-flex justify-content-between\" href=\"/api/v2/reports/dom?id=".concat(elem.MISBroj, "\"><span class=\"w-25 px-2\">").concat(no, ".</span><span class=\"w-25 px-2\">MIS Broj: ").concat(elem.MISBroj, "</span><span class=\"w-25 px-2\">Nalog: ").concat(elem.radniNalog, "</span><span class=\"w-25 px-2\">").concat(elem.proizvod.proizvod, "</span><span class=\"w-25 text-right px-2\">").concat(elem.duzina, "m</span></a>");
     elements.pageItemsContainer.insertAdjacentHTML('beforeend', markup);
   }); // update buttons
 
   updateButtons(currentPage, lastPage);
-}; // pagination buttons
+}; // pagination buttons logic
 
 
 exports.renderPaginatedUI = renderPaginatedUI;
@@ -9025,9 +9026,12 @@ var updateButtons = function updateButtons(current, last) {
   } // proveri buton PREVIOUS
 
 
-  if (current > 1 && current <= last) {
+  if (current > 1 && current < last) {
     elements.btnPrevPage.innerText = current - 1;
     elements.btnPrevPage.dataset.url = "/api/v2/reports/dom/json?page=".concat(current - 1);
+  } else if (current == last) {
+    elements.btnPrevPage.innerText = current - 2;
+    elements.btnPrevPage.dataset.url = "/api/v2/reports/dom/json?page=".concat(current - 2);
   } else {
     elements.btnPrevPage.innerText = 1;
     elements.btnPrevPage.dataset.url = "/api/v2/reports/dom/json?page=1";
@@ -9036,18 +9040,24 @@ var updateButtons = function updateButtons(current, last) {
   } // proveri buton MIDDLE
 
 
-  if (current < last) {
+  if (current == 1) {
+    elements.middlePage.classList.remove('disabled');
+    elements.btnMiddlePage.innerText = +current + 1;
+    elements.btnMiddlePage.dataset.url = "/api/v2/reports/dom/json?page=".concat(+current + 1);
+  } else if (current >= last) {
+    elements.btnMiddlePage.innerText = +current - 1;
+    elements.btnMiddlePage.dataset.url = "/api/v2/reports/dom/json?page=".concat(+current - 1);
+  } else {
     elements.middlePage.classList.add('disabled');
     elements.btnMiddlePage.innerText = current;
     elements.btnMiddlePage.dataset.url = "/api/v2/reports/dom/json?page=".concat(current);
-  }
-
-  if (current == 1) {
-    elements.middlePage.classList.remove('disabled');
   } // proveri buton NEXT
 
 
-  if (current < last) {
+  if (current == 1) {
+    elements.btnNextPage.innerText = +current + 2;
+    elements.btnNextPage.dataset.url = "/api/v2/reports/dom/json?page=".concat(+current + 2);
+  } else if (current < last) {
     elements.btnNextPage.innerText = +current + 1;
     elements.btnNextPage.dataset.url = "/api/v2/reports/dom/json?page=".concat(+current + 1);
   } else {
@@ -10017,7 +10027,7 @@ if (_userInterface.elements.forgottenPasswordForm) {
   if (elem) {
     elem.addEventListener("click", /*#__PURE__*/function () {
       var _ref11 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee11(e) {
-        var extractedUrl, currentPageNumber, itemsPerPage, lastPageNumber, results;
+        var extractedUrl, currentPageNumber, lastPageNumber, limit, results;
         return regeneratorRuntime.wrap(function _callee11$(_context11) {
           while (1) {
             switch (_context11.prev = _context11.next) {
@@ -10026,17 +10036,17 @@ if (_userInterface.elements.forgottenPasswordForm) {
 
                 extractedUrl = elem.dataset.url;
                 currentPageNumber = extractedUrl.split('page=')[1];
-                itemsPerPage = document.getElementById('itemsPerPage').value;
-                lastPageNumber = _userInterface.elements.btnLastPage.dataset.url.split('page=')[1]; // pozovi ajax i pokupi podatke za traženu stranu
+                lastPageNumber = _userInterface.elements.btnLastPage.dataset.url.split('page=')[1];
+                limit = _userInterface.elements.itemsPerPage.value;
+                console.log(limit); // pozovi ajax i pokupi podatke za traženu stranu
 
-                _context11.next = 7;
+                _context11.next = 8;
                 return (0, _ajaxRequests.getAdvancedResultsData)(extractedUrl);
 
-              case 7:
+              case 8:
                 results = _context11.sent;
-                console.log(results); // update UI
-
-                (0, _userInterface.renderPaginatedUI)(results, currentPageNumber, itemsPerPage, lastPageNumber);
+                // update UI
+                (0, _userInterface.renderPaginatedUI)(results, currentPageNumber, limit, lastPageNumber);
 
               case 10:
               case "end":
@@ -10051,7 +10061,19 @@ if (_userInterface.elements.forgottenPasswordForm) {
       };
     }());
   }
-});
+}); // promena broja stavki po strani
+// elements.itemsPerPage.addEventListener('change', async (e) => {
+//     e.preventDefault();
+//     const limit = elements.itemsPerPage.value;
+//     const url = `/api/v2/reports/dom/json?limit=${limit}`;
+//     console.log(limit);    
+//     // pozovi ajax i pokupi podatke za traženu stranu
+//     const results = await getAdvancedResultsData(url);
+//     const lastPageNumber = results.data.lastPage;
+//     const currentPageNumber = 1;
+//     // update UI
+//     renderPaginatedUI(results, currentPageNumber, limit, lastPageNumber);
+// })
 },{"core-js/modules/es6.array.copy-within":"../../node_modules/core-js/modules/es6.array.copy-within.js","core-js/modules/es6.array.fill":"../../node_modules/core-js/modules/es6.array.fill.js","core-js/modules/es6.array.find":"../../node_modules/core-js/modules/es6.array.find.js","core-js/modules/es6.array.find-index":"../../node_modules/core-js/modules/es6.array.find-index.js","core-js/modules/es7.array.flat-map":"../../node_modules/core-js/modules/es7.array.flat-map.js","core-js/modules/es6.array.from":"../../node_modules/core-js/modules/es6.array.from.js","core-js/modules/es7.array.includes":"../../node_modules/core-js/modules/es7.array.includes.js","core-js/modules/es6.array.iterator":"../../node_modules/core-js/modules/es6.array.iterator.js","core-js/modules/es6.array.of":"../../node_modules/core-js/modules/es6.array.of.js","core-js/modules/es6.array.sort":"../../node_modules/core-js/modules/es6.array.sort.js","core-js/modules/es6.array.species":"../../node_modules/core-js/modules/es6.array.species.js","core-js/modules/es6.date.to-primitive":"../../node_modules/core-js/modules/es6.date.to-primitive.js","core-js/modules/es6.function.has-instance":"../../node_modules/core-js/modules/es6.function.has-instance.js","core-js/modules/es6.function.name":"../../node_modules/core-js/modules/es6.function.name.js","core-js/modules/es6.map":"../../node_modules/core-js/modules/es6.map.js","core-js/modules/es6.math.acosh":"../../node_modules/core-js/modules/es6.math.acosh.js","core-js/modules/es6.math.asinh":"../../node_modules/core-js/modules/es6.math.asinh.js","core-js/modules/es6.math.atanh":"../../node_modules/core-js/modules/es6.math.atanh.js","core-js/modules/es6.math.cbrt":"../../node_modules/core-js/modules/es6.math.cbrt.js","core-js/modules/es6.math.clz32":"../../node_modules/core-js/modules/es6.math.clz32.js","core-js/modules/es6.math.cosh":"../../node_modules/core-js/modules/es6.math.cosh.js","core-js/modules/es6.math.expm1":"../../node_modules/core-js/modules/es6.math.expm1.js","core-js/modules/es6.math.fround":"../../node_modules/core-js/modules/es6.math.fround.js","core-js/modules/es6.math.hypot":"../../node_modules/core-js/modules/es6.math.hypot.js","core-js/modules/es6.math.imul":"../../node_modules/core-js/modules/es6.math.imul.js","core-js/modules/es6.math.log1p":"../../node_modules/core-js/modules/es6.math.log1p.js","core-js/modules/es6.math.log10":"../../node_modules/core-js/modules/es6.math.log10.js","core-js/modules/es6.math.log2":"../../node_modules/core-js/modules/es6.math.log2.js","core-js/modules/es6.math.sign":"../../node_modules/core-js/modules/es6.math.sign.js","core-js/modules/es6.math.sinh":"../../node_modules/core-js/modules/es6.math.sinh.js","core-js/modules/es6.math.tanh":"../../node_modules/core-js/modules/es6.math.tanh.js","core-js/modules/es6.math.trunc":"../../node_modules/core-js/modules/es6.math.trunc.js","core-js/modules/es6.number.constructor":"../../node_modules/core-js/modules/es6.number.constructor.js","core-js/modules/es6.number.epsilon":"../../node_modules/core-js/modules/es6.number.epsilon.js","core-js/modules/es6.number.is-finite":"../../node_modules/core-js/modules/es6.number.is-finite.js","core-js/modules/es6.number.is-integer":"../../node_modules/core-js/modules/es6.number.is-integer.js","core-js/modules/es6.number.is-nan":"../../node_modules/core-js/modules/es6.number.is-nan.js","core-js/modules/es6.number.is-safe-integer":"../../node_modules/core-js/modules/es6.number.is-safe-integer.js","core-js/modules/es6.number.max-safe-integer":"../../node_modules/core-js/modules/es6.number.max-safe-integer.js","core-js/modules/es6.number.min-safe-integer":"../../node_modules/core-js/modules/es6.number.min-safe-integer.js","core-js/modules/es6.number.parse-float":"../../node_modules/core-js/modules/es6.number.parse-float.js","core-js/modules/es6.number.parse-int":"../../node_modules/core-js/modules/es6.number.parse-int.js","core-js/modules/es6.object.assign":"../../node_modules/core-js/modules/es6.object.assign.js","core-js/modules/es7.object.define-getter":"../../node_modules/core-js/modules/es7.object.define-getter.js","core-js/modules/es7.object.define-setter":"../../node_modules/core-js/modules/es7.object.define-setter.js","core-js/modules/es7.object.entries":"../../node_modules/core-js/modules/es7.object.entries.js","core-js/modules/es6.object.freeze":"../../node_modules/core-js/modules/es6.object.freeze.js","core-js/modules/es6.object.get-own-property-descriptor":"../../node_modules/core-js/modules/es6.object.get-own-property-descriptor.js","core-js/modules/es7.object.get-own-property-descriptors":"../../node_modules/core-js/modules/es7.object.get-own-property-descriptors.js","core-js/modules/es6.object.get-own-property-names":"../../node_modules/core-js/modules/es6.object.get-own-property-names.js","core-js/modules/es6.object.get-prototype-of":"../../node_modules/core-js/modules/es6.object.get-prototype-of.js","core-js/modules/es7.object.lookup-getter":"../../node_modules/core-js/modules/es7.object.lookup-getter.js","core-js/modules/es7.object.lookup-setter":"../../node_modules/core-js/modules/es7.object.lookup-setter.js","core-js/modules/es6.object.prevent-extensions":"../../node_modules/core-js/modules/es6.object.prevent-extensions.js","core-js/modules/es6.object.to-string":"../../node_modules/core-js/modules/es6.object.to-string.js","core-js/modules/es6.object.is":"../../node_modules/core-js/modules/es6.object.is.js","core-js/modules/es6.object.is-frozen":"../../node_modules/core-js/modules/es6.object.is-frozen.js","core-js/modules/es6.object.is-sealed":"../../node_modules/core-js/modules/es6.object.is-sealed.js","core-js/modules/es6.object.is-extensible":"../../node_modules/core-js/modules/es6.object.is-extensible.js","core-js/modules/es6.object.keys":"../../node_modules/core-js/modules/es6.object.keys.js","core-js/modules/es6.object.seal":"../../node_modules/core-js/modules/es6.object.seal.js","core-js/modules/es7.object.values":"../../node_modules/core-js/modules/es7.object.values.js","core-js/modules/es6.promise":"../../node_modules/core-js/modules/es6.promise.js","core-js/modules/es7.promise.finally":"../../node_modules/core-js/modules/es7.promise.finally.js","core-js/modules/es6.reflect.apply":"../../node_modules/core-js/modules/es6.reflect.apply.js","core-js/modules/es6.reflect.construct":"../../node_modules/core-js/modules/es6.reflect.construct.js","core-js/modules/es6.reflect.define-property":"../../node_modules/core-js/modules/es6.reflect.define-property.js","core-js/modules/es6.reflect.delete-property":"../../node_modules/core-js/modules/es6.reflect.delete-property.js","core-js/modules/es6.reflect.get":"../../node_modules/core-js/modules/es6.reflect.get.js","core-js/modules/es6.reflect.get-own-property-descriptor":"../../node_modules/core-js/modules/es6.reflect.get-own-property-descriptor.js","core-js/modules/es6.reflect.get-prototype-of":"../../node_modules/core-js/modules/es6.reflect.get-prototype-of.js","core-js/modules/es6.reflect.has":"../../node_modules/core-js/modules/es6.reflect.has.js","core-js/modules/es6.reflect.is-extensible":"../../node_modules/core-js/modules/es6.reflect.is-extensible.js","core-js/modules/es6.reflect.own-keys":"../../node_modules/core-js/modules/es6.reflect.own-keys.js","core-js/modules/es6.reflect.prevent-extensions":"../../node_modules/core-js/modules/es6.reflect.prevent-extensions.js","core-js/modules/es6.reflect.set":"../../node_modules/core-js/modules/es6.reflect.set.js","core-js/modules/es6.reflect.set-prototype-of":"../../node_modules/core-js/modules/es6.reflect.set-prototype-of.js","core-js/modules/es6.regexp.constructor":"../../node_modules/core-js/modules/es6.regexp.constructor.js","core-js/modules/es6.regexp.flags":"../../node_modules/core-js/modules/es6.regexp.flags.js","core-js/modules/es6.regexp.match":"../../node_modules/core-js/modules/es6.regexp.match.js","core-js/modules/es6.regexp.replace":"../../node_modules/core-js/modules/es6.regexp.replace.js","core-js/modules/es6.regexp.split":"../../node_modules/core-js/modules/es6.regexp.split.js","core-js/modules/es6.regexp.search":"../../node_modules/core-js/modules/es6.regexp.search.js","core-js/modules/es6.regexp.to-string":"../../node_modules/core-js/modules/es6.regexp.to-string.js","core-js/modules/es6.set":"../../node_modules/core-js/modules/es6.set.js","core-js/modules/es6.symbol":"../../node_modules/core-js/modules/es6.symbol.js","core-js/modules/es7.symbol.async-iterator":"../../node_modules/core-js/modules/es7.symbol.async-iterator.js","core-js/modules/es6.string.anchor":"../../node_modules/core-js/modules/es6.string.anchor.js","core-js/modules/es6.string.big":"../../node_modules/core-js/modules/es6.string.big.js","core-js/modules/es6.string.blink":"../../node_modules/core-js/modules/es6.string.blink.js","core-js/modules/es6.string.bold":"../../node_modules/core-js/modules/es6.string.bold.js","core-js/modules/es6.string.code-point-at":"../../node_modules/core-js/modules/es6.string.code-point-at.js","core-js/modules/es6.string.ends-with":"../../node_modules/core-js/modules/es6.string.ends-with.js","core-js/modules/es6.string.fixed":"../../node_modules/core-js/modules/es6.string.fixed.js","core-js/modules/es6.string.fontcolor":"../../node_modules/core-js/modules/es6.string.fontcolor.js","core-js/modules/es6.string.fontsize":"../../node_modules/core-js/modules/es6.string.fontsize.js","core-js/modules/es6.string.from-code-point":"../../node_modules/core-js/modules/es6.string.from-code-point.js","core-js/modules/es6.string.includes":"../../node_modules/core-js/modules/es6.string.includes.js","core-js/modules/es6.string.italics":"../../node_modules/core-js/modules/es6.string.italics.js","core-js/modules/es6.string.iterator":"../../node_modules/core-js/modules/es6.string.iterator.js","core-js/modules/es6.string.link":"../../node_modules/core-js/modules/es6.string.link.js","core-js/modules/es7.string.pad-start":"../../node_modules/core-js/modules/es7.string.pad-start.js","core-js/modules/es7.string.pad-end":"../../node_modules/core-js/modules/es7.string.pad-end.js","core-js/modules/es6.string.raw":"../../node_modules/core-js/modules/es6.string.raw.js","core-js/modules/es6.string.repeat":"../../node_modules/core-js/modules/es6.string.repeat.js","core-js/modules/es6.string.small":"../../node_modules/core-js/modules/es6.string.small.js","core-js/modules/es6.string.starts-with":"../../node_modules/core-js/modules/es6.string.starts-with.js","core-js/modules/es6.string.strike":"../../node_modules/core-js/modules/es6.string.strike.js","core-js/modules/es6.string.sub":"../../node_modules/core-js/modules/es6.string.sub.js","core-js/modules/es6.string.sup":"../../node_modules/core-js/modules/es6.string.sup.js","core-js/modules/es7.string.trim-left":"../../node_modules/core-js/modules/es7.string.trim-left.js","core-js/modules/es7.string.trim-right":"../../node_modules/core-js/modules/es7.string.trim-right.js","core-js/modules/es6.typed.array-buffer":"../../node_modules/core-js/modules/es6.typed.array-buffer.js","core-js/modules/es6.typed.int8-array":"../../node_modules/core-js/modules/es6.typed.int8-array.js","core-js/modules/es6.typed.uint8-array":"../../node_modules/core-js/modules/es6.typed.uint8-array.js","core-js/modules/es6.typed.uint8-clamped-array":"../../node_modules/core-js/modules/es6.typed.uint8-clamped-array.js","core-js/modules/es6.typed.int16-array":"../../node_modules/core-js/modules/es6.typed.int16-array.js","core-js/modules/es6.typed.uint16-array":"../../node_modules/core-js/modules/es6.typed.uint16-array.js","core-js/modules/es6.typed.int32-array":"../../node_modules/core-js/modules/es6.typed.int32-array.js","core-js/modules/es6.typed.uint32-array":"../../node_modules/core-js/modules/es6.typed.uint32-array.js","core-js/modules/es6.typed.float32-array":"../../node_modules/core-js/modules/es6.typed.float32-array.js","core-js/modules/es6.typed.float64-array":"../../node_modules/core-js/modules/es6.typed.float64-array.js","core-js/modules/es6.weak-map":"../../node_modules/core-js/modules/es6.weak-map.js","core-js/modules/es6.weak-set":"../../node_modules/core-js/modules/es6.weak-set.js","core-js/modules/web.timers":"../../node_modules/core-js/modules/web.timers.js","core-js/modules/web.immediate":"../../node_modules/core-js/modules/web.immediate.js","core-js/modules/web.dom.iterable":"../../node_modules/core-js/modules/web.dom.iterable.js","regenerator-runtime/runtime":"../../node_modules/regenerator-runtime/runtime.js","./ajaxRequests":"ajaxRequests.js","./errorHandler":"errorHandler.js","./alertMessage":"alertMessage.js","./userInterface":"userInterface.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -10080,7 +10102,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53578" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50008" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

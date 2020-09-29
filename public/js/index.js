@@ -443,17 +443,35 @@ if (elements.forgottenPasswordForm) {
             // iscupaj URL, bropj strane, podataka po strani i broj poslednje strane
             const extractedUrl = elem.dataset.url;
             const currentPageNumber = extractedUrl.split('page=')[1];
-            const itemsPerPage = document.getElementById('itemsPerPage').value;
             const lastPageNumber = elements.btnLastPage.dataset.url.split('page=')[1];
+            const limit = elements.itemsPerPage.value;
+            console.log(limit);
 
             // pozovi ajax i pokupi podatke za traženu stranu
             const results = await getAdvancedResultsData(extractedUrl);
-            console.log(results)
 
             // update UI
-            renderPaginatedUI(results, currentPageNumber, itemsPerPage, lastPageNumber);
-
+            renderPaginatedUI(results, currentPageNumber, limit, lastPageNumber);
             
         });
     }
 });
+
+// promena broja stavki po strani
+// elements.itemsPerPage.addEventListener('change', async (e) => {
+//     e.preventDefault();
+
+//     const limit = elements.itemsPerPage.value;
+//     const url = `/api/v2/reports/dom/json?limit=${limit}`;
+//     console.log(limit);    
+
+//     // pozovi ajax i pokupi podatke za traženu stranu
+//     const results = await getAdvancedResultsData(url);
+
+//     const lastPageNumber = results.data.lastPage;
+//     const currentPageNumber = 1;
+
+//     // update UI
+//     renderPaginatedUI(results, currentPageNumber, limit, lastPageNumber);
+
+// })

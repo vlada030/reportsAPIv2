@@ -93,7 +93,8 @@ export const elements = {
     middlePage: document.getElementById('middlePage'),
     nextPage: document.getElementById('nextPage'),
     leftDots: document.getElementById('leftDots'),
-    rightDots: document.getElementById('rightDots')
+    rightDots: document.getElementById('rightDots'),
+    itemsPerPage: document.getElementById('itemsPerPage')
 
 };
 
@@ -263,7 +264,7 @@ export const renderPaginatedUI = (input, currentPage, limit, lastPage) => {
 
         let no = (currentPage - 1) * limit + ind + 1;
         
-        const markup = `<a class="list-group-item list-group-item-action d-flex justify-content-between" href="/api/v2/reports/dom?id=${elem.MISBroj}"><span class="w-25 px-2">${no}</span><span class="w-25 px-2">MIS Broj: ${elem.MISBroj}</span><span class="w-25 px-2">Nalog: ${elem.radniNalog}</span><span class="w-25 px-2">${elem.proizvod.proizvod}</span><span class="w-25 text-right px-2">${elem.duzina}m</span></a>`;
+        const markup = `<a class="list-group-item list-group-item-action d-flex justify-content-between" href="/api/v2/reports/dom?id=${elem.MISBroj}"><span class="w-25 px-2">${no}.</span><span class="w-25 px-2">MIS Broj: ${elem.MISBroj}</span><span class="w-25 px-2">Nalog: ${elem.radniNalog}</span><span class="w-25 px-2">${elem.proizvod.proizvod}</span><span class="w-25 text-right px-2">${elem.duzina}m</span></a>`;
     
         elements.pageItemsContainer.insertAdjacentHTML('beforeend', markup);
     })
@@ -272,7 +273,7 @@ export const renderPaginatedUI = (input, currentPage, limit, lastPage) => {
     updateButtons(currentPage, lastPage);
 }
 
-// pagination buttons
+// pagination buttons logic
 const updateButtons = (current, last) => {
     // skini klasu disabled elementu ako je ima
     [elements.firstPage, elements.lastPage, elements.prevPage, elements.middlePage, elements.nextPage].forEach(elem => {
@@ -299,11 +300,14 @@ const updateButtons = (current, last) => {
     }
 
     // proveri buton PREVIOUS
-    if ( current > 1 && current <= last) {
+    if ( current > 1 && current < last) {
 
         elements.btnPrevPage.innerText = current - 1;
         elements.btnPrevPage.dataset.url = `/api/v2/reports/dom/json?page=${current - 1}`;
 
+    } else if (current == last) {
+        elements.btnPrevPage.innerText = current - 2;
+        elements.btnPrevPage.dataset.url = `/api/v2/reports/dom/json?page=${current - 2}`;
     } else {
         elements.btnPrevPage.innerText = 1;
         elements.btnPrevPage.dataset.url = `/api/v2/reports/dom/json?page=1`;
@@ -312,20 +316,27 @@ const updateButtons = (current, last) => {
     }
 
     // proveri buton MIDDLE
-    if (current < last) {
+    if (current == 1) {
+        elements.middlePage.classList.remove('disabled');
+        elements.btnMiddlePage.innerText = +current + 1;
+        elements.btnMiddlePage.dataset.url = `/api/v2/reports/dom/json?page=${+current + 1}`;
+
+    } else if (current >= last) {
+        elements.btnMiddlePage.innerText = +current - 1;
+        elements.btnMiddlePage.dataset.url = `/api/v2/reports/dom/json?page=${+current - 1}`;
+    } else {
 
         elements.middlePage.classList.add('disabled');
         elements.btnMiddlePage.innerText = current;
         elements.btnMiddlePage.dataset.url = `/api/v2/reports/dom/json?page=${current}`;
     }
 
-    if (current == 1) {
-        elements.middlePage.classList.remove('disabled');
-
-    }
 
     // proveri buton NEXT
-    if (current < last) {
+    if ( current == 1) {
+        elements.btnNextPage.innerText = +current +2;
+        elements.btnNextPage.dataset.url = `/api/v2/reports/dom/json?page=${+current + 2}`;
+    } else if (current < last) {
         elements.btnNextPage.innerText = +current + 1;
         elements.btnNextPage.dataset.url = `/api/v2/reports/dom/json?page=${+current + 1}`;
         
