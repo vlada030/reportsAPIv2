@@ -86,7 +86,15 @@ export const elements = {
     btnLastPage: document.getElementById('btnLastPage'),
     btnPrevPage: document.getElementById('btnPrevPage'),
     btnMiddlePage: document.getElementById('btnMiddlePage'),
-    btnNextPage: document.getElementById('btnNextPage')
+    btnNextPage: document.getElementById('btnNextPage'),
+    firstPage: document.getElementById('firstPage'),
+    lastPage: document.getElementById('lastPage'),
+    prevPage: document.getElementById('prevPage'),
+    middlePage: document.getElementById('middlePage'),
+    nextPage: document.getElementById('nextPage'),
+    leftDots: document.getElementById('leftDots'),
+    rightDots: document.getElementById('rightDots')
+
 };
 
 export const updateReportsUI = (elem) => {
@@ -245,16 +253,106 @@ export const removeItemProboj = () => {
 };
 
 // paginacija, render UI, prikazivanje rezultata strane i dodeljivanje novih adresa buttonima
-export const renderPaginatedUI = (input, page) => {
-    const productsArray = input.data.data;
+export const renderPaginatedUI = (input, currentPage, limit, lastPage) => {
+    let productsArray = input.data.data;
 
+    // update kontejner listu
     elements.pageItemsContainer.innerHTML = '';
 
     productsArray.forEach((elem, ind) => {
 
-        let no = page * ind;
+        let no = (currentPage - 1) * limit + ind + 1;
+        
         const markup = `<a class="list-group-item list-group-item-action d-flex justify-content-between" href="/api/v2/reports/dom?id=${elem.MISBroj}"><span class="w-25 px-2">${no}</span><span class="w-25 px-2">MIS Broj: ${elem.MISBroj}</span><span class="w-25 px-2">Nalog: ${elem.radniNalog}</span><span class="w-25 px-2">${elem.proizvod.proizvod}</span><span class="w-25 text-right px-2">${elem.duzina}m</span></a>`;
     
         elements.pageItemsContainer.insertAdjacentHTML('beforeend', markup);
     })
+
+    // update buttons
+    updateButtons(currentPage, lastPage);
 }
+
+// pagination buttons
+const updateButtons = (current, last) => {
+    // skini klasu disabled elementu ako je ima
+    [elements.firstPage, elements.lastPage, elements.prevPage, elements.middlePage, elements.nextPage].forEach(elem => {
+        if (elem && elem.classList.contains('disabled')) {
+            // console.log(`elem ${elem.toString()} ima klasu disabled`);
+            elem.classList.remove('disabled');
+            
+        } 
+    })
+
+    // proveri buton FIRST
+    if (current == 1) {
+        elements.firstPage.classList.add('disabled');
+
+    } else {
+        elements.firstPage.classList.remove('disabled');
+    }
+    // proveri tacke levo
+    if (current > 2) {
+        elements.leftDots.classList.remove('d-none');
+
+    } else {
+        elements.leftDots.classList.add('d-none');
+    }
+
+    // proveri buton PREVIOUS
+    if ( current > 1 && current <= last) {
+
+        elements.btnPrevPage.innerText = current - 1;
+        elements.btnPrevPage.dataset.url = `/api/v2/reports/dom/json?page=${current - 1}`;
+
+    } else {
+        elements.btnPrevPage.innerText = 1;
+        elements.btnPrevPage.dataset.url = `/api/v2/reports/dom/json?page=1`;
+        elements.firstPage.classList.add('disabled');
+        elements.prevPage.classList.add('disabled');
+    }
+
+    // proveri buton MIDDLE
+    if (current < last) {
+
+        elements.middlePage.classList.add('disabled');
+        elements.btnMiddlePage.innerText = current;
+        elements.btnMiddlePage.dataset.url = `/api/v2/reports/dom/json?page=${current}`;
+    }
+
+    if (current == 1) {
+        elements.middlePage.classList.remove('disabled');
+
+    }
+
+    // proveri buton NEXT
+    if (current < last) {
+        elements.btnNextPage.innerText = +current + 1;
+        elements.btnNextPage.dataset.url = `/api/v2/reports/dom/json?page=${+current + 1}`;
+        
+    } else {
+        elements.btnNextPage.innerText = last;
+        elements.btnNextPage.dataset.url = `/api/v2/reports/dom/json?page=${last}`;
+        elements.lastPage.classList.add('disabled');
+        elements.nextPage.classList.add('disabled');
+    }
+
+    // proveri tacke desno
+    if (current > last - 1) {
+        elements.rightDots.classList.add('d-none');
+
+    } else {
+        elements.rightDots.classList.remove('d-none');
+    }
+
+    // proveri buton LAST
+    if (current == last) {
+        elements.lastPage.classList.add('disabled');
+
+    } else {
+        elements.lastPage.classList.remove('disabled');
+    }
+}
+
+// const markup = (pageNo) => {
+//     return `<button class="page-link" data-url="/api/v2/reports/dom/json?page=${pageNo}" id="btnPrevPage">${pageNo}</button>`;
+// }

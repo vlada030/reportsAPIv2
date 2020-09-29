@@ -11,6 +11,12 @@ block secondaryNavBar
 block content
     .container.my-3.w-100
         .row.w-100.mb-4
+            .form-group.d-flex.flex-row.align-items-center.mx-auto.my-4
+                label(for='itemsPerPage').mr-4   Broj&nbsp;prikaza&nbsp;po&nbsp;strani
+                select#itemsPerPage.form-control   
+                    option(value="10").selected 10
+                    option(value="30") 30
+                    option(value="50") 50
             .list-group.w-100#pageItemsContainer
                 -var No = 1
                 if path === 'dom'
@@ -34,31 +40,31 @@ block content
                         - No++     
         nav.pb-3#paginationElem
             ul.pagination.justify-content-center
-                li.page-item(class='disabled')
+                li.page-item(class='disabled')#firstPage
                     button.page-link(data-url=`/api/v2/reports/dom/json?page=1`)#btnFirstPage Prva
 
-                li.page-item.mx-2
+                li.page-item.mx-2#leftDots.d-none
                     |   . . .        
 
-                li.page-item.active
-                    span.page-link 
-                        |   1
-                        span.sr-only (current)
-                //- li.page-item
-                //-         button.page-link(data-url=`#`) 1
+                //- li.page-item.active#prevPage
+                //-     span.page-link 
+                //-         |   1
+                //-         span.sr-only (current)
+                li.page-item#prevPage(class='disabled')
+                        button.page-link(data-url=`/api/v2/reports/dom/json?page=1`)#btnPrevPage 1
 
                 if (reports.pagination.next.page)         
-                    li.page-item
+                    li.page-item#middlePage
                         button.page-link(data-url=`/api/v2/reports/dom/json?page=2`)#btnMiddlePage 2
 
                 if (reports.lastPage >= 3)         
-                    li.page-item
+                    li.page-item#nextPage
                         button.page-link(data-url=`/api/v2/reports/dom/json?page=3`)#btnNextPage 3
 
-                li.page-item.mx-2
+                li.page-item.mx-2#rightDots
                     |   . . .   
 
-                li.page-item
+                li.page-item#lastPage
                     button.page-link(data-url=`/api/v2/reports/dom/json?page=${reports.lastPage}`)#btnLastPage Poslednja
     
 block footer    

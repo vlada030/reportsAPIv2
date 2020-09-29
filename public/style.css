@@ -107,7 +107,8 @@ label:after {
     /* margin-left: 0.3rem; */
 }
 
-#updateAvatar label:after {
+#updateAvatar label:after,
+label[for="itemsPerPage"]:after {
     content: "";
 }
 

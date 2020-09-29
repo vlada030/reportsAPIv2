@@ -8802,7 +8802,14 @@ var elements = {
   btnLastPage: document.getElementById('btnLastPage'),
   btnPrevPage: document.getElementById('btnPrevPage'),
   btnMiddlePage: document.getElementById('btnMiddlePage'),
-  btnNextPage: document.getElementById('btnNextPage')
+  btnNextPage: document.getElementById('btnNextPage'),
+  firstPage: document.getElementById('firstPage'),
+  lastPage: document.getElementById('lastPage'),
+  prevPage: document.getElementById('prevPage'),
+  middlePage: document.getElementById('middlePage'),
+  nextPage: document.getElementById('nextPage'),
+  leftDots: document.getElementById('leftDots'),
+  rightDots: document.getElementById('rightDots')
 };
 exports.elements = elements;
 
@@ -8979,17 +8986,93 @@ var removeItemProboj = function removeItemProboj() {
 
 exports.removeItemProboj = removeItemProboj;
 
-var renderPaginatedUI = function renderPaginatedUI(input, page) {
-  var productsArray = input.data.data;
+var renderPaginatedUI = function renderPaginatedUI(input, currentPage, limit, lastPage) {
+  var productsArray = input.data.data; // update kontejner listu
+
   elements.pageItemsContainer.innerHTML = '';
   productsArray.forEach(function (elem, ind) {
-    var no = page * ind;
+    var no = (currentPage - 1) * limit + ind + 1;
     var markup = "<a class=\"list-group-item list-group-item-action d-flex justify-content-between\" href=\"/api/v2/reports/dom?id=".concat(elem.MISBroj, "\"><span class=\"w-25 px-2\">").concat(no, "</span><span class=\"w-25 px-2\">MIS Broj: ").concat(elem.MISBroj, "</span><span class=\"w-25 px-2\">Nalog: ").concat(elem.radniNalog, "</span><span class=\"w-25 px-2\">").concat(elem.proizvod.proizvod, "</span><span class=\"w-25 text-right px-2\">").concat(elem.duzina, "m</span></a>");
     elements.pageItemsContainer.insertAdjacentHTML('beforeend', markup);
-  });
-};
+  }); // update buttons
+
+  updateButtons(currentPage, lastPage);
+}; // pagination buttons
+
 
 exports.renderPaginatedUI = renderPaginatedUI;
+
+var updateButtons = function updateButtons(current, last) {
+  // skini klasu disabled elementu ako je ima
+  [elements.firstPage, elements.lastPage, elements.prevPage, elements.middlePage, elements.nextPage].forEach(function (elem) {
+    if (elem && elem.classList.contains('disabled')) {
+      // console.log(`elem ${elem.toString()} ima klasu disabled`);
+      elem.classList.remove('disabled');
+    }
+  }); // proveri buton FIRST
+
+  if (current == 1) {
+    elements.firstPage.classList.add('disabled');
+  } else {
+    elements.firstPage.classList.remove('disabled');
+  } // proveri tacke levo
+
+
+  if (current > 2) {
+    elements.leftDots.classList.remove('d-none');
+  } else {
+    elements.leftDots.classList.add('d-none');
+  } // proveri buton PREVIOUS
+
+
+  if (current > 1 && current <= last) {
+    elements.btnPrevPage.innerText = current - 1;
+    elements.btnPrevPage.dataset.url = "/api/v2/reports/dom/json?page=".concat(current - 1);
+  } else {
+    elements.btnPrevPage.innerText = 1;
+    elements.btnPrevPage.dataset.url = "/api/v2/reports/dom/json?page=1";
+    elements.firstPage.classList.add('disabled');
+    elements.prevPage.classList.add('disabled');
+  } // proveri buton MIDDLE
+
+
+  if (current < last) {
+    elements.middlePage.classList.add('disabled');
+    elements.btnMiddlePage.innerText = current;
+    elements.btnMiddlePage.dataset.url = "/api/v2/reports/dom/json?page=".concat(current);
+  }
+
+  if (current == 1) {
+    elements.middlePage.classList.remove('disabled');
+  } // proveri buton NEXT
+
+
+  if (current < last) {
+    elements.btnNextPage.innerText = +current + 1;
+    elements.btnNextPage.dataset.url = "/api/v2/reports/dom/json?page=".concat(+current + 1);
+  } else {
+    elements.btnNextPage.innerText = last;
+    elements.btnNextPage.dataset.url = "/api/v2/reports/dom/json?page=".concat(last);
+    elements.lastPage.classList.add('disabled');
+    elements.nextPage.classList.add('disabled');
+  } // proveri tacke desno
+
+
+  if (current > last - 1) {
+    elements.rightDots.classList.add('d-none');
+  } else {
+    elements.rightDots.classList.remove('d-none');
+  } // proveri buton LAST
+
+
+  if (current == last) {
+    elements.lastPage.classList.add('disabled');
+  } else {
+    elements.lastPage.classList.remove('disabled');
+  }
+}; // const markup = (pageNo) => {
+//     return `<button class="page-link" data-url="/api/v2/reports/dom/json?page=${pageNo}" id="btnPrevPage">${pageNo}</button>`;
+// }
 },{}],"index.js":[function(require,module,exports) {
 "use strict";
 
@@ -9934,26 +10017,28 @@ if (_userInterface.elements.forgottenPasswordForm) {
   if (elem) {
     elem.addEventListener("click", /*#__PURE__*/function () {
       var _ref11 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee11(e) {
-        var extractedUrl, pageNumber, results;
+        var extractedUrl, currentPageNumber, itemsPerPage, lastPageNumber, results;
         return regeneratorRuntime.wrap(function _callee11$(_context11) {
           while (1) {
             switch (_context11.prev = _context11.next) {
               case 0:
-                e.preventDefault(); // iscupaj URL
+                e.preventDefault(); // iscupaj URL, bropj strane, podataka po strani i broj poslednje strane
 
                 extractedUrl = elem.dataset.url;
-                pageNumber = extractedUrl.split('page=')[1]; // pozovi ajax
+                currentPageNumber = extractedUrl.split('page=')[1];
+                itemsPerPage = document.getElementById('itemsPerPage').value;
+                lastPageNumber = _userInterface.elements.btnLastPage.dataset.url.split('page=')[1]; // pozovi ajax i pokupi podatke za traženu stranu
 
-                _context11.next = 5;
+                _context11.next = 7;
                 return (0, _ajaxRequests.getAdvancedResultsData)(extractedUrl);
 
-              case 5:
+              case 7:
                 results = _context11.sent;
                 console.log(results); // update UI
 
-                (0, _userInterface.renderPaginatedUI)(results, pageNumber);
+                (0, _userInterface.renderPaginatedUI)(results, currentPageNumber, itemsPerPage, lastPageNumber);
 
-              case 8:
+              case 10:
               case "end":
                 return _context11.stop();
             }
@@ -9995,7 +10080,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49500" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53578" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
