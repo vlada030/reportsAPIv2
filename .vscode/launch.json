@@ -5,18 +5,27 @@
     "version": "0.2.0",
     "configurations": [        
 
+
+    {
+        "name": "Launch Chrome",
+        "request": "launch",
+        "type": "pwa-chrome",
+        "url": "http://127.0.0.1:5500",
+        "webRoot": "${workspaceFolder}"
+    },
+
         
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Launch Program",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}\\server.js",
-            "restart": true,
-            "runtimeExecutable": "nodemon",
-            "console": "integratedTerminal"
-        }
+    {
+        "type": "node",
+        "request": "launch",
+        "name": "Launch Program",
+        "skipFiles": [
+            "<node_internals>/**"
+        ],
+        "program": "${workspaceFolder}\\server.js",
+        "restart": true,
+        "runtimeExecutable": "nodemon",
+        "console": "integratedTerminal"
+    }
     ]
 }

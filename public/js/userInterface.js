@@ -270,11 +270,11 @@ export const renderPaginatedUI = (input, currentPage, limit, lastPage) => {
     })
 
     // update buttons
-    updateButtons(currentPage, lastPage);
+    updateButtons(currentPage, lastPage, limit);
 }
 
 // pagination buttons logic
-const updateButtons = (current, last) => {
+const updateButtons = (current, last, itmPerPage) => {
     // skini klasu disabled elementu ako je ima
     [elements.firstPage, elements.lastPage, elements.prevPage, elements.middlePage, elements.nextPage].forEach(elem => {
         if (elem && elem.classList.contains('disabled')) {
@@ -285,6 +285,7 @@ const updateButtons = (current, last) => {
     })
 
     // proveri buton FIRST
+    elements.btnFirstPage.dataset.url = `/api/v2/reports/dom/json?limit=${itmPerPage}&page=1`;
     if (current == 1) {
         elements.firstPage.classList.add('disabled');
 
@@ -303,14 +304,14 @@ const updateButtons = (current, last) => {
     if ( current > 1 && current < last) {
 
         elements.btnPrevPage.innerText = current - 1;
-        elements.btnPrevPage.dataset.url = `/api/v2/reports/dom/json?page=${current - 1}`;
+        elements.btnPrevPage.dataset.url = `/api/v2/reports/dom/json?limit=${itmPerPage}&page=${current - 1}`;
 
     } else if (current == last) {
         elements.btnPrevPage.innerText = current - 2;
-        elements.btnPrevPage.dataset.url = `/api/v2/reports/dom/json?page=${current - 2}`;
+        elements.btnPrevPage.dataset.url = `/api/v2/reports/dom/json?limit=${itmPerPage}&page=${current - 2}`;
     } else {
         elements.btnPrevPage.innerText = 1;
-        elements.btnPrevPage.dataset.url = `/api/v2/reports/dom/json?page=1`;
+        elements.btnPrevPage.dataset.url = `/api/v2/reports/dom/json?limit=${itmPerPage}&page=1`;
         elements.firstPage.classList.add('disabled');
         elements.prevPage.classList.add('disabled');
     }
@@ -319,30 +320,30 @@ const updateButtons = (current, last) => {
     if (current == 1) {
         elements.middlePage.classList.remove('disabled');
         elements.btnMiddlePage.innerText = +current + 1;
-        elements.btnMiddlePage.dataset.url = `/api/v2/reports/dom/json?page=${+current + 1}`;
+        elements.btnMiddlePage.dataset.url = `/api/v2/reports/dom/json?limit=${itmPerPage}&page=${+current + 1}`;
 
     } else if (current >= last) {
         elements.btnMiddlePage.innerText = +current - 1;
-        elements.btnMiddlePage.dataset.url = `/api/v2/reports/dom/json?page=${+current - 1}`;
+        elements.btnMiddlePage.dataset.url = `/api/v2/reports/dom/json?limit=${itmPerPage}&page=${+current - 1}`;
     } else {
 
         elements.middlePage.classList.add('disabled');
         elements.btnMiddlePage.innerText = current;
-        elements.btnMiddlePage.dataset.url = `/api/v2/reports/dom/json?page=${current}`;
+        elements.btnMiddlePage.dataset.url = `/api/v2/reports/dom/json?limit=${itmPerPage}&page=${current}`;
     }
 
 
     // proveri buton NEXT
     if ( current == 1) {
         elements.btnNextPage.innerText = +current +2;
-        elements.btnNextPage.dataset.url = `/api/v2/reports/dom/json?page=${+current + 2}`;
+        elements.btnNextPage.dataset.url = `/api/v2/reports/dom/json?limit=${itmPerPage}&page=${+current + 2}`;
     } else if (current < last) {
         elements.btnNextPage.innerText = +current + 1;
-        elements.btnNextPage.dataset.url = `/api/v2/reports/dom/json?page=${+current + 1}`;
+        elements.btnNextPage.dataset.url = `/api/v2/reports/dom/json?limit=${itmPerPage}&page=${+current + 1}`;
         
     } else {
         elements.btnNextPage.innerText = last;
-        elements.btnNextPage.dataset.url = `/api/v2/reports/dom/json?page=${last}`;
+        elements.btnNextPage.dataset.url = `/api/v2/reports/dom/json?limit=${itmPerPage}&page=${last}`;
         elements.lastPage.classList.add('disabled');
         elements.nextPage.classList.add('disabled');
     }
@@ -356,6 +357,8 @@ const updateButtons = (current, last) => {
     }
 
     // proveri buton LAST
+    elements.btnLastPage.dataset.url = `/api/v2/reports/dom/json?limit=${itmPerPage}&page=${last}`;
+
     if (current == last) {
         elements.lastPage.classList.add('disabled');
 
