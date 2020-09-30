@@ -458,20 +458,23 @@ if (elements.forgottenPasswordForm) {
 });
 
 //promena broja stavki po strani
-elements.itemsPerPage.addEventListener('change', async (e) => {
-    e.preventDefault();
+if (elements.itemsPerPage) {
 
-    const limit = elements.itemsPerPage.value;
-    const url = `/api/v2/reports/dom/json?limit=${limit}`;
-    console.log(limit);    
-
-    // pozovi ajax i pokupi podatke za traženu stranu
-    const results = await getAdvancedResultsData(url);
-
-    const lastPageNumber = results.data.lastPage;
-    const currentPageNumber = 1;
-
-    // update UI
-    renderPaginatedUI(results, currentPageNumber, limit, lastPageNumber);
-
-})
+    elements.itemsPerPage.addEventListener('change', async (e) => {
+        e.preventDefault();
+    
+        const limit = elements.itemsPerPage.value;
+        const url = `/api/v2/reports/dom/json?limit=${limit}`;
+        console.log(limit);    
+    
+        // pozovi ajax i pokupi podatke za traženu stranu
+        const results = await getAdvancedResultsData(url);
+    
+        const lastPageNumber = results.data.lastPage;
+        const currentPageNumber = 1;
+    
+        // update UI
+        renderPaginatedUI(results, currentPageNumber, limit, lastPageNumber);
+    
+    })
+}

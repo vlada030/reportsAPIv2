@@ -284,7 +284,7 @@ const updateButtons = (current, last, itmPerPage) => {
         } 
     })
 
-    // proveri buton FIRST
+    // PROVERI BUTTON FIRST
     elements.btnFirstPage.dataset.url = `/api/v2/reports/dom/json?limit=${itmPerPage}&page=1`;
     if (current == 1) {
         elements.firstPage.classList.add('disabled');
@@ -292,23 +292,29 @@ const updateButtons = (current, last, itmPerPage) => {
     } else {
         elements.firstPage.classList.remove('disabled');
     }
-    // proveri tacke levo
-    if (current > 2) {
+
+    // PROVERI TACKE LEVO
+    if (current > 2 && last != 1 && last != 2 && last != 3) {
         elements.leftDots.classList.remove('d-none');
 
     } else {
         elements.leftDots.classList.add('d-none');
     }
 
-    // proveri buton PREVIOUS
+    // PROVERI BUTTON PREVIOUS
     if ( current > 1 && current < last) {
 
         elements.btnPrevPage.innerText = current - 1;
         elements.btnPrevPage.dataset.url = `/api/v2/reports/dom/json?limit=${itmPerPage}&page=${current - 1}`;
 
-    } else if (current == last) {
+    } else if (current == last && last != 2) {
         elements.btnPrevPage.innerText = current - 2;
         elements.btnPrevPage.dataset.url = `/api/v2/reports/dom/json?limit=${itmPerPage}&page=${current - 2}`;
+
+    } else if (current == last && last == 2) {
+        elements.btnPrevPage.innerText = current - 1;
+        elements.btnPrevPage.dataset.url = `/api/v2/reports/dom/json?limit=${itmPerPage}&page=${current - 1}`;
+
     } else {
         elements.btnPrevPage.innerText = 1;
         elements.btnPrevPage.dataset.url = `/api/v2/reports/dom/json?limit=${itmPerPage}&page=1`;
@@ -316,13 +322,18 @@ const updateButtons = (current, last, itmPerPage) => {
         elements.prevPage.classList.add('disabled');
     }
 
-    // proveri buton MIDDLE
+    // PROVERI BUTTON MIDDLE
+    // provera prvo da li je button d-none
+    if (elements.middlePage.classList.contains('d-none')) {
+        elements.middlePage.classList.remove('d-none');
+    }
+
     if (current == 1) {
         elements.middlePage.classList.remove('disabled');
         elements.btnMiddlePage.innerText = +current + 1;
         elements.btnMiddlePage.dataset.url = `/api/v2/reports/dom/json?limit=${itmPerPage}&page=${+current + 1}`;
 
-    } else if (current >= last) {
+    } else if (current >= last && last != 2) {
         elements.btnMiddlePage.innerText = +current - 1;
         elements.btnMiddlePage.dataset.url = `/api/v2/reports/dom/json?limit=${itmPerPage}&page=${+current - 1}`;
     } else {
@@ -332,8 +343,17 @@ const updateButtons = (current, last, itmPerPage) => {
         elements.btnMiddlePage.dataset.url = `/api/v2/reports/dom/json?limit=${itmPerPage}&page=${current}`;
     }
 
+    // ako ima 1 stranu, disable Middle, Next
+    if ( last == 1 ) {
+        elements.middlePage.classList.add('d-none');
+    }
 
-    // proveri buton NEXT
+    // PROVERI BUTTON NEXT
+    // provera prvo da li je button d-none
+    if (elements.nextPage.classList.contains('d-none')) {
+        elements.nextPage.classList.remove('d-none');
+    }
+
     if ( current == 1) {
         elements.btnNextPage.innerText = +current +2;
         elements.btnNextPage.dataset.url = `/api/v2/reports/dom/json?limit=${itmPerPage}&page=${+current + 2}`;
@@ -348,8 +368,13 @@ const updateButtons = (current, last, itmPerPage) => {
         elements.nextPage.classList.add('disabled');
     }
 
-    // proveri tacke desno
-    if (current > last - 1) {
+    // ako ima 1 stranu, disable Next
+    if ( last == 1 || last == 2 ) {
+        elements.nextPage.classList.add('d-none');
+    }
+
+    // PROVERI TACKE DESNO
+    if (current > last - 1 || last == 2 || last == 1 || last == 3) {
         elements.rightDots.classList.add('d-none');
 
     } else {
