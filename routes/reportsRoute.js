@@ -114,8 +114,10 @@ router
         ],
         createExpReport
     );
-router.route('/exp/all').get(protect,advancedResults(ExpReport, {path: 'createdByUser', select: 'name'}),  getAllExpReports);
-router.route('/exp/allReports').get(getAllExpReportsHTML);
+router.route('/exp/json').get(protect,advancedResults(ExpReport, 'proizvod'),  getAllExpReports);
+
+router.route('/exp/allReports').get(protect, advancedResults(ExpReport, 'proizvod'), getAllExpReportsHTML);
+
 router.route('/exp/:id').get(getExpReport).delete(protect, deleteExpReport).put(protect, updateExpReport);
 
 router

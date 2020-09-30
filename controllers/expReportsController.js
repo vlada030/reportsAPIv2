@@ -75,7 +75,7 @@ exports.getExpReport = asyncHandler( async(req, res, next) => {
 // @access Private
 
 exports.getAllExpReportsHTML = asyncHandler(async(req, res) => {
-    const reports = await ExpReport.find().populate("proizvod");
+    const reports = res.advancedResults;
     //console.log(reports)
 
     res.status(200).render("domExpReportsAll", {

@@ -8987,23 +8987,36 @@ var removeItemProboj = function removeItemProboj() {
 
 exports.removeItemProboj = removeItemProboj;
 
-var renderPaginatedUI = function renderPaginatedUI(input, currentPage, limit, lastPage) {
+var renderPaginatedUI = function renderPaginatedUI(input, currentPage, limit, lastPage, type) {
   var productsArray = input.data.data; // update kontejner listu
 
   elements.pageItemsContainer.innerHTML = '';
   productsArray.forEach(function (elem, ind) {
     var no = (currentPage - 1) * limit + ind + 1;
-    var markup = "<a class=\"list-group-item list-group-item-action d-flex justify-content-between\" href=\"/api/v2/reports/dom?id=".concat(elem.MISBroj, "\"><span class=\"w-25 px-2\">").concat(no, ".</span><span class=\"w-25 px-2\">MIS Broj: ").concat(elem.MISBroj, "</span><span class=\"w-25 px-2\">Nalog: ").concat(elem.radniNalog, "</span><span class=\"w-25 px-2\">").concat(elem.proizvod.proizvod, "</span><span class=\"w-25 text-right px-2\">").concat(elem.duzina, "m</span></a>");
+    var markup;
+
+    if (type === 'dom') {
+      markup = "<a class=\"list-group-item list-group-item-action d-flex justify-content-between\" href=\"/api/v2/reports/dom?id=".concat(elem.MISBroj, "\"><span class=\"w-25 px-2\">").concat(no, ".</span><span class=\"w-25 px-2\">MIS Broj: ").concat(elem.MISBroj, "</span><span class=\"w-25 px-2\">Nalog: ").concat(elem.radniNalog, "</span><span class=\"w-25 px-2\">").concat(elem.proizvod.proizvod, "</span><span class=\"w-25 text-right px-2\">").concat(elem.duzina, "m</span></a>");
+    } else {
+      var options = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      };
+      markup = "<a class=\"list-group-item list-group-item-action d-flex justify-content-between\" href=\"\"/api/v2/reports/dom?id=".concat(elem._id, "\"><span class=\"w-25 px-2\">").concat(no, ".</span><span class=\"w-25 px-2\">").concat(elem.proizvod.proizvod, "</span><span class=\"w-25 px-2\">Ukupna duzina: ").concat(elem.ukupnaDuz, "m</span><span class=\"w-25 px-2\">Kreiran: ").concat(elem.createdAt.toLocaleString('sr-sr', options), "</span></a>");
+    }
+
     elements.pageItemsContainer.insertAdjacentHTML('beforeend', markup);
   }); // update buttons
 
-  updateButtons(currentPage, lastPage, limit);
+  updateButtons(currentPage, lastPage, limit, type);
 }; // pagination buttons logic
 
 
 exports.renderPaginatedUI = renderPaginatedUI;
 
-var updateButtons = function updateButtons(current, last, itmPerPage) {
+var updateButtons = function updateButtons(current, last, itmPerPage, typeOfReport) {
   // skini klasu disabled elementu ako je ima
   [elements.firstPage, elements.lastPage, elements.prevPage, elements.middlePage, elements.nextPage].forEach(function (elem) {
     if (elem && elem.classList.contains('disabled')) {
@@ -9012,7 +9025,7 @@ var updateButtons = function updateButtons(current, last, itmPerPage) {
     }
   }); // PROVERI BUTTON FIRST
 
-  elements.btnFirstPage.dataset.url = "/api/v2/reports/dom/json?limit=".concat(itmPerPage, "&page=1");
+  elements.btnFirstPage.dataset.url = "/api/v2/reports/".concat(typeOfReport, "/json?limit=").concat(itmPerPage, "&page=1");
 
   if (current == 1) {
     elements.firstPage.classList.add('disabled');
@@ -9030,16 +9043,20 @@ var updateButtons = function updateButtons(current, last, itmPerPage) {
 
   if (current > 1 && current < last) {
     elements.btnPrevPage.innerText = current - 1;
-    elements.btnPrevPage.dataset.url = "/api/v2/reports/dom/json?limit=".concat(itmPerPage, "&page=").concat(current - 1);
+    elements.btnPrevPage.dataset.url = "/api/v2/reports/".concat(typeOfReport, "/json?limit=").concat(itmPerPage, "&page=").concat(current - 1);
+  } else if (current == 1 && last == 1) {
+    elements.btnPrevPage.innerText = current;
+    elements.btnPrevPage.dataset.url = "/api/v2/reports/".concat(typeOfReport, "/json?limit=").concat(itmPerPage, "&page=").concat(current);
+    elements.prevPage.classList.add('disabled');
   } else if (current == last && last != 2) {
     elements.btnPrevPage.innerText = current - 2;
-    elements.btnPrevPage.dataset.url = "/api/v2/reports/dom/json?limit=".concat(itmPerPage, "&page=").concat(current - 2);
-  } else if (current == last && last == 2) {
+    elements.btnPrevPage.dataset.url = "/api/v2/reports/".concat(typeOfReport, "/json?limit=").concat(itmPerPage, "&page=").concat(current - 2);
+  } else if (current == 2 && last == 2) {
     elements.btnPrevPage.innerText = current - 1;
-    elements.btnPrevPage.dataset.url = "/api/v2/reports/dom/json?limit=".concat(itmPerPage, "&page=").concat(current - 1);
+    elements.btnPrevPage.dataset.url = "/api/v2/reports/".concat(typeOfReport, "/json?limit=").concat(itmPerPage, "&page=").concat(current - 1);
   } else {
     elements.btnPrevPage.innerText = 1;
-    elements.btnPrevPage.dataset.url = "/api/v2/reports/dom/json?limit=".concat(itmPerPage, "&page=1");
+    elements.btnPrevPage.dataset.url = "/api/v2/reports/".concat(typeOfReport, "/json?limit=").concat(itmPerPage, "&page=1");
     elements.firstPage.classList.add('disabled');
     elements.prevPage.classList.add('disabled');
   } // PROVERI BUTTON MIDDLE
@@ -9053,15 +9070,15 @@ var updateButtons = function updateButtons(current, last, itmPerPage) {
   if (current == 1) {
     elements.middlePage.classList.remove('disabled');
     elements.btnMiddlePage.innerText = +current + 1;
-    elements.btnMiddlePage.dataset.url = "/api/v2/reports/dom/json?limit=".concat(itmPerPage, "&page=").concat(+current + 1);
+    elements.btnMiddlePage.dataset.url = "/api/v2/reports/".concat(typeOfReport, "/json?limit=").concat(itmPerPage, "&page=").concat(+current + 1);
   } else if (current >= last && last != 2) {
     elements.btnMiddlePage.innerText = +current - 1;
-    elements.btnMiddlePage.dataset.url = "/api/v2/reports/dom/json?limit=".concat(itmPerPage, "&page=").concat(+current - 1);
+    elements.btnMiddlePage.dataset.url = "/api/v2/reports/".concat(typeOfReport, "/json?limit=").concat(itmPerPage, "&page=").concat(+current - 1);
   } else {
     elements.middlePage.classList.add('disabled');
     elements.btnMiddlePage.innerText = current;
-    elements.btnMiddlePage.dataset.url = "/api/v2/reports/dom/json?limit=".concat(itmPerPage, "&page=").concat(current);
-  } // ako ima 1 stranu, disable Middle, Next
+    elements.btnMiddlePage.dataset.url = "/api/v2/reports/".concat(typeOfReport, "/json?limit=").concat(itmPerPage, "&page=").concat(current);
+  } // ako ima 1 stranu, disable Middle
 
 
   if (last == 1) {
@@ -9070,26 +9087,28 @@ var updateButtons = function updateButtons(current, last, itmPerPage) {
   // provera prvo da li je button d-none
 
 
-  if (elements.nextPage.classList.contains('d-none')) {
-    elements.nextPage.classList.remove('d-none');
-  }
+  if (elements.btnNextPage) {
+    if (elements.nextPage.classList.contains('d-none')) {
+      elements.nextPage.classList.remove('d-none');
+    }
 
-  if (current == 1) {
-    elements.btnNextPage.innerText = +current + 2;
-    elements.btnNextPage.dataset.url = "/api/v2/reports/dom/json?limit=".concat(itmPerPage, "&page=").concat(+current + 2);
-  } else if (current < last) {
-    elements.btnNextPage.innerText = +current + 1;
-    elements.btnNextPage.dataset.url = "/api/v2/reports/dom/json?limit=".concat(itmPerPage, "&page=").concat(+current + 1);
-  } else {
-    elements.btnNextPage.innerText = last;
-    elements.btnNextPage.dataset.url = "/api/v2/reports/dom/json?limit=".concat(itmPerPage, "&page=").concat(last);
-    elements.lastPage.classList.add('disabled');
-    elements.nextPage.classList.add('disabled');
-  } // ako ima 1 stranu, disable Next
+    if (current == 1) {
+      elements.btnNextPage.innerText = +current + 2;
+      elements.btnNextPage.dataset.url = "/api/v2/reports/".concat(typeOfReport, "/json?limit=").concat(itmPerPage, "&page=").concat(+current + 2);
+    } else if (current < last) {
+      elements.btnNextPage.innerText = +current + 1;
+      elements.btnNextPage.dataset.url = "/api/v2/reports/".concat(typeOfReport, "/json?limit=").concat(itmPerPage, "&page=").concat(+current + 1);
+    } else {
+      elements.btnNextPage.innerText = last;
+      elements.btnNextPage.dataset.url = "/api/v2/reports/".concat(typeOfReport, "/json?limit=").concat(itmPerPage, "&page=").concat(last);
+      elements.lastPage.classList.add('disabled');
+      elements.nextPage.classList.add('disabled');
+    } // ako ima 1 stranu, disable Next
 
 
-  if (last == 1 || last == 2) {
-    elements.nextPage.classList.add('d-none');
+    if (last == 1 || last == 2) {
+      elements.nextPage.classList.add('d-none');
+    }
   } // PROVERI TACKE DESNO
 
 
@@ -9100,16 +9119,14 @@ var updateButtons = function updateButtons(current, last, itmPerPage) {
   } // proveri buton LAST
 
 
-  elements.btnLastPage.dataset.url = "/api/v2/reports/dom/json?limit=".concat(itmPerPage, "&page=").concat(last);
+  elements.btnLastPage.dataset.url = "/api/v2/reports/".concat(typeOfReport, "/json?limit=").concat(itmPerPage, "&page=").concat(last);
 
   if (current == last) {
     elements.lastPage.classList.add('disabled');
   } else {
     elements.lastPage.classList.remove('disabled');
   }
-}; // const markup = (pageNo) => {
-//     return `<button class="page-link" data-url="/api/v2/reports/dom/json?page=${pageNo}" id="btnPrevPage">${pageNo}</button>`;
-// }
+};
 },{}],"index.js":[function(require,module,exports) {
 "use strict";
 
@@ -10054,7 +10071,7 @@ if (_userInterface.elements.forgottenPasswordForm) {
   if (elem) {
     elem.addEventListener("click", /*#__PURE__*/function () {
       var _ref11 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee11(e) {
-        var extractedUrl, currentPageNumber, lastPageNumber, limit, results;
+        var extractedUrl, path, currentPageNumber, lastPageNumber, limit, results;
         return regeneratorRuntime.wrap(function _callee11$(_context11) {
           while (1) {
             switch (_context11.prev = _context11.next) {
@@ -10062,10 +10079,10 @@ if (_userInterface.elements.forgottenPasswordForm) {
                 e.preventDefault(); // iscupaj URL, bropj strane, podataka po strani i broj poslednje strane
 
                 extractedUrl = elem.dataset.url;
+                path = extractedUrl.includes('dom') ? 'dom' : 'exp';
                 currentPageNumber = extractedUrl.split('page=')[1];
                 lastPageNumber = _userInterface.elements.btnLastPage.dataset.url.split('page=')[1];
-                limit = _userInterface.elements.itemsPerPage.value;
-                console.log(limit); // pozovi ajax i pokupi podatke za traženu stranu
+                limit = _userInterface.elements.itemsPerPage.value; // pozovi ajax i pokupi podatke za traženu stranu
 
                 _context11.next = 8;
                 return (0, _ajaxRequests.getAdvancedResultsData)(extractedUrl);
@@ -10073,7 +10090,7 @@ if (_userInterface.elements.forgottenPasswordForm) {
               case 8:
                 results = _context11.sent;
                 // update UI
-                (0, _userInterface.renderPaginatedUI)(results, currentPageNumber, limit, lastPageNumber);
+                (0, _userInterface.renderPaginatedUI)(results, currentPageNumber, limit, lastPageNumber, path);
 
               case 10:
               case "end":
@@ -10093,27 +10110,28 @@ if (_userInterface.elements.forgottenPasswordForm) {
 if (_userInterface.elements.itemsPerPage) {
   _userInterface.elements.itemsPerPage.addEventListener('change', /*#__PURE__*/function () {
     var _ref12 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee12(e) {
-      var limit, url, results, lastPageNumber, currentPageNumber;
+      var path, limit, url, results, lastPageNumber, currentPageNumber;
       return regeneratorRuntime.wrap(function _callee12$(_context12) {
         while (1) {
           switch (_context12.prev = _context12.next) {
             case 0:
               e.preventDefault();
+              path = window.location.href.includes('dom') ? 'dom' : 'exp';
               limit = _userInterface.elements.itemsPerPage.value;
-              url = "/api/v2/reports/dom/json?limit=".concat(limit);
+              url = "/api/v2/reports/".concat(path, "/json?limit=").concat(limit);
               console.log(limit); // pozovi ajax i pokupi podatke za traženu stranu
 
-              _context12.next = 6;
+              _context12.next = 7;
               return (0, _ajaxRequests.getAdvancedResultsData)(url);
 
-            case 6:
+            case 7:
               results = _context12.sent;
               lastPageNumber = results.data.lastPage;
               currentPageNumber = 1; // update UI
 
-              (0, _userInterface.renderPaginatedUI)(results, currentPageNumber, limit, lastPageNumber);
+              (0, _userInterface.renderPaginatedUI)(results, currentPageNumber, limit, lastPageNumber, path);
 
-            case 10:
+            case 11:
             case "end":
               return _context12.stop();
           }
@@ -10154,7 +10172,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49749" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52553" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

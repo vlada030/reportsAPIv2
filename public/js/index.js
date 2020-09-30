@@ -442,16 +442,16 @@ if (elements.forgottenPasswordForm) {
             e.preventDefault();
             // iscupaj URL, bropj strane, podataka po strani i broj poslednje strane
             const extractedUrl = elem.dataset.url;
+            const path = extractedUrl.includes('dom') ? 'dom' : 'exp';
             const currentPageNumber = extractedUrl.split('page=')[1];
             const lastPageNumber = elements.btnLastPage.dataset.url.split('page=')[1];
             const limit = elements.itemsPerPage.value;
-            console.log(limit);
 
             // pozovi ajax i pokupi podatke za traženu stranu
             const results = await getAdvancedResultsData(extractedUrl);
 
             // update UI
-            renderPaginatedUI(results, currentPageNumber, limit, lastPageNumber);
+            renderPaginatedUI(results, currentPageNumber, limit, lastPageNumber, path);
             
         });
     }
@@ -462,9 +462,10 @@ if (elements.itemsPerPage) {
 
     elements.itemsPerPage.addEventListener('change', async (e) => {
         e.preventDefault();
-    
+
+        const path = window.location.href.includes('dom') ? 'dom' : 'exp';
         const limit = elements.itemsPerPage.value;
-        const url = `/api/v2/reports/dom/json?limit=${limit}`;
+        const url = `/api/v2/reports/${path}/json?limit=${limit}`;
         console.log(limit);    
     
         // pozovi ajax i pokupi podatke za traženu stranu
@@ -474,7 +475,7 @@ if (elements.itemsPerPage) {
         const currentPageNumber = 1;
     
         // update UI
-        renderPaginatedUI(results, currentPageNumber, limit, lastPageNumber);
+        renderPaginatedUI(results, currentPageNumber, limit, lastPageNumber, path);
     
     })
 }
