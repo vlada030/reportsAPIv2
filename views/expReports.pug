@@ -187,7 +187,7 @@ block content
                             input(type='hidden', name='_csrf', value=csrfToken)
                             button.btn.btn-warning.btn-lg.m-0.mr-sm-4#savePDF(onclick="event.preventDefault(); window.print();" disabled=report ? false : true) Štampaj PDF
                             button(type='submit' disabled=report ? false : true).btn.btn-warning.btn-lg.m-0.mr-sm-4#save Sačuvaj
-                            input(type='reset', value='Obriši sva polja', form='inoForm').btn.btn-warning.btn-lg
+                            //- input(type='reset', value='Obriši sva polja', form='inoForm').btn.btn-warning.btn-lg
 
             include layouts/testsTable.pug
             

@@ -24,9 +24,16 @@ block secondaryNavBar
 block content
     .container.my-3.w-100
         .row.w-100
-            .list-group.w-100
+            .form-group.d-flex.flex-row.align-items-center.mx-auto.my-4
+                label(for='itemsPerPage').mr-4   Broj&nbsp;prikaza&nbsp;po&nbsp;strani
+                select#itemsPerPage.form-control   
+                    option(value="10" selected=true) 10
+                    option(value="30") 30
+                    option(value="50") 50
+
+            .list-group.w-100#pageItemsContainer
                 -var No = 1
-                each report in reports
+                each report in reports.data
                     a(href=`../shift/${report._id}`).list-group-item.list-group-item-action.d-flex.justify-content-between
                         span.w-25.px-2=`${No}.`
                         -var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -35,3 +42,31 @@ block content
                         span.w-25.px-2=`Kontrolor: ${report.createdByUser.name}`
                         
                     - No++ 
+
+        nav.my-4#paginationElem
+            ul.pagination.justify-content-center
+                li.page-item(class='disabled')#firstPage
+                    button.page-link(data-url=`/api/v2/reports/shift/json?page=1`)#btnFirstPage Prva
+
+                li.page-item.mx-2#leftDots.d-none
+                    |   . . .        
+
+                li.page-item#prevPage(class='disabled')
+                        button.page-link(data-url=`/api/v2/reports/shift/json?page=1`)#btnPrevPage 1
+
+                if (reports.pagination.next)         
+                    li.page-item#middlePage
+                        button.page-link(data-url=`/api/v2/reports/shift/json?page=2`)#btnMiddlePage 2
+
+                if (reports.lastPage >= 3)         
+                    li.page-item#nextPage
+                        button.page-link(data-url=`/api/v2/reports/shift/json?page=3`)#btnNextPage 3
+                
+                li.page-item.mx-2#rightDots(class=reports.lastPage > 3 ? '' : 'd-none')
+                    |   . . .   
+                
+                li.page-item#lastPage(class=reports.lastPage == 1 ? 'disabled' : '')
+                    button.page-link(data-url=`/api/v2/reports/shift/json?page=${reports.lastPage}`)#btnLastPage Poslednja
+
+block footer    
+    include layouts/fixed_footer.pug            

@@ -53,7 +53,7 @@ block content
                 li.page-item#prevPage(class='disabled')
                         button.page-link(data-url=`/api/v2/reports/${path}/json?page=1`)#btnPrevPage 1
 
-                if (reports.pagination.next.page)         
+                if (reports.pagination.next)         
                     li.page-item#middlePage
                         button.page-link(data-url=`/api/v2/reports/${path}/json?page=2`)#btnMiddlePage 2
 
@@ -64,7 +64,7 @@ block content
                 li.page-item.mx-2#rightDots(class=reports.lastPage > 3 ? '' : 'd-none')
                     |   . . .   
 
-                li.page-item#lastPage
+                li.page-item#lastPage(class=reports.lastPage == 1 ? 'disabled' : '')
                     button.page-link(data-url=`/api/v2/reports/${path}/json?page=${reports.lastPage}`)#btnLastPage Poslednja
     
 block footer    

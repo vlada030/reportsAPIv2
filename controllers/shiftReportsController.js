@@ -93,10 +93,7 @@ exports.getShiftReport = asyncHandler( async(req, res, next) => {
 // @route  GET /api/v2/reports/shift/allReports
 // @access Private
  exports.getAllShiftReportsHTML = asyncHandler(async(req, res) => {
-    const reports = await ShiftReport.find().populate({
-        path: 'createdByUser',
-        select: 'name'
-    });
+    const reports = res.advancedResults;
     //console.log(reports);
 
     res.status(200).render("shiftReportsAll", {
@@ -108,8 +105,8 @@ exports.getShiftReport = asyncHandler( async(req, res, next) => {
     });
 });
 
-// @desc   Get All Reports
-// @route  GET /api/v2/reports/shift/all
+// @desc   Get All Reports in JSON
+// @route  GET /api/v2/reports/shift/json
 // @access Private
 
 exports.getAllShiftReports = asyncHandler( async(req, res, next) => {

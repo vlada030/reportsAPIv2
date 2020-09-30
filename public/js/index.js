@@ -442,11 +442,11 @@ if (elements.forgottenPasswordForm) {
             e.preventDefault();
             // iscupaj URL, bropj strane, podataka po strani i broj poslednje strane
             const extractedUrl = elem.dataset.url;
-            const path = extractedUrl.includes('dom') ? 'dom' : 'exp';
+            const path = extractedUrl.includes('dom') ? 'dom' : extractedUrl.includes('exp') ? 'exp' : 'shift';
             const currentPageNumber = extractedUrl.split('page=')[1];
             const lastPageNumber = elements.btnLastPage.dataset.url.split('page=')[1];
             const limit = elements.itemsPerPage.value;
-
+            
             // pozovi ajax i pokupi podatke za traženu stranu
             const results = await getAdvancedResultsData(extractedUrl);
 
@@ -463,10 +463,11 @@ if (elements.itemsPerPage) {
     elements.itemsPerPage.addEventListener('change', async (e) => {
         e.preventDefault();
 
-        const path = window.location.href.includes('dom') ? 'dom' : 'exp';
+        const currentUrl = window.location.href;
+        const path = currentUrl.includes('dom') ? 'dom' : currentUrl.includes('exp') ? 'exp' : 'shift';
+
         const limit = elements.itemsPerPage.value;
         const url = `/api/v2/reports/${path}/json?limit=${limit}`;
-        console.log(limit);    
     
         // pozovi ajax i pokupi podatke za traženu stranu
         const results = await getAdvancedResultsData(url);

@@ -163,8 +163,10 @@ router
             return true;
         }), createShiftReport
     );
-router.route('/shift/all').get(protect, advancedResults(ShiftReport, {path: 'createdByUser', select: 'name'}), getAllShiftReports);
-router.route('/shift/allReports').get(getAllShiftReportsHTML);
+router.route('/shift/json').get(protect, advancedResults(ShiftReport, {path: 'createdByUser', select: 'name'}), getAllShiftReports);
+
+router.route('/shift/allReports').get(protect, advancedResults(ShiftReport, {path: 'createdByUser', select: 'name'}), getAllShiftReportsHTML);
+
 router.route('/shift/:id').get(protect, getShiftReport).put(protect, updateShiftReport).delete(protect, deleteShiftReport);
 
 module.exports = router;
