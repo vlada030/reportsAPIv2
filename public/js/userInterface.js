@@ -56,6 +56,7 @@ export const elements = {
     email: document.getElementById('email'),
     password: document.getElementById('password'),
     password2: document.getElementById('password2'),
+    // togglePassword: document.getElementById('togglePassword'),
 
     // user panel
     updateNameForm: document.getElementById('updateName'),

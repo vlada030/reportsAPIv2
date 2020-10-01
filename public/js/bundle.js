@@ -8777,6 +8777,7 @@ var elements = {
   email: document.getElementById('email'),
   password: document.getElementById('password'),
   password2: document.getElementById('password2'),
+  // togglePassword: document.getElementById('togglePassword'),
   // user panel
   updateNameForm: document.getElementById('updateName'),
   updateEmailForm: document.getElementById('updateEmail'),
@@ -9415,7 +9416,20 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-// provera da li postoji proizvod sa zadatom šifrom dom/exp Reports
+// toggle vidljivost polja PASSWORD
+// ovakva forma jel moze da ima vise ovakvih polja na jednoj strani
+window.addEventListener('click', function (e) {
+  var toggleIcon = e.target; // proveri da li je ikonica kliknuta
+
+  if (toggleIcon.classList.contains('togglePassword')) {
+    // uzmi input element
+    var inputElem = toggleIcon.parentNode.firstChild;
+    var type = inputElem.getAttribute('type') === 'password' ? 'text' : 'password';
+    inputElem.setAttribute('type', type);
+    toggleIcon.classList.toggle('fa-eye-slash');
+  }
+}); // provera da li postoji proizvod sa zadatom šifrom dom/exp Reports
+
 if (_userInterface.elements.productCode) {
   _userInterface.elements.productCode.addEventListener('input', /*#__PURE__*/function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(e) {

@@ -24,7 +24,9 @@ block content
 
                                 .form-group
                                     label(for='password') Šifra
-                                    input#password.form-control.mt-1.mb-1(type='password', name='password', value=oldInput.password, placeholder='*******')
+                                    .password-container
+                                        input#password.form-control.mt-1.mb-1(type='password', name='password', value=oldInput.password, placeholder='*******')
+                                        i.far.fa-eye.togglePassword
 
                                 a.text-muted(href='/api/v2/auth/resetpassword')
                                     p Zaboravili ste šifru?

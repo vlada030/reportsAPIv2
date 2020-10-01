@@ -107,7 +107,25 @@ input::placeholder {
     background-repeat: no-repeat; /* Do not repeat the icon image */
     padding: 12px 20px 12px 50px; /* Add some padding */
     
-  }
+}
+
+.password-container {
+    position: relative;
+}
+
+.password-container i {
+    position: absolute;
+    color: #7d8891;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+}
+
+/* input[type="password"] {
+    background-image: url('./img/visible.png');
+    background-repeat: no-repeat;
+    background-position: right 5% bottom 50%;
+} */
 
 label:after {
     content: " *";

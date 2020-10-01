@@ -53,11 +53,15 @@ block content
                                     form#updatePassword
                                         .form-group.mb-4
                                             label.mb-2(for='currentPassword') Unesite postojeću šifru
-                                            input#currentPassword.form-control.mt-1.mb-1(name='currentPassword', type='password')
+                                            .password-container
+                                                input#currentPassword.form-control.mt-1.mb-1(name='currentPassword', type='password')
+                                                i.far.fa-eye.togglePassword
 
                                         .form-group
                                             label.mb-2(for='newPassword') Unesite novu šifru
-                                            input#newPassword.form-control.mt-1.mb-1(name='newPassword', type='password')
+                                            .password-container
+                                                input#newPassword.form-control.mt-1.mb-1(name='newPassword', type='password')
+                                                i.far.fa-eye.togglePassword
                                             br
 
                                         button.btn.btn-info.btn-block.mt-3(type='submit')#submitPassword Izmeni

@@ -5,7 +5,21 @@ import errorHandler from './errorHandler';
 import {showMessage, deleteMessage} from './alertMessage';
 import {elements, updateReportsUI, updateProductUI, addItem, delItem, updateTotalLength, addWorker, removeWorker, addItemDorada, removeItemDorada, addItemProboj, removeItemProboj, renderPaginatedUI} from './userInterface';
 
+// toggle vidljivost polja PASSWORD
+// ovakva forma jel moze da ima vise ovakvih polja na jednoj strani
+window.addEventListener('click', (e) => {
+    const toggleIcon = e.target;
 
+    // proveri da li je ikonica kliknuta
+    if ( toggleIcon.classList.contains('togglePassword' )) {
+        // uzmi input element
+        const inputElem = toggleIcon.parentNode.firstChild;
+        const type = inputElem.getAttribute('type') === 'password' ? 'text' : 'password';
+
+        inputElem.setAttribute('type', type);
+        toggleIcon.classList.toggle('fa-eye-slash');
+    }
+});
 
 // provera da li postoji proizvod sa zadatom šifrom dom/exp Reports
 if (elements.productCode) {
