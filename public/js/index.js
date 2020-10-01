@@ -480,3 +480,40 @@ if (elements.itemsPerPage) {
     
     })
 }
+
+// filtriranje naziva svih proizvoda
+if (elements.filterProductName) {
+    [
+        elements.filterProductName,
+        elements.fltByName,
+        elements.fltByCode,
+    ].forEach((elem) => {
+        elem.addEventListener("input", (e) => {
+            e.preventDefault();
+            const term = elements.filterProductName.value.trim().toUpperCase();
+
+            let productsArray = Array.from(document.querySelectorAll(".item"));
+            let counter = 0;
+
+            const searchBy = elements.fltByName.checked ? ".name" : ".code";
+
+            productsArray.forEach((el) => {
+                const name = el.querySelector(searchBy).innerText;
+
+                if (!name.toUpperCase().includes(term)) {
+                    el.classList.add("d-none");
+                } else {
+                    el.classList.remove("d-none");
+                    counter++;
+                }
+            });
+
+            // update counter
+            if (counter === 1) {
+                elements.itemsCounter.innerText = `Pronađena je 1 stavka`;
+            } else {
+                elements.itemsCounter.innerText = `Pronađene su ${counter} stavke`;
+            }
+        });
+    });
+}

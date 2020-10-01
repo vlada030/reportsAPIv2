@@ -101,6 +101,14 @@ input::placeholder {
     font-weight: 100;
 }
 
+#filterProductName {
+    background-image: url('./img/searchicon.png'); /* Add a search icon to input */
+    background-position: left 5% bottom 50%; /* Position the search icon */
+    background-repeat: no-repeat; /* Do not repeat the icon image */
+    padding: 12px 20px 12px 50px; /* Add some padding */
+    
+  }
+
 label:after {
     content: " *";
     color: red;
@@ -108,7 +116,10 @@ label:after {
 }
 
 #updateAvatar label:after,
-label[for="itemsPerPage"]:after {
+label[for="itemsPerPage"]:after,
+label[for="fltByName"]:after, 
+label[for="fltByCode"]:after {
+
     content: "";
 }
 

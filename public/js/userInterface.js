@@ -94,7 +94,13 @@ export const elements = {
     nextPage: document.getElementById('nextPage'),
     leftDots: document.getElementById('leftDots'),
     rightDots: document.getElementById('rightDots'),
-    itemsPerPage: document.getElementById('itemsPerPage')
+    itemsPerPage: document.getElementById('itemsPerPage'),
+
+    // filtriranje svih proizvoda
+    filterProductName: document.getElementById('filterProductName'),
+    itemsCounter: document.getElementById('itemsCounter'),
+    fltByName: document.getElementById('fltByName'),
+    fltByCode: document.getElementById('fltByCode')
 
 };
 

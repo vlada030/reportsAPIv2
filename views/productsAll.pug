@@ -9,18 +9,32 @@ block secondaryNavBar
             include layouts/secondaryMenuProduct.pug
 
 block content
-    .container.my-3.w-100
+    .container.my-3.pb-5.w-100
         .row.w-100
+            .form-group.mx-auto.my-4
+                input.form-control.mb-4(placeholder='Unesi deo naziva proizvoda' value='')#filterProductName
+
+                .form-check.mb-2
+                    input#fltByName.form-check-input(type='radio' name='gridRadios' value='option1' )
+                    label.form-check-label.font-weight-light(for='fltByName')
+                        | Po nazivu proizvoda
+                .form-check.mb-2
+                    input#fltByCode.form-check-input(type='radio' name='gridRadios' value='option2' checked='')
+                    label.form-check-label.font-weight-light(for='fltByCode')
+                        | Po šifri proizvoda  
+
+                p.lead.font-weight-normal#itemsCounter Pronađeno je #{products.length} stavke  
+
             .list-group.w-100
                 -var No = 1
                 each product in products
-
-                    a(href=`/api/v2/products/${product.sifra}`).list-group-item.list-group-item-action.d-flex.justify-content-start
-                        span.w-25.px-2=`${No}.`
-                        span.w-25.px-2=product.sifra
-                        span.w-25.px-2=product.proizvod
-                        span.w-25.text-right.px-2=product.napon
-                        span.w-25.text-right.px-2=product.propis
+                    .item
+                        a(href=`/api/v2/products/${product.sifra}`).list-group-item.list-group-item-action.d-flex.justify-content-start
+                            span.w-25.px-2=`${No}.`
+                            span.w-25.px-2.code=product.sifra
+                            span.w-25.px-2.name=product.proizvod
+                            span.w-25.text-right.px-2=product.napon
+                            span.w-25.text-right.px-2=product.propis
                     -No++
     
 block footer    
