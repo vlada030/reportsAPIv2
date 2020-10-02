@@ -274,12 +274,12 @@ export const renderPaginatedUI = (input, currentPage, limit, lastPage, type) => 
         let markup;
 
         if (type === 'dom') {
-            markup = `<a class="list-group-item list-group-item-action d-flex justify-content-between" href="/api/v2/reports/dom/${elem.MISBroj}"><span class="w-25 px-2">${no}.</span><span class="w-25 px-2">MIS Broj: ${elem.MISBroj}</span><span class="w-25 px-2">Nalog: ${elem.radniNalog}</span><span class="w-25 px-2">${elem.proizvod.proizvod}</span><span class="w-25 text-right px-2">${elem.duzina}m</span></a>`;
+            markup = `<a class="list-group-item list-group-item-action d-flex justify-content-between" href="/api/v2/reports/dom?id=${elem.MISBroj}"><span class="w-25 px-2">${no}.</span><span class="w-25 px-2">MIS Broj: ${elem.MISBroj}</span><span class="w-25 px-2">Nalog: ${elem.radniNalog}</span><span class="w-25 px-2">${elem.proizvod.proizvod}</span><span class="w-25 text-right px-2">${elem.duzina}m</span></a>`;
 
         } else if (type === 'exp'){
             let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
-            markup = `<a class="list-group-item list-group-item-action d-flex justify-content-between" href="/api/v2/reports/exp/${elem._id}"><span class="w-25 px-2">${no}.</span><span class="w-25 px-2">${elem.proizvod.proizvod}</span><span class="w-25 px-2">Ukupna duzina: ${elem.ukupnaDuz}m</span><span class="w-25 px-2">Kreiran: ${elem.createdAt.toLocaleString('sr-sr', options)}</span></a>`;
+            markup = `<a class="list-group-item list-group-item-action d-flex justify-content-between" href="/api/v2/reports/exp?id=${elem._id}"><span class="w-25 px-2">${no}.</span><span class="w-25 px-2">${elem.proizvod.proizvod}</span><span class="w-25 px-2">Ukupna duzina: ${elem.ukupnaDuz}m</span><span class="w-25 px-2">Kreiran: ${elem.createdAt.toLocaleString('sr-sr', options)}</span></a>`;
         } else {
             let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             markup = `<a class="list-group-item list-group-item-action d-flex justify-content-between" href="/api/v2/reports/shift/${elem._id}"><span class="w-25 px-2">${no}</span><span class="w-25 px-2">Kreiran: ${elem.createdAt.toLocaleString('sr-sr', options)}</span><span class="w-25 px-2">Smena: ${elem.smena}</span><span class="w-25 px-2">Kontrolor: ${elem.createdByUser.name}</span></a>`;

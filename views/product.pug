@@ -27,6 +27,7 @@ block content
                 select#ratedVoltage.form-control(name='napon')
                     option(value='100V' selected=product&&product.napon==='100V' ? true : false) 100V
                     option(value='380V' selected=product&&product.napon==='380V' ? true : false) 380V
+                    option(value='600V' selected=product&&product.napon==='600V' ? true : false) 600V
                     option(value='300/300V' selected=product&&product.napon==='300/300V' ? true : false) 300/300V
                     option(value='300/500V' selected=product&&product.napon==='300/500V' ? true : false) 300/500V
                     option(value='450/750V' selected=product&&product.napon==='450/750V' ? true : false) 450/750V
@@ -47,18 +48,18 @@ block content
             label.col-md-4(for='productColor') Boja:
             .col-md-8
                 select#productColor.form-control(name='boja')
-                    option(value='crna' selected=product&&product.boja==='CRNA' ? true : false) Crna
-                    option(value='siva' selected=product&&product.boja==='SIVA' ? true : false) Siva
-                    option(value='bela' selected=product&&product.boja==='BELA' ? true : false) Bela
-                    option(value='crvena' selected=product&&product.boja==='CRVENA' ? true : false) Crvena
-                    option(value='narandžasta' selected=product&&product.boja==='NARANDŽASTA' ? true : false) Narandžasta
-                    option(value='žuto-zelena' selected=product&&product.boja==='ŽUTO-ZELENA' ? true : false) Žuto-Zelena
-                    option(value='plava' selected=product&&product.boja==='PLAVA' ? true : false) Plava
-                    option(value='braon' selected=product&&product.boja==='BRAON' ? true : false) Braon
-                    option(value='zelena' selected=product&&product.boja==='ZELENA' ? true : false) Zelena
-                    option(value='žuta' selected=product&&product.boja==='ŽUTA' ? true : false) Žuta
+                    option(value='crna' selected=product&&product.boja==='crna' ? true : false) Crna
+                    option(value='siva' selected=product&&product.boja==='siva' ? true : false) Siva
+                    option(value='bela' selected=product&&product.boja==='bela' ? true : false) Bela
+                    option(value='crvena' selected=product&&product.boja==='crvena' ? true : false) Crvena
+                    option(value='narandžasta' selected=product&&product.boja==='narandžasta' ? true : false) Narandžasta
+                    option(value='žuto-zelena' selected=product&&product.boja==='žuto-zelena' ? true : false) Žuto-Zelena
+                    option(value='plava' selected=product&&product.boja==='plava' ? true : false) Plava
+                    option(value='braon' selected=product&&product.boja==='braon' ? true : false) Braon
+                    option(value='zelena' selected=product&&product.boja==='zelena' ? true : false) Zelena
+                    option(value='žuta' selected=product&&product.boja==='žuta' ? true : false) Žuta
                     option(value='bezbojna' selected=product&&product.boja==='bezbojna' ? true : false) Bezbojna
-                    option(value='N/A' selected=product&&product.boja==='N/A' ? true : false) N/A
+                    option(value='N/A' selected=product&&product.boja==='n/a' ? true : false) N/A
         .form-group.row.align-items-center.pb-4
             label.col-md-4(for='wiresNumber') Broj žica:
             .col-md-8
@@ -127,17 +128,17 @@ block content
             label.col-md-4(for='testVoltage') Ispitni napon:
             .col-md-8
                 select#testVoltage.form-control(name='ispitniNapon')
-                    option(value='2' selected=product&&product.ispitniNapon==='2' ? true : false) 2kV
-                    option(value='2.5' selected=product&&product.ispitniNapon==='2.5' ? true : false) 2.5kV
-                    option(value='3' selected=product&&product.ispitniNapon==='3' ? true : false) 3kV
-                    option(value='3.5' selected=product&&product.ispitniNapon==='3.5' ? true : false) 3.5kV
-                    option(value='4' selected=product&&product.ispitniNapon==='4' ? true : false) 4kV
-                    option(value='15' selected=product&&product.ispitniNapon==='15' ? true : false) 15kV
-                    option(value='21' selected=product&&product.ispitniNapon==='21' ? true : false) 21kV
-                    option(value='30' selected=product&&product.ispitniNapon==='30' ? true : false) 30kV
-                    option(value='42' selected=product&&product.ispitniNapon==='42' ? true : false) 42kV
-                    option(value='50' selected=product&&product.ispitniNapon==='50' ? true : false) 50kV
-                    option(value='83.2' selected=product&&product.ispitniNapon==='83.2' ? true : false) 83.2kV
+                    option(value='2' selected=product&&product.ispitniNapon=='2' ? true : false) 2kV
+                    option(value='2.5' selected=product&&product.ispitniNapon=='2.5' ? true : false) 2.5kV
+                    option(value='3' selected=product&&product.ispitniNapon=='3' ? true : false) 3kV
+                    option(value='3.5' selected=product&&product.ispitniNapon=='3.5' ? true : false) 3.5kV
+                    option(value='4' selected=product&&product.ispitniNapon=='4' ? true : false) 4kV
+                    option(value='15' selected=product&&product.ispitniNapon=='15' ? true : false) 15kV
+                    option(value='21' selected=product&&product.ispitniNapon=='21' ? true : false) 21kV
+                    option(value='30' selected=product&&product.ispitniNapon=='30' ? true : false) 30kV
+                    option(value='42' selected=product&&product.ispitniNapon=='42' ? true : false) 42kV
+                    option(value='50' selected=product&&product.ispitniNapon=='50' ? true : false) 50kV
+                    option(value='83.2' selected=product&&product.ispitniNapon=='83.2' ? true : false) 83.2kV
         .form-group.row.align-items-center.pb-4
             label.col-md-4(for='pDischarge') Parcijalna pražnjenja:
             .col-md-8

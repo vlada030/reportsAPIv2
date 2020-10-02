@@ -33,6 +33,10 @@ export default error => {
             console.log('Greska prilikom validacije axios PUT requesta')
             showMessage(error.response.data.data, 'error')
         
+        } else if (error.response.status === 404 && error.response.config.url.startsWith('/api/v2/products')) {
+            console.log('Proizvod sa zadatom sifrom ne postoji u sistemu')
+            showMessage('Proizvod sa zadatom sifrom ne postoji u sistemu', 'error')
+        
         } else if (error.response.status === 401 && error.response.config.url.endsWith('auth/me/updatepassword')) {
             console.log('Unesite ispravnu tekuću šifru')
             showMessage('Unesite ispravnu tekuću šifru', 'error')

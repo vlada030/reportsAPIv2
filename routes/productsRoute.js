@@ -41,8 +41,8 @@ router
             body("brojZica", 'Broj žica provodnika je u intervalu 1 - 2500')
                 .isInt({ min: 1, max: 2500 })
                 .trim(),
-            body("precnikZice", 'Prečnik žice komponente je u intervalu 0.2 - 3.6')
-                .isFloat({ min: 0.2, max: 3.6 })
+            body("precnikZice", 'Prečnik žice komponente je u intervalu 0.2 - 3.75')
+                .isFloat({ min: 0.2, max: 3.75 })
                 .trim(),
             body("otpor", 'Vrednost otpora mora da bude u granicama 0.01 - 24')
                 .isFloat({ min: 0.01, max: 24 })
@@ -50,8 +50,8 @@ router
             body("debIzolacije", 'Debljina izolacije je u intervalu 0.1 - 9')
                 .isFloat({ min: 0.1, max: 9 })
                 .trim(),
-            body("debPlasta", 'Debljina plašta je u intervalu 0.1 - 4')
-                .isFloat({ min: 0.1, max: 4 })
+            body("debPlasta", 'Debljina plašta je u intervalu 0 - 4')
+                .isFloat({ min: 0, max: 4 })
                 .trim(),
             body("spPrecnik", 'Spoljnji prečnik mora da bude u granicama 2 - 70')
                 .isFloat({ min: 2, max: 70 })
@@ -78,9 +78,9 @@ router
                 .trim(),
             body(
                 "precnikZice",
-                "Prečnik žice komponente je u intervalu 0.2 - 3.6"
+                "Prečnik žice komponente je u intervalu 0.2 - 3.75"
             )
-                .isFloat({ min: 0.2, max: 3.6 })
+                .isFloat({ min: 0.2, max: 3.75 })
                 .trim(),
             body("otpor", "Vrednost otpora mora da bude u granicama 0.01 - 24")
                 .isFloat({ min: 0.01, max: 24 })
@@ -88,8 +88,8 @@ router
             body("debIzolacije", "Debljina izolacije je u intervalu 0.1 - 9")
                 .isFloat({ min: 0.1, max: 9 })
                 .trim(),
-            body("debPlasta", "Debljina plašta je u intervalu 0.1 - 4")
-                .isFloat({ min: 0.1, max: 4 })
+            body("debPlasta", "Debljina plašta je u intervalu 0 - 4")
+                .isFloat({ min: 0, max: 4 })
                 .trim(),
             body(
                 "spPrecnik",

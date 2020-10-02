@@ -126,7 +126,7 @@ exports.getProduct = asyncHandler(async (req, res, next) => {
         product: convertedProduct[0]
     }); 
 });
-// @desc   Get single product and rturn JSON
+// @desc   Get single product and return JSON
 // @route  GET /api/v2/products/:id/json
 // @access Private
 
