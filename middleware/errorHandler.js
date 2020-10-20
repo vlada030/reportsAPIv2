@@ -49,6 +49,8 @@ const errorHandler = (err, req, res, next) => {
 
     res.status(error.statusCode || 500).render("error_page", {
         title: "Greška",
+        userName: req.session.name,
+        avatarUrl: req.session.avatarUrl,
         error: error.message || "Server Error",
         statusCode: error.statusCode || 500
     });

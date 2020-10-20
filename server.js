@@ -153,6 +153,9 @@ app.use('/api/v2/products', productsRoute);
 app.use('/api/v2/auth', authRoute);
 app.use('/api/v2/users', usersRoute);
 
+// posto nema landing page, ovo je ubačeno da preusmeri na postojeću route
+app.use('', (req, res) => {res.redirect('/api/v2/reports/dom')});
+
 // ukoliko strana ne postoji
 app.use(pageNotFound);
 

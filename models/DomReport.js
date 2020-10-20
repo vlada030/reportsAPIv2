@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const DomReportSchema = new mongoose.Schema({
     rb: {
         type: Number,
-        required: [true, 'Unesite redni broj izveštaja']
+        // required: [true, 'Unesite redni broj izveštaja']
     },
     
     MISBroj: {

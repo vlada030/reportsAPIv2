@@ -142,7 +142,7 @@ window.addEventListener('click',async (e) => {
 })
 
 // POŠALJI PUT REQUEST ZA UPDATE PROIZVODA
-if (elements.productHandleForm) {
+if (elements.productHandleForm && elements.saveUpdateButton) {
     elements.saveUpdateButton.addEventListener('click',async (e) => {
         e.preventDefault();
         try {
