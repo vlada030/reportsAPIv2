@@ -274,7 +274,7 @@ export const renderPaginatedUI = (input, currentPage, limit, lastPage, type) => 
         let markup;
 
         if (type === 'dom') {
-            markup = `<a class="list-group-item list-group-item-action d-flex justify-content-between" href="/api/v2/reports/dom?id=${elem.MISBroj}"><span class="w-25 px-2">${no}.</span><span class="w-25 px-2">MIS Broj: ${elem.MISBroj}</span><span class="w-25 px-2">Nalog: ${elem.radniNalog}</span><span class="w-25 px-2">${elem.proizvod.proizvod}</span><span class="w-25 text-right px-2">${elem.duzina}m</span></a>`;
+            markup = `<a class="list-group-item list-group-item-action d-flex justify-content-between" href="/api/v2/reports/dom?id=${elem.MISBroj}"><span class="w-25 px-2">${no}.</span><span class="w-25 px-2">MIS Broj: ${elem.MISBroj}</span><span class="w-25 px-2">Nalog: ${elem.radniNalog}</span><span class="w-25 px-2">${elem.proizvod.proizvod}</span><span class="w-25 text-right px-2">${elem.proizvod.napon}</span><span class="w-25 text-right px-2">${elem.duzina}m</span></a>`;
 
         } else if (type === 'exp'){
             let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
