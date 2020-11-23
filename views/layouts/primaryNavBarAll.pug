@@ -34,7 +34,8 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.py-2
                     li.nav-item.mr-2.mb-2.mb-lg-0
                         a.btn.btn-outline-info(href='/api/v2/auth/me')
                             .d-flex.align-items-center
-                                img.icon.icon--user.mr-2(src=`/img/${avatarUrl}`, alt="user")
+                                -var url = avatarUrl==null ? '/img//user/user-default.png' : `data:image/jpeg;base64,${avatarUrl}`;
+                                img.icon.icon--user.mr-2(src=url, alt="user")
                                 p.m-0   #{userName}
                     li.nav-item
                         form(action='/api/v2/auth/logoutAll', method='POST')

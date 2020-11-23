@@ -60,7 +60,7 @@ exports.uploadUserPhoto = upload.single('avatar');
 
 exports.getRegisterUserHTML = (req, res) => {
 
-    // ukoliko nema error, message je prazan hiz pa ga pug ne vidi kao nepostojeci
+    // ukoliko nema error, message je prazan niz pa ga pug ne vidi kao nepostojeci
     let message = req.flash('error');
     if (message.length === 0) {
         message = false
@@ -441,33 +441,47 @@ exports.updateAvatar = asyncHandler(async (req, res, next) => {
     if (!req.file) {
         return next(new ErrorResponse('Niste izabrali avatar sliku', 400));
     }
+    // VARIJANTA AVATAR U PUBLIC
     // zapamti ime slike koje treba da se izbrise nakon update
-    const removeFromPublic = req.user.avatar;
+    // const removeFromPublic = req.user.avatar;
 
+    // VARIJANTA AVATAR U PUBLIC
     //const ext = req.file.mimetype.split("/")[1];
-    const url = `user/user-${req.user.id}-${Date.now()}.jpeg`;
-    
-    //req.user.avatar = req.file.buffer;
+    // const url = `user/user-${req.user.id}-${Date.now()}.jpeg`;
 
-    // dodavanje sharp modula za narmalizaciju slike resize / png i vracanje u buffer format zbog snimanja u db
+    // VARIJANTA AVATAR U PUBLIC
     // sharp modula za narmalizaciju slike resize / jpeg, prihvata se kao buffer i nakon obrade snima se u fajl
-    await sharp(req.file.buffer).resize({width: 500, height: 500}).toFormat('jpeg').jpeg({quality: 90}).toFile(`public/img/${url}`);
+    // await sharp(req.file.buffer).resize({width: 500, height: 500}).toFormat('jpeg').jpeg({quality: 90}).toFile(`public/img/${url}`);
 
-    //const user = await req.user.save();
-    const user = await User.findByIdAndUpdate(req.user.id, {avatar: url}, {
+    // VARIJANTA AVATAR U PUBLIC
+    // const user = await User.findByIdAndUpdate(req.user.id, {avatar: url}, {
+    //     new: true
+    // });
+
+    // VARIJANTA AVATAR U PUBLIC
+    // izbriši avatar iz public foldera osim ako je default
+    // if (!removeFromPublic.endsWith('.png')) {
+    //     fs.unlink(`public/img/${removeFromPublic}`, (err) => {
+    //         if (err) {
+    //             console.log('Slika ne postoji u Public folderu.');
+    //         } else {
+    //             console.log('Slika uspešno obrisana iz Public foldera.');
+    //         }
+    //    })
+    // }
+
+    // dodavanje sharp modula za narmalizaciju slike resize / jpeg i vracanje buffer formata zbog snimanja u db
+    const buffer = await sharp(req.file.buffer).resize({width: 500, height: 500}).toFormat('jpeg').jpeg({quality: 90}).toBuffer();
+
+    const user = await User.findByIdAndUpdate(req.user.id, {avatar: buffer}, {
         new: true
     });
-
-    // izbriši avatar iz public foldera osim ako je default
-    if (!removeFromPublic.endsWith('.png')) {
-        fs.unlink(`public/img/${removeFromPublic}`, (err) => {
-            if (err) {
-                console.log('Slika ne postoji u Public folderu.');
-            } else {
-                console.log('Slika uspešno obrisana iz Public foldera.');
-            }
-       })
-    }
+    
+    // nema refresh stranice
+    // res.status(200).json({
+    //     success: true,
+    //     data: user
+    // });  
 
     // generisi novi token i session podatke
     // postavi response status na 200
@@ -477,7 +491,6 @@ exports.updateAvatar = asyncHandler(async (req, res, next) => {
     res.json({success: true});   
     
 });
-
 
 // @desc    Delete user avatar
 // @route   DELETE /api/v2/auth/me/avatar
@@ -489,27 +502,30 @@ exports.deleteAvatar = asyncHandler(async (req, res, next) => {
     if (!user) {
         return next(new ErrorResponse(`Korisnik sa trazenim id ${req.user.id} ne postoji`, 400));
     }
+    // VARIJANTA AVATAR U PUBLIC
+    //const removeFromPublic = req.user.avatar;
 
-    const removeFromPublic = req.user.avatar;
-
+    // VARIJANTA AVATAR U PUBLIC
     // vrati vrednost polja na default
-    req.user.avatar = 'user/user-default.png';
+    //req.user.avatar = 'user/user-default.png';
 
-    //const user = await req.user.save();
+    req.user.avatar = void 0;
+
     user = await User.findByIdAndUpdate(req.user.id, {avatar: req.user.avatar}, {
         new: true
     });
 
+    // VARIJANTA AVATAR U PUBLIC
     // izbriši avatar iz public foldera osim ako je default
-    if (!removeFromPublic.endsWith('.png')) {
-        fs.unlink(`public/img/${removeFromPublic}`, (err) => {
-            if (err) {
-                console.log('Slika ne postoji u Public folderu.');
-            } else {
-                console.log('Slika uspešno obrisana iz Public foldera.');
-            }
-       })
-    }
+    // if (!removeFromPublic.endsWith('.png')) {
+    //     fs.unlink(`public/img/${removeFromPublic}`, (err) => {
+    //         if (err) {
+    //             console.log('Slika ne postoji u Public folderu.');
+    //         } else {
+    //             console.log('Slika uspešno obrisana iz Public foldera.');
+    //         }
+    //    })
+    // }
 
     // generisi novi token i session podatke
     // postavi response status na 200
@@ -629,7 +645,8 @@ const sendTokenResponse = async (user, statusCode, res, req) => {
     req.session.token = token;
     req.session.isLoggedIn = true;
     req.session.name = user.name;
-    req.session.avatarUrl = user.avatar;
+    // ukoliko avatar binary postoji pretvori ga u string base64 (`data:image/jpeg;base64,${avatarUrl}`), a ukoliko ne preko pug postavi default src='/img/user/user-default.png'
+    req.session.avatarUrl = user.avatar ? new Buffer.from(user.avatar).toString('base64') : null;
     req.session.email = user.email;    
     
     res

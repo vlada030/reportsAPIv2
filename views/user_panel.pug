@@ -79,7 +79,8 @@ block content
                                             input#avatar.form-control.mt-1.mb-1(name='avatar', type='file' accept='image/*')
 
                                         .form-group.d-flex.align-items-center.justify-content-center.flex-column
-                                            img#avatarImg.icon.icon--update-avatar.mb-3(src=`/img/${avatarUrl}`, alt="avatar")
+                                            -var url = avatarUrl==null ? '/img//user/user-default.png' : `data:image/jpeg;base64,${avatarUrl}`;
+                                            img#avatarImg.icon.icon--update-avatar.mb-3(src=url, alt="user")
                                             p#avatarDesc
 
                                         button.btn.btn-info.btn-block.mt-3(type='submit')#submitAvatar Izmeni                                     
