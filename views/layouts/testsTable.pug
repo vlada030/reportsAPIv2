@@ -81,9 +81,11 @@
                 
                 tr
                     if lang === 'eng'
-                        td Testing Voltage / 5 min
+                        td Testing Voltage / 
+                            span#testTime=report && report.proizvod.ispitniNapon==4? '15min' : '5min'
                     else
-                        td Ispitni napon / 5 minuta
+                        td Ispitni napon / 
+                            span#testTime=report && report.proizvod.ispitniNapon==4? '15min' : '5min' 
                     td kV (AC)
                     td#testVoltage=report ? report.proizvod.ispitniNapon : '/'
                 tr

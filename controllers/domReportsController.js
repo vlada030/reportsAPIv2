@@ -55,7 +55,7 @@ exports.getDomReport = asyncHandler(async (req, res, next) => {
         userName: req.session.name,
         avatarUrl: req.session.avatarUrl,
         report,
-        readonlyInputStatus: false   
+        readonlyInputStatus: false,
     })
     
 });

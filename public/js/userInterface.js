@@ -24,6 +24,7 @@ export const elements = {
     thickSheath: document.getElementById('thickSheath'),
     outerDiametar: document.getElementById('outerDiametar'),
     testVoltage: document.getElementById('testVoltage'),
+    testTime: document.getElementById('testTime'),
     pDischarge: document.getElementById('pDischarge'),
     // exp Reports
     drumList: document.getElementById('drumList'),
@@ -125,6 +126,7 @@ export const updateReportsUI = (elem) => {
         elements.thickSheath.innerText = elem.debPlasta || "/";
         elements.outerDiametar.innerText = elem.spPrecnik || "/";
         elements.testVoltage.innerText = elem.ispitniNapon || "/";
+        elements.testTime.innerText = elem.ispitniNapon == 4 ? '15 min' : '5 min' || '5 min';
         elements.pDischarge.innerText = elem.parcijalna || "/";
     } else {
         elements.cableType.innerText = "/";
@@ -143,6 +145,7 @@ export const updateReportsUI = (elem) => {
         elements.thickSheath.innerText = "/";
         elements.outerDiametar.innerText = "/";
         elements.testVoltage.innerText = "/";
+        elements.testTime.innerText = '5min';
         elements.pDischarge.innerText = "/";
     }
 };
