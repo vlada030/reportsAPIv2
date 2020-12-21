@@ -168,7 +168,7 @@ export const updateProductUI = (elem) => {
         elements.thickSheath.value = elem.debPlasta || "/";
         elements.outerDiametar.value = elem.spPrecnik || "/";
         elements.testVoltage.value = elem.ispitniNapon || "/";
-        elements.pDischarge.value = elem.parcijalna || "/";
+        elements.pDischarge.value = elem.parcijalna.replace('&lt;', '<') || "/";
     } else {
         elements.cableType.value = "/";
         elements.ratedVoltage.value =  "0.6/1kV";

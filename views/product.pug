@@ -146,8 +146,8 @@ block content
             .col-md-8
                 select#pDischarge.form-control(name='parcijalna')
                     option(value='/' selected=product&&product.parcijalna==='/' ? true : false) /
-                    option(value='<2' selected=product&&product.parcijalna==='<2' ? true : false) &lt;2pC
-                    option(value='<20' selected=product&&product.parcijalna==='<20' ? true : false) &lt;20pC
+                    option(value='<2' selected=product&&product.parcijalna.includes('2') ? true : false) &lt;2pC
+                    option(value='<20' selected=product&&product.parcijalna.includes('20') ? true : false) &lt;20pC
         hr.w-75.mb-4
         .row.mb-4
             .col-md-6.mx-auto.row.justify-content-center

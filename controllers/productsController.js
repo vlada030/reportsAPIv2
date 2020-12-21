@@ -13,7 +13,7 @@ exports.getCreateProductHTML = (req, res, next) => {
     res.status(200).render("product", {
         title: "Dodaj novi proizvod",
         path: "product",
-        product: {},
+        product: null,
         avatarUrl: req.session.avatarUrl,
         userName: req.session.name
     });
@@ -30,7 +30,7 @@ exports.getUpdateProductHTML = asyncHandler((req, res, next) => {
         path: "product",
         userName: req.session.name,
         avatarUrl: req.session.avatarUrl,
-        product: {},
+        product: null,
         isProductCodeIdExist: true
     });
 });
