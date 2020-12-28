@@ -180,6 +180,8 @@ exports.createProduct = asyncHandler( async (req, res, next) => {
         })
     }
 
+    // korekcija ulaza jer XXS modul pretvara znak '<' u '&lt;'
+    req.body.parcijalna = req.body.parcijalna.replace('&lt;', '<');
     const product = await Product.create(req.body);
 
     res.status(201).render('product', {
@@ -223,6 +225,9 @@ exports.updateProduct = asyncHandler(async (req, res, next) => {
     // req.body.modifiedAt = Date.now();
     //req.fields.modifiedByUser = req.user.id;
     //req.fields.modifiedAt = Date.now();
+    
+    // korekcija ulaza jer XXS modul pretvara znak '<' u '&lt;'
+    req.body.parcijalna = req.body.parcijalna.replace('&lt;', '<');
 
     product = await Product.findOneAndUpdate({sifra: req.params.id}, req.body, {
         new: true

@@ -126,7 +126,7 @@ export const updateReportsUI = (elem) => {
         elements.thickSheath.innerText = elem.debPlasta || "/";
         elements.outerDiametar.innerText = elem.spPrecnik || "/";
         elements.testVoltage.innerText = elem.ispitniNapon || "/";
-        elements.testTime.innerText = elem.ispitniNapon == 4 ? '15 min' : '5 min' || '5 min';
+        elements.testTime.innerText = elem.proizvod.toLowerCase().startsWith('fr') ? '15 min' : '5 min' || '5 min';
         elements.pDischarge.innerText = elem.parcijalna.replace('&lt;', '<') || "/";
     } else {
         elements.cableType.innerText = "/";
