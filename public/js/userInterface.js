@@ -359,12 +359,12 @@ const updateButtons = (current, last, itmPerPage, typeOfReport) => {
 
         if (current == 1) {
             elements.middlePage.classList.remove('disabled');
-            elements.btnMiddlePage.innerText = +current + 1;
-            elements.btnMiddlePage.dataset.url = `/api/v2/reports/${typeOfReport}/json?limit=${itmPerPage}&page=${+current + 1}`;
+            elements.btnMiddlePage.innerText = current + 1;
+            elements.btnMiddlePage.dataset.url = `/api/v2/reports/${typeOfReport}/json?limit=${itmPerPage}&page=${current + 1}`;
 
         } else if (current >= last && last != 2) {
-            elements.btnMiddlePage.innerText = +current - 1;
-            elements.btnMiddlePage.dataset.url = `/api/v2/reports/${typeOfReport}/json?limit=${itmPerPage}&page=${+current - 1}`;
+            elements.btnMiddlePage.innerText = current - 1;
+            elements.btnMiddlePage.dataset.url = `/api/v2/reports/${typeOfReport}/json?limit=${itmPerPage}&page=${current - 1}`;
         } else {
 
             elements.middlePage.classList.add('disabled');
@@ -387,11 +387,11 @@ const updateButtons = (current, last, itmPerPage, typeOfReport) => {
         }
 
         if ( current == 1) {
-            elements.btnNextPage.innerText = +current +2;
-            elements.btnNextPage.dataset.url = `/api/v2/reports/${typeOfReport}/json?limit=${itmPerPage}&page=${+current + 2}`;
+            elements.btnNextPage.innerText = current +2;
+            elements.btnNextPage.dataset.url = `/api/v2/reports/${typeOfReport}/json?limit=${itmPerPage}&page=${current + 2}`;
         } else if (current < last) {
-            elements.btnNextPage.innerText = +current + 1;
-            elements.btnNextPage.dataset.url = `/api/v2/reports/${typeOfReport}/json?limit=${itmPerPage}&page=${+current + 1}`;
+            elements.btnNextPage.innerText = current + 1;
+            elements.btnNextPage.dataset.url = `/api/v2/reports/${typeOfReport}/json?limit=${itmPerPage}&page=${current + 1}`;
             
         } else {
             elements.btnNextPage.innerText = last;

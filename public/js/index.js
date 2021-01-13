@@ -465,7 +465,8 @@ if (elements.forgottenPasswordForm) {
             const results = await getAdvancedResultsData(extractedUrl);
 
             // update UI
-            renderPaginatedUI(results, currentPageNumber, limit, lastPageNumber, path);
+            // OBRATITI PAZNJU NA TIPOVE PODATAKA - OBAVEZNO PRETVARATI U BROJEVE - BUG
+            renderPaginatedUI(results, +currentPageNumber, +limit, +lastPageNumber, path);
             
         });
     }
@@ -490,7 +491,7 @@ if (elements.itemsPerPage) {
         const currentPageNumber = 1;
     
         // update UI
-        renderPaginatedUI(results, currentPageNumber, limit, lastPageNumber, path);
+        renderPaginatedUI(results, currentPageNumber, +limit, +lastPageNumber, path);
     
     })
 }
