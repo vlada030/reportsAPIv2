@@ -5,9 +5,18 @@ import errorHandler from './errorHandler';
 import {showMessage, deleteMessage} from './alertMessage';
 import {elements, updateReportsUI, updateProductUI, addItem, delItem, updateTotalLength, addWorker, removeWorker, addItemDorada, removeItemDorada, addItemProboj, removeItemProboj, renderPaginatedUI} from './userInterface';
 
+window.addEventListener('DOMContentLoaded', (event) => {
+    const alertElem = document.querySelector('.alert--success');
+    
+    if (alertElem) {
+        setTimeout(()=> {
+            deleteMessage();
+        }, 3000)
+        
+    }
 // toggle vidljivost polja PASSWORD
 // ovakva forma jel moze da ima vise ovakvih polja na jednoj strani
-window.addEventListener('click', (e) => {
+document.addEventListener('click', (e) => {
     const toggleIcon = e.target;
 
     // proveri da li je ikonica kliknuta
@@ -43,7 +52,7 @@ if (elements.productCode) {
                 throw new Error('Šifra proizvoda se sastoji iz 7 cifara');
             }
             const product = await getProduct(elements.productCode.value.trim());
-            console.log(product)
+            // console.log(product)
             if (product && typeof(product.data) === 'string') {
                 // AKO JE PRODUCT:DATA STRING , RESPONSE PAYLOAD JE LOGIN PAGE - HTML STRING
                 elements.saveButton.setAttribute('disabled', 'true');
@@ -51,7 +60,7 @@ if (elements.productCode) {
                 showMessage('Niste logovani', 'error')
             } else {
                 //AKO POSTOJI PROIZVOD UPDATE UI
-                console.log(product.data.data[0])
+                // console.log(product.data.data[0])
                 updateReportsUI(product.data.data[0]);
             }
             
@@ -79,11 +88,11 @@ if (elements.updateProductCode) {
                 elements.saveUpdateButton.setAttribute('disabled', 'true');
                 throw new Error('Šifra proizvoda se sastoji iz 7 cifara');
             }
-            console.log(updateProductCode.value);
+            // console.log(updateProductCode.value);
             const product = await getProduct(updateProductCode.value.trim());
             if (product) {
                 // AKO POSTOJI PROIZVOD UPDATE UI
-                console.log(product.data.data[0])
+                // console.log(product.data.data[0])
                 updateProductUI(product.data.data[0]);    
             } 
             
@@ -94,7 +103,7 @@ if (elements.updateProductCode) {
 }
 
 // ZATVORI INFO PROZOR / MODAL...
-window.addEventListener('click', (e) => {
+document.addEventListener('click', (e) => {
     if (e.target.matches('.close')) {
         deleteMessage();
     }
@@ -112,19 +121,19 @@ window.addEventListener('click', (e) => {
 
 
 // OBRIŠI DOMREPORT/EXPREPORT IZ BAZE
-window.addEventListener('click',async (e) => {
+document.addEventListener('click',async (e) => {
     // kada je klinkuto dugme Obriši na modalu
     if (e.target.matches('#eraseReport')) {
         try {
             const eraseID = e.target;
             const reportId = eraseID.dataset.reportid;
             const kindOfReport = eraseID.dataset.report || '';
-            console.log(reportId, kindOfReport);
+            // console.log(reportId, kindOfReport);
 
             await deleteReport(reportId, kindOfReport);
             showMessage('Izveštaj je uspešno obrisan.', 'success');
 
-            window.setTimeout(() => {
+            setTimeout(() => {
                 // MIS broj ima 7 cifre za dom report, exp je ObjectId, shift isto ima ObjectId
                 if (reportId.length === 7) {
                     location.assign('/api/v2/reports/dom');            
@@ -160,11 +169,11 @@ if (elements.productHandleForm && elements.saveUpdateButton) {
                 }        
             })
             const result = await updateProduct(data.sifra, data);
-            console.log(result);  
+            // console.log(result);  
             
             if (result.data.success === true) {
                 showMessage('Proizvod je uspešno izmenjen.', 'success');
-                window.setTimeout(() => {
+                setTimeout(() => {
                     location.assign('/api/v2/reports/dom');                
                 }, 1000)
             }
@@ -292,7 +301,7 @@ if (elements.updateNameForm) {
             const user = await updateUserDetail('update', {name});
             showMessage('Korisničko ime uspešno promenjeno.', 'success');
 
-            window.setTimeout(() => {
+            setTimeout(() => {
                 
                 location.assign('/api/v2/auth/me');                    
                 
@@ -316,7 +325,7 @@ if (elements.updateEmailForm) {
             const user = await updateUserDetail('update', {email});
             showMessage('Korisnički email je uspešno promenjen.', 'success');
 
-            window.setTimeout(() => {
+            setTimeout(() => {
                 
                 location.assign('/api/v2/auth/me');                    
                 
@@ -339,7 +348,7 @@ if (elements.updatePasswordForm) {
 
         try {
             const user = await updateUserDetail('updatepassword', {currentPassword, newPassword});
-            console.log(user);
+            // console.log(user);
             showMessage('Korisnička šifra je uspešno promenjena.', 'success');
           
 
@@ -385,7 +394,7 @@ if (elements.updateAvatarForm) {
             const user = await updateUserDetail('avatar', form);
             showMessage('Profilna slika je uspešno promenjena.', 'success');
 
-            window.setTimeout(() => {
+            setTimeout(() => {
                 
                 location.assign('/api/v2/auth/me');                    
                 
@@ -408,7 +417,7 @@ if (elements.updateAvatarForm) {
 
             showMessage('Profilna slika je izbrisana.', 'success');
 
-            window.setTimeout(() => {
+            setTimeout(() => {
                 
                 location.assign('/api/v2/auth/me');                    
                 
@@ -432,7 +441,7 @@ if (elements.forgottenPasswordForm) {
         try {
             const user = await updateForgottenPassword(currentUrl, password);
             showMessage('Šifra je uspešno promenjena. Ulogujte se ponovo.', 'success');
-            window.setTimeout(() => {
+            setTimeout(() => {
                 
                 window.close();                    
                 
@@ -532,3 +541,5 @@ if (elements.filterProductName) {
         });
     });
 }
+
+});
