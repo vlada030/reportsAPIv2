@@ -1,2 +1,2 @@
 # reportsAPI
-API related to Cable Factory affairs, based on information collection and further issuing necessary documentation requested by customer after cable pourchase.
+An API related to administration stuff, preparing & printing different type of reports, product test reports as well as maintaining the current base of products.
