@@ -101,6 +101,24 @@ app.use(
     })
 );
 
+// dodatno setovanje security headera
+// disable content Security Policy jer mi blokira bootstrap...
+app.use(helmet({
+    contentSecurityPolicy: false,
+}));
+
+// pokusaj konfigurisanja helmeta za pokretanje dozvoljenih skripti - NE RADI ZA FONTAWESOME 
+// app.use(helmet({
+
+//     contentSecurityPolicy: {
+//         directives:{
+//             defaultSrc:["'self'"],
+//             scriptSrc:["'self'", 'https://code.jquery.com/jquery-3.5.1.slim.min.js', 'https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js', 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js', 'https://kit.fontawesome.com/52005eadbf.js'],
+//             styleSrc:["'self'", 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css'],
+//             fontSrc:["'self'"]}
+//     }
+//     }));
+
 // nakon pozivanje session poziva se csrf zastita jer je konfigurisana preko session
 app.use(csurfProtection);
 // poziva se pre routa, a posle csrf pozivanja
@@ -111,9 +129,6 @@ app.use(flash());
 
 // Mongo sanitize - No-SQL injection
 app.use(mongoSanitize());
-
-// dodatno setovanje security headera
-//app.use(helmet());
 
 // prevencija XSS - input sadrzi script tag ili html koji se kasnije prilikom prikazivanja moze ucitati u stranu, pre routa se poziva
 app.use(xss());
