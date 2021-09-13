@@ -29,10 +29,9 @@ router
             .isNumeric()
             .isLength({min: 8, max: 8})
             .trim(),
-        body("MISBroj")
+        body("MISBroj", "Broj kalema je broj iz MIS-a i sastoji se od 7 cifara")
             .isNumeric()
             .isLength({min: 7, max: 7})
-            .withMessage("MIS broj sastoji se od 7 cifara")
             .custom(async (value) => {
                 const report = await DomReport.findOne({ MISBroj: value });
 
