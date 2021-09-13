@@ -70,7 +70,7 @@
                     else
                         td Debljina plašta
                     td mm
-                    td#thickSheath=report ? report.proizvod.debPlasta : '/'
+                    td#thickSheath=report ? report.proizvod.debPlasta == '0' ? '/' : report.proizvod.debPlasta : '/'
                 tr
                     if lang === 'eng'
                         td Overall Diametar
