@@ -3,12 +3,10 @@ const dotenv = require('dotenv');
 const colors = require('colors');
 const path = require('path');
 const morgan = require('morgan');
-const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const MongoDbSessionStore = require('connect-mongodb-session')(session);
 const csrf = require('csurf');
 const flash = require('connect-flash');
-const formidableMiddleware = require('express-formidable');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const xss = require('xss-clean');
@@ -80,9 +78,6 @@ app.use(express.json());
 // kada se podaci salju preko formData, formData automatski setuje 'content-type': 'multipart/form-data' koji bodyparser iznad ne moze da iscita
 // formidable moze da iscita i json type tako da body parser ne treba
 //app.use(formidableMiddleware());
-
-// pozivanje cookie parsera da bi u cookie mogao sa se ubaci token
-//app.use(cookieParser());
 
 // da se nebi opetercivala memorija noda, snimanje session u MongoDb
 const storeSession = new MongoDbSessionStore({

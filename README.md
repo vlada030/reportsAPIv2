@@ -1,2 +1,2 @@
 # reportsAPI
-An API related to administration stuff, preparing & printing different type of reports, product test reports as well as maintaining the current base of products.
+An API related to administrative stuff, preparing & printing different types of reports, maintaining the current base of products...

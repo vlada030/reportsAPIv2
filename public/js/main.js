@@ -1,5 +1,4 @@
 // bez ovoga ne radi npr async/await... i blokira celu app
-import '@babel/polyfill';
 import {getProduct, updateProduct, deleteReport, updateUserDetail, deleteUserAvatar, updateForgottenPassword, getAdvancedResultsData} from './ajaxRequests';
 import errorHandler from './errorHandler';
 import {showMessage, deleteMessage} from './alertMessage';
