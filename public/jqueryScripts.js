@@ -5,7 +5,7 @@ $(document).ready(function() {
     // datum domaci
     // document.querySelector('#datum').valueAsDate = new Date();
     // console.log(document.querySelector('#datum').placeholder);
-    document.querySelector('#datum').value = new Intl.DateTimeFormat('sr-RS').format(new Date())
+    // document.querySelector('#datum').value = new Intl.DateTimeFormat('sr-RS').format(new Date())
     // godina
     $(".year").text(new Date().getFullYear());
     // hamburger button

@@ -38,10 +38,12 @@ block content
                 .col-3.text-center KONTROLA KVALITETA
                     p QS 06.10.03.00/03
                 .col-6.text-center.lead.font-weight-normal TF Kable Fabrika kablova Zaječar D.O.O.
-                .col-3.text-center 
-                    //span#date
-                    label(for="datum") Datum:
-                    input(type='text' form='domesticForm' placeholder='dd.mm.yyyy.'  name='datum' pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}").form-control.text-center#datum
+                .col-3
+                    .row.justify-content-center
+                        .col-lg-8.d-flex.flex-column.align-items-center
+                            //span#date
+                            label(for="datum") Datum:
+                            input#datum(type='text' form='domesticForm' placeholder='dd.mm.gggg.' name='datum' value=report ? report.datum : '').form-control.text-center
 
             hr.mb-5
             //- drugi red

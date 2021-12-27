@@ -48,6 +48,10 @@ exports.getDomReport = asyncHandler(async (req, res, next) => {
         }
     }
 
+    // const datum = new Intl.DateTimeFormat('sr-RS').format(new Date())
+    // report = {}
+    // report['datum'] = datum
+
     res.status(200).render('domReports', {
         title: "Izveštaji za domaće tržište",
         path: "dom",

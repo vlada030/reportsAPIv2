@@ -20,46 +20,59 @@ router
     .route("/dom")
     .get(getDomReport)
     .post(
-        protect,[
-        body("sifra", "Šifra se sastoji od 7 cifara")
-            .isNumeric()
-            .isLength({min: 7, max: 7})
-            .trim(),
-        body("radniNalog", "Radni nalog sastoji se od 8 cifara")
-            .isNumeric()
-            .isLength({min: 8, max: 8})
-            .trim(),
-        body("MISBroj", "Broj kalema je broj iz MIS-a i sastoji se od 7 cifara")
-            .isNumeric()
-            .isLength({min: 7, max: 7})
-            .custom(async (value) => {
-                const report = await DomReport.findOne({ MISBroj: value });
+        protect,
+        [
+            body("sifra", "Šifra se sastoji od 7 cifara")
+                .isNumeric()
+                .isLength({ min: 7, max: 7 })
+                .trim(),
+            body("radniNalog", "Radni nalog sastoji se od 8 cifara")
+                .isNumeric()
+                .isLength({ min: 8, max: 8 })
+                .trim(),
+            body(
+                "MISBroj",
+                "Broj kalema je broj iz MIS-a i sastoji se od 7 cifara"
+            )
+                .isNumeric()
+                .isLength({ min: 7, max: 7 })
+                .custom(async (value) => {
+                    const report = await DomReport.findOne({ MISBroj: value });
 
-                if (report) {
-                    throw new Error("Izveštaj pod ovim MIS brojem postoji!");
-                }
-                return true;
-            })
-            .trim(),
-        body("duzina", "Najmanja dužina je 1m, a najveća 3000m")
-            .isNumeric()
-            .isInt({ gt: 1, lt: 3000 })
-            .trim(),
-        body("neto", "Najmanja težina je 1kg, a najveća 5000kg")
-            .isNumeric()
-            .isInt({ gt: 1, lt: 5000 })
-            .trim(),
-        body("bruto")
-            .isNumeric()
-            .isInt({ gt: 1, lt: 6000 })
-            .withMessage('Najmanja težina je 1kg, a najveća 6000kg')
-            .custom((value, {req}) => {
-                if (parseInt(req.body.neto, 10) > parseInt(value, 10) ) {
-                    throw new Error("Bruto težina mora da bude veća od neto težine");
-                }
-                return true;
-            })
-            .trim()],
+                    if (report) {
+                        throw new Error(
+                            "Izveštaj pod ovim MIS brojem postoji!"
+                        );
+                    }
+                    return true;
+                })
+                .trim(),
+            body("duzina", "Najmanja dužina je 1m, a najveća 3000m")
+                .isNumeric()
+                .isInt({ gt: 1, lt: 3000 })
+                .trim(),
+            body("neto", "Najmanja težina je 1kg, a najveća 5000kg")
+                .isNumeric()
+                .isInt({ gt: 1, lt: 5000 })
+                .trim(),
+            body("bruto")
+                .isNumeric()
+                .isInt({ gt: 1, lt: 6000 })
+                .withMessage("Najmanja težina je 1kg, a najveća 6000kg")
+                .custom((value, { req }) => {
+                    if (parseInt(req.body.neto, 10) > parseInt(value, 10)) {
+                        throw new Error(
+                            "Bruto težina mora da bude veća od neto težine"
+                        );
+                    }
+                    return true;
+                })
+                .trim(),
+            body("datum")
+                .trim()
+                .matches(/[0-9]{2}\.[0-9]{2}\.[0-9]{4}\./)
+                .withMessage("Pogrešno unet format datuma, potrebno je dd.mm.gggg."),
+        ],
         createDomReport
     );
 router.route('/dom/json').get(protect, advancedResults(DomReport, 'proizvod'), getAllDomReports);
