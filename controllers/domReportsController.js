@@ -16,7 +16,7 @@ exports.getDomReport = asyncHandler(async (req, res, next) => {
 
     // ako postoji MISBroj onda se ucitava postojeci izvestaj u suprotnom izvestaj treba da se kreira
     // isto se odnosi i na report
-    let report = null;
+    let report = {};
 
     if (MISBroj) {
         report = await DomReport.findOne({ MISBroj })
@@ -47,10 +47,11 @@ exports.getDomReport = asyncHandler(async (req, res, next) => {
             });
         }
     }
-
-    // const datum = new Intl.DateTimeFormat('sr-RS').format(new Date())
-    // report = {}
-    // report['datum'] = datum
+    // dodaj danasnji datum ukoliko se ucitava prazan template
+    const datum = new Intl.DateTimeFormat('sr-RS').format(new Date())
+    if (!report?.datum) {
+        report['datum'] = datum
+    }
 
     res.status(200).render('domReports', {
         title: "Izveštaji za domaće tržište",
