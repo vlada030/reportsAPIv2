@@ -68,7 +68,7 @@ block content
                                     .col-4 
                                         label Šifra :
                                     .col-8
-                                        input(type='number' placeholder='Unesi 7-cifreni broj' value=report.sifra ? report.sifra : '' readonly=readonlyInputStatus name='sifra').form-control.font-weight-bold#productCode
+                                        input(type='number' placeholder='Unesi 7-cifreni broj' value=report && report.sifra ? report.sifra : '' readonly=readonlyInputStatus name='sifra').form-control.font-weight-bold#productCode
                                         small Error message 
                         //- cetvrti red
                         .row.font-weight-bold.mb-2
@@ -102,7 +102,7 @@ block content
                                             label(for='workOrder') Radni nalog:
                                          
                                     .col-8
-                                        input(type='number', placeholder='Unesi 8-cifreni broj' value=report.radniNalog ? report.radniNalog : '' readonly=readonlyInputStatus name='radniNalog').form-control.font-weight-bold#workOrder
+                                        input(type='number', placeholder='Unesi 8-cifreni broj' value=report && report.radniNalog ? report.radniNalog : '' readonly=readonlyInputStatus name='radniNalog').form-control.font-weight-bold#workOrder
                                         small Error message
                                     
                             .col-lg-6
@@ -114,7 +114,7 @@ block content
                                             label(for='num') Broj kalema:
                                         
                                     .col-4
-                                        input(type='text', placeholder='7-cifreni broj' value=report.MISBroj ? report.MISBroj : '' readonly=readonlyInputStatus name='MISBroj').form-control.font-weight-bold#misNumber
+                                        input(type='text', placeholder='7-cifreni broj' value=report && report.MISBroj ? report.MISBroj : '' readonly=readonlyInputStatus name='MISBroj').form-control.font-weight-bold#misNumber
                                         small Error message
                                     .col-4
                                         select.form-control.font-weight-bold#drumSize(disabled=readonlyInputStatus name='velDob')
@@ -146,7 +146,7 @@ block content
                                             label(for='length') Dužina:                                        
 
                                     .input-group.col-5
-                                        input(type='number' value=report.duzina ? report.duzina : '' readonly=readonlyInputStatus name='duzina').form-control.text-right.font-weight-bold#length
+                                        input(type='number' value=report && report.duzina ? report.duzina : '' readonly=readonlyInputStatus name='duzina').form-control.text-right.font-weight-bold#length
                                         .input-group-append
                                             span.input-group-text m
                                         small Error message
@@ -159,13 +159,13 @@ block content
                                             label(for='weight') Težina (bruto/neto):                                       
 
                                     .input-group.col-4
-                                        input(type='number' value=report.bruto ? report.bruto : '' readonly=readonlyInputStatus name='bruto').form-control.text-right.font-weight-bold.pr-2#bruto
+                                        input(type='number' value=report && report.bruto ? report.bruto : '' readonly=readonlyInputStatus name='bruto').form-control.text-right.font-weight-bold.pr-2#bruto
                                         .input-group-append
                                             span.input-group-text kg
                                         small Error message
 
                                     .input-group.col-4
-                                        input(type='number' value=report.neto ? report.neto : '' readonly=readonlyInputStatus name='neto').form-control.text-right.font-weight-bold.pr-2#neto
+                                        input(type='number' value=report && report.neto ? report.neto : '' readonly=readonlyInputStatus name='neto').form-control.text-right.font-weight-bold.pr-2#neto
                                         .input-group-append
                                             span.input-group-text kg
                                         small Error message

@@ -5,6 +5,8 @@ const asyncHandler = require("../middleware/asyncHandler");
 const ErrorResponse = require("../utils/errorResponse");
 
 const {validationResult} = require('express-validator');
+const {fixedNumberOfDecimals} = require('../utils/fixedNumberOfDecimals')
+const {getCurrentDate} = require('../utils/getCurrentDate')
 
 // @desc   Get Report
 // @route  GET /api/v2/reports/dom?id=MISBroj&lang=lang
@@ -17,9 +19,11 @@ exports.getDomReport = asyncHandler(async (req, res, next) => {
     // ako postoji MISBroj onda se ucitava postojeci izvestaj u suprotnom izvestaj treba da se kreira
     // isto se odnosi i na report
     let report = {};
+    let retrievedReport = null
+
 
     if (MISBroj) {
-        report = await DomReport.findOne({ MISBroj })
+        retrievedReport = await DomReport.findOne({ MISBroj })
             .populate({
                 path: "createdByUser",
                 select: "name",
@@ -30,7 +34,7 @@ exports.getDomReport = asyncHandler(async (req, res, next) => {
             })
             .populate("proizvod"); // popunjava virtuals polje
     
-        if (!report) {
+        if (!retrievedReport) {
             // return next(
             //     new ErrorResponse(
             //         `Izveštaj sa MIS brojem ${MISBroj} ne postoji`,
@@ -43,14 +47,23 @@ exports.getDomReport = asyncHandler(async (req, res, next) => {
                 userName: req.session.name,
                 avatarUrl: req.session.avatarUrl,
                 readonlyInputStatus: false,
-                errorMessage: 'Traženi izveštaj ne postoji ili je izbrisan.'
+                errorMessage: "Traženi izveštaj ne postoji ili je izbrisan.",
             });
         }
-    }
+    }    
+
     // dodaj danasnji datum ukoliko se ucitava prazan template
-    const datum = new Intl.DateTimeFormat('sr-RS').format(new Date())
-    if (!report?.datum) {
-        report['datum'] = datum
+    if (!retrievedReport.datum) {
+        report["datum"] = getCurrentDate();
+    }
+
+    if (retrievedReport.proizvod) {
+        const updatedReport = fixedNumberOfDecimals(
+            { ...retrievedReport.proizvod },
+            2
+        );
+
+        report = {...retrievedReport, proizvod: {...updatedReport}}
     }
 
     res.status(200).render('domReports', {
