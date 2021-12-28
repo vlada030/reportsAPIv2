@@ -16,28 +16,45 @@ exports.getDomReport = asyncHandler(async (req, res, next) => {
     const MISBroj = req.query.id
     const lang = req.query.lang || 'ser';
 
-    // ako postoji MISBroj onda se ucitava postojeci izvestaj u suprotnom izvestaj treba da se kreira
-    // isto se odnosi i na report
+    // ako postoji MISBroj postoji i retrievedReport - onda se ucitava postojeci izvestaj u suprotnom izvestaj treba da se kreira
+    let retrievedReport = {}
     let report = {};
-    let retrievedReport = null
 
 
     if (MISBroj) {
-        retrievedReport = await DomReport.findOne({ MISBroj })
-            .populate({
-                path: "createdByUser",
-                select: "name",
-            })
-            .populate({
-                path: "updatedByUser",
-                select: "name",
-            })
-            .populate("proizvod"); // popunjava virtuals polje
-    
-        if (!retrievedReport) {
+        try {
+            retrievedReport = await DomReport.findOne({ MISBroj })
+                .populate({
+                    path: "createdByUser",
+                    select: "name",
+                })
+                .populate({
+                    path: "updatedByUser",
+                    select: "name",
+                })
+                .populate("proizvod"); // popunjava virtuals polje
+
+            if (!retrievedReport) {
+                // return next(
+                //     new ErrorResponse(
+                //         `Izveštaj sa MIS brojem ${MISBroj} ne postoji`,
+                //         400
+                //     ));
+                return res.status(404).render("domReports", {
+                    title: "Izveštaji za domaće tržište",
+                    path: "dom",
+                    lang,
+                    userName: req.session.name,
+                    avatarUrl: req.session.avatarUrl,
+                    readonlyInputStatus: false,
+                    errorMessage:
+                        "Traženi izveštaj ne postoji ili je izbrisan.",
+                });
+            }
+        } catch (error) {
             // return next(
             //     new ErrorResponse(
-            //         `Izveštaj sa MIS brojem ${MISBroj} ne postoji`,
+            //         Došlo je do greške, pokušajte ponovo.,
             //         400
             //     ));
             return res.status(404).render("domReports", {
@@ -47,23 +64,24 @@ exports.getDomReport = asyncHandler(async (req, res, next) => {
                 userName: req.session.name,
                 avatarUrl: req.session.avatarUrl,
                 readonlyInputStatus: false,
-                errorMessage: "Traženi izveštaj ne postoji ili je izbrisan.",
+                errorMessage: "Došlo je do greške, pokušajte ponovo.",
             });
         }
+        
     }    
-
+    
+    // preradi proizvod objekat da fiksira broj na 2 decimale
+    if (retrievedReport?.proizvod) {
+        const updatedProizvod = fixedNumberOfDecimals(
+            { ...retrievedReport.proizvod }, 2);
+            
+            report = Object.create(retrievedReport)
+            report.proizvod = {...updatedProizvod}
+        }
+        
     // dodaj danasnji datum ukoliko se ucitava prazan template
-    if (!retrievedReport.datum) {
+    if (!report?.datum) {
         report["datum"] = getCurrentDate();
-    }
-
-    if (retrievedReport.proizvod) {
-        const updatedReport = fixedNumberOfDecimals(
-            { ...retrievedReport.proizvod },
-            2
-        );
-
-        report = {...retrievedReport, proizvod: {...updatedReport}}
     }
 
     res.status(200).render('domReports', {

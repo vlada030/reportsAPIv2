@@ -35,9 +35,7 @@
                     else
                         td Prečnik žice
                     td mm
-                    - var diametar=report && report.proizvod ? report.proizvod.precnikZice : '/'
-                    - var formatedDiametar = typeof diametar !== 'string' ? new Intl.NumberFormat(undefined,{ type: 'decimal',minimumFractionDigits: 2 }).format(diametar) : '/'
-                    td#wireDiametar=formatedDiametar
+                    td#wireDiametar=report && report.proizvod ? report.proizvod.precnikZice : '/'
                 tr
                     if lang === 'eng'
                         td Maximum Allowed Conductor Resistance
@@ -72,9 +70,7 @@
                     else
                         td Debljina plašta
                     td mm
-                    - var sheath=report && report.proizvod ? report.proizvod.debPlasta == 0 ? '/' : report.proizvod.debPlasta : '/'
-                    - var formatedSheath = typeof sheath !== 'string' ? new Intl.NumberFormat(undefined,{ type: 'decimal',minimumFractionDigits: 2 }).format(sheath) : '/'
-                    td#thickSheath=formatedSheath
+                    td#thickSheath=report && report.proizvod ? report.proizvod.debPlasta == 0 ? '/' : report.proizvod.debPlasta : '/'
                 tr
                     if lang === 'eng'
                         td Overall Diametar

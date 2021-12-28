@@ -43,7 +43,7 @@ block content
                         .col-lg-8.d-flex.flex-column.align-items-center
                             //span#date
                             label(for="datum") Datum:
-                            input#datum(type='text' form='domesticForm' placeholder='dd.mm.gggg.' name='datum' value=report.datum).form-control.text-center
+                            input#datum(type='text' form='domesticForm' placeholder='dd.mm.gggg.' name='datum' value=report && report.datum ? report.datum : '').form-control.text-center
 
             hr.mb-5
             //- drugi red
@@ -61,7 +61,7 @@ block content
 
             .row
                 .col-10.mx-auto
-                    form.border.border-dark.p-3#domesticForm(action='/api/v2/reports/dom' method='POST' novalidate)                        
+                    form.border.border-dark.rounded.p-3#domesticForm(action='/api/v2/reports/dom' method='POST' novalidate)                        
                         .row.font-weight-bold.mb-3.d-print-none     
                             .col-lg-6
                                 .row.align-items-center
