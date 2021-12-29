@@ -52,7 +52,14 @@ exports.getDomReport = asyncHandler(async (req, res, next) => {
     }    
     
     // preradi proizvod objekat da fiksira broj na 2 decimale
-    if (retrievedReport?.proizvod) {
+    // if (retrievedReport?.proizvod) {
+    //     const updatedProizvod = fixedNumberOfDecimals(
+    //         { ...retrievedReport.proizvod }, 2);
+            
+    //         report = Object.create(retrievedReport)
+    //         report.proizvod = {...updatedProizvod}
+    //     }
+    if (retrievedReport && retrievedReport.proizvod) {
         const updatedProizvod = fixedNumberOfDecimals(
             { ...retrievedReport.proizvod }, 2);
             
@@ -61,7 +68,10 @@ exports.getDomReport = asyncHandler(async (req, res, next) => {
         }
         
     // dodaj danasnji datum ukoliko se ucitava prazan template
-    if (!report?.datum) {
+    // if (!report?.datum) {
+    //     report["datum"] = getCurrentDate();
+    // }
+    if (report && !report.datum) {
         report["datum"] = getCurrentDate();
     }
 
