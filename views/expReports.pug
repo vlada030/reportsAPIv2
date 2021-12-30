@@ -138,7 +138,7 @@ block content
                                             label Broj doboša:
                                     
                                     .col-7#drumList
-                                        if report 
+                                        if report && report.proizvod
                                             -var n = 1;
                                             each val, key in report
                                                 if key.startsWith('dobos') && val
@@ -194,9 +194,9 @@ block content
             .row.my-5
                 .col-6.d-flex.flex-column.align-items-center
                     label(for="datum") Datum:
-                    input#datum(type='text' form='expReportsForm' placeholder='dd.mm.gggg.' name='datum' value=report && report.datum ? report.datum : '').form-control.text-center.w-75
+                    input#datum(type='text' form='expReportsForm' placeholder='dd.mm.gggg.' name='datum' value=report && report.datum ? report.datum : '').form-control.text-center.w-50
 
-                .col-6.ml-auto.sign
+                .col-6.ml-auto.sign.d-flex.flex-column.align-items-center
 
                     include layouts/documentSign.pug 
 

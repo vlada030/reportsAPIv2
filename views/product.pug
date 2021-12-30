@@ -89,7 +89,7 @@ block content
             label.col-md-4(for='semiFirst') Prvi poluprovodni sloj:
             .col-md-8
                 .input-group
-                    input#semiFirst.form-control(type='text', placeholder='/', name='debPPS1' value=product ? product.debPPS1 : '')
+                    input#semiFirst.form-control(type='text', placeholder='/', name='debPPS1' value=product ? product.debPPS1 : '/')
                     .input-group-append
                         span.input-group-text mm
                     small Error message
@@ -105,7 +105,7 @@ block content
             label.col-md-4(for='semiSecond') Drugi poluprovodni sloj:
             .col-md-8
                 .input-group
-                    input#semiSecond.form-control(placeholder='/', type='text', name='debPPS2' value=product ? product.debPPS2 : '')
+                    input#semiSecond.form-control(placeholder='/', type='text', name='debPPS2' value=product ? product.debPPS2 : '/')
                     .input-group-append
                         span.input-group-text mm
                     small Error message

@@ -5,6 +5,8 @@ const asyncHandler = require('../middleware/asyncHandler');
 const ErrorResponse = require('../utils/errorResponse');
 
 const {validationResult} = require('express-validator');
+const { fixedNumberOfDecimals } = require("../utils/fixedNumberOfDecimals");
+const { getCurrentDate } = require("../utils/getCurrentDate");
 
 // @desc   Get Report
 // @route  GET /api/v2/reports/exp?id=id&lang=lang
@@ -14,12 +16,13 @@ exports.getExpReport = asyncHandler( async(req, res, next) => {
     const reportId = req.query.id;
     const lang = req.query.lang || "ser";
 
-    // ako postoji id onda se ucitava postojeci izvestaj u suprotnom izvestaj treba da se kreira
-    // isto se odnosi i na report
-    let report = null;
+    // ako postoji id onda se ucitava postojeci izvestaj tj retrievedReport u suprotnom izvestaj treba da se kreira
+    let retrievedReport = {};
+    let report = {};
 
     if (reportId) {
-        report = await ExpReport.findById(reportId).populate({
+        retrievedReport = await ExpReport.findById(reportId)
+            .populate({
                 path: "createdByUser",
                 select: "name",
             })
@@ -28,8 +31,8 @@ exports.getExpReport = asyncHandler( async(req, res, next) => {
                 select: "name",
             })
             .populate("proizvod");
-    
-        if (!report) {
+
+        if (!retrievedReport) {
             //return next(new ErrorResponse(`Izabrani izvestaj ne postoji`, 400));
             return res.status(404).render("expReports", {
                 title: "Izveštaji za inostrano tržište",
@@ -38,11 +41,37 @@ exports.getExpReport = asyncHandler( async(req, res, next) => {
                 userName: req.session.name,
                 avatarUrl: req.session.avatarUrl,
                 readonlyInputStatus: false,
-                errorMessage: 'Traženi izveštaj ne postoji ili je izbrisan.'
+                errorMessage: "Traženi izveštaj ne postoji ili je izbrisan.",
             });
         }
     }
 
+    // preradi proizvod objekat da fiksira broj na 2 decimale
+    // iz nekog razloga ne radi na 2 kompjutera
+    // if (retrievedReport?.proizvod) {
+    //     const updatedProizvod = fixedNumberOfDecimals(
+    //         { ...retrievedReport.proizvod }, 2);
+
+    //         report = Object.create(retrievedReport)
+    //         report.proizvod = {...updatedProizvod}
+    //     }
+    if (retrievedReport && retrievedReport.proizvod) {
+        const updatedProizvod = fixedNumberOfDecimals(
+            { ...retrievedReport.proizvod },
+            2
+        );
+
+        report = Object.create(retrievedReport);
+        report.proizvod = { ...updatedProizvod };
+    }
+
+    // dodaj danasnji datum ukoliko se ucitava prazan template
+    // if (!report?.datum) {
+    //     report["datum"] = getCurrentDate();
+    // }
+    if (report && !report.datum) {
+        report["datum"] = getCurrentDate();
+    }
 
     res.status(200).render("expReports", {
         title: "Izveštaji za inostrano tržište",

@@ -52,6 +52,7 @@ exports.getDomReport = asyncHandler(async (req, res, next) => {
     }    
     
     // preradi proizvod objekat da fiksira broj na 2 decimale
+    // iz nekog razloga ne radi na 2 kompjutera
     // if (retrievedReport?.proizvod) {
     //     const updatedProizvod = fixedNumberOfDecimals(
     //         { ...retrievedReport.proizvod }, 2);
