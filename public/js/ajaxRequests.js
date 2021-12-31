@@ -91,6 +91,6 @@ export const updateForgottenPassword = async (url, params) => {
 export const getAdvancedResultsData = async (url) => {
     return await axios({
         url,
-        method: 'get'
+        method: 'GET'
     })
 }

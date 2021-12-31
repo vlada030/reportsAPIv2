@@ -1,8 +1,10 @@
 // bez ovoga ne radi npr async/await... i blokira celu app
 import {getProduct, updateProduct, deleteReport, updateUserDetail, deleteUserAvatar, updateForgottenPassword, getAdvancedResultsData} from './ajaxRequests';
 import errorHandler from './errorHandler';
-import {showMessage, deleteMessage} from './alertMessage';
-import {elements, updateReportsUI, updateProductUI, addItem, delItem, updateTotalLength, addWorker, removeWorker, addItemDorada, removeItemDorada, addItemProboj, removeItemProboj, renderPaginatedUI} from './userInterface';
+import {showMessage, deleteMessage} from './manageAlertMessages';
+import { updateReportsUI, updateProductUI, addItem, delItem, updateTotalLength, addWorker, removeWorker, addItemDorada, removeItemDorada, addItemProboj, removeItemProboj, renderPaginatedUI} from './userInterface';
+import { elements } from "./elementsList";
+
 
 window.addEventListener('DOMContentLoaded', (event) => {
     const alertElem = document.querySelector('.alert--success');

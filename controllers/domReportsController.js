@@ -154,7 +154,19 @@ exports.createDomReport = asyncHandler(async (req, res, next) => {
             readonlyInputStatus: false
         })
     }
-    await DomReport.create(req.body);
+    
+    // ovde se formatiraju decimale reporta koji se vraca nakon snimanja u bazu
+    const retrievedReport = await DomReport.create(req.body);
+
+    if (retrievedReport && retrievedReport.proizvod) {
+        const updatedProizvod = fixedNumberOfDecimals(
+            { ...retrievedReport.proizvod },
+            2
+        );
+
+        report = Object.create(retrievedReport);
+        report.proizvod = { ...updatedProizvod };
+    }
 
     // ovo mora da se doda da bi se zadrzao unos , da ne brise unesene vrednosti
     // const report = await DomReport.findOne({ MISBroj: req.body.MISBroj })
@@ -175,7 +187,7 @@ exports.createDomReport = asyncHandler(async (req, res, next) => {
         userName: req.session.name,
         avatarUrl: req.session.avatarUrl,
         successMessage: 'Izveštaj je uspešno snimljen u bazu.',
-        report: req.body,
+        report,
         readonlyInputStatus: false    
     });
 });

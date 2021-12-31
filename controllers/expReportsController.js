@@ -121,16 +121,16 @@ exports.getAllExpReportsHTML = asyncHandler(async(req, res) => {
 // @access Private
 
 exports.createExpReport = asyncHandler( async(req, res, next) => {
-    const lang = req.query.lang || 'ser';
+    const lang = req.query.lang || "ser";
     req.body.createdByUser = req.user.id;
 
     // za povlacenje podataka na osnovu sifre prpoizvoda
-    const proizvod = await Product.findOne({sifra: req.body.sifra});
+    const proizvod = await Product.findOne({ sifra: req.body.sifra });
     req.body.proizvod = proizvod;
 
     // cupanje errors iz express-validatora
     const errors = validationResult(req);
-    
+
     // validacija preko express-validatora
     // implementirano pamcenje prethodnog unosa
     if (!errors.isEmpty()) {
@@ -142,11 +142,22 @@ exports.createExpReport = asyncHandler( async(req, res, next) => {
             avatarUrl: req.session.avatarUrl,
             errorMessage: errors.array()[0].msg,
             report: req.body,
-            readonlyInputStatus: false
-        })
+            readonlyInputStatus: false,
+        });
     }
 
-    const report = await ExpReport.create(req.body);
+    // ovde se formatiraju decimale reporta koji se vraca nakon snimanja u bazu
+    const retrievedReport = await ExpReport.create(req.body);
+
+    if (retrievedReport && retrievedReport.proizvod) {
+        const updatedProizvod = fixedNumberOfDecimals(
+            { ...retrievedReport.proizvod },
+            2
+        );
+
+        report = Object.create(retrievedReport);
+        report.proizvod = { ...updatedProizvod };
+    }
 
     res.status(201).render("expReports", {
         title: "Izveštaji za inostrano tržište",
@@ -155,9 +166,9 @@ exports.createExpReport = asyncHandler( async(req, res, next) => {
         userName: req.session.name,
         avatarUrl: req.session.avatarUrl,
         report,
-        successMessage: 'Izveštaj je uspešno kreiran',
-        readonlyInputStatus: false
-    })
+        successMessage: "Izveštaj je uspešno kreiran",
+        readonlyInputStatus: false,
+    });
 });
 
 // @desc   Get All Reports
