@@ -187,7 +187,14 @@ router
                 }  
         }
             return true;
-        }), createShiftReport
+        }),
+        body("datum")
+                .trim()
+                .matches(/[0-9]{2}\.[0-9]{2}\.[0-9]{4}\./)
+                .withMessage(
+                    "Pogrešno unet format datuma, potrebno je dd.mm.gggg."
+                ), 
+        createShiftReport
     );
 router.route('/shift/json').get(protect, advancedResults(ShiftReport, {path: 'createdByUser', select: 'name'}), getAllShiftReports);
 

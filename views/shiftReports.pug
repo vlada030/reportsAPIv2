@@ -42,10 +42,10 @@ block content
                 // drugi red
                 .row.align-items-center.pb-5
                     .col-8.d-flex.flex-column.flex-lg-row.align-items-center.justify-content-center.mx-auto.centriraj
-                        span.lead.mr-3.mb-2 ZA DAN : 
-                        span#date.lead.mr-3.mb-2
-                        label.lead.mr-3.mb-2(for='shift') SMENA:
-                        select#shift.form-control.lead.mb-2.w-25(name='smena')
+                        label(for="datum").mr-3 ZA DAN:
+                        input#datum(type='text' placeholder='dd.mm.gggg.' name='datum' value=report && report.datum ? report.datum : '').form-control.text-center.w-25.mr-lg-4
+                        label.lead.mr-3(for='shift') SMENA:
+                        select#shift.form-control.lead.w-25(name='smena')
                             option(value='prva' selected= report&&report.smena==='prva' ? true : false ) prva
                             option(value='druga' selected= report&&report.smena==='druga' ? true : false ) druga
                 .row.p-2
@@ -106,7 +106,6 @@ block content
                                 th.align-middle.w-25(scope='row')
                                     select.form-control.mb-1(name='radnik1_ime')
                                         option(value='M. Lilić') M. Lilić
-                                        option(value='M. Vučković') M. Vučković
                                         option(value='D. Aranđelović') D. Aranđelović
                                         option(value='A. Dimitrijević') A. Dimitrijević
                                     .d-flex.flex-row

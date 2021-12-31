@@ -4,19 +4,26 @@ const ShiftReport = require('../models/ShiftReport');
 
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/asyncHandler');
+const { getCurrentDate } = require("../utils/getCurrentDate");
 
 // @desc   Get Shift Reports HTML
 // @route  GET /api/v2/reports/shift
 // @access Public
 
 exports.getShiftReportsHTML = (req, res, next) => {
+    
 
+    // dodaj danasnji datum ukoliko se ucitava prazan template
+    const report = {}
+    report["datum"] = getCurrentDate();
+    
     res.status(200).render("shiftReports", {
         title: "Smenski izveštaj o radu",
         path: "shift",
         isAuthenticated: req.session.isLoggedIn,
         avatarUrl: req.session.avatarUrl,
-        userName: req.session.name
+        userName: req.session.name,
+        report
     });
 };
 
@@ -61,14 +68,15 @@ exports.createShiftReport = asyncHandler( async(req, res, next) => {
 // @access Private
 
 exports.getShiftReport = asyncHandler( async(req, res, next) => {
+    //let report = {}
 
-    const report = await ShiftReport.findById(req.params.id).populate({
+    let report = await ShiftReport.findById(req.params.id).populate({
         path: 'createdByUser',
         select: 'name'
     });
 
-    //console.log(report)
- 
+    //console.log(report);
+        
     if (!report) {
         return res.status(404).render("shiftReports", {
             title: "Smenski izveštaj o radu",
@@ -76,10 +84,13 @@ exports.getShiftReport = asyncHandler( async(req, res, next) => {
             userName: req.session.name,
             avatarUrl: req.session.avatarUrl,
             errorMessage: 'Traženi izveštaj ne postoji ili je izbrisan.',
-            report            
         });
     }
- 
+    
+    if (!report.datum) {
+        report["datum"] = getCurrentDate();
+    }
+
     res.status(200).render("shiftReports", {
         title: "Smenski izveštaj o radu",
         path: "shift",
