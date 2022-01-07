@@ -20,7 +20,7 @@ ul.navbar-nav.mr-auto#optionsNav
             a(href=`/api/v2/reports/${path}`).btn.btn-secondary Kreiraj izveštaj
 
         li.nav-item.mr-2.mb-2.mb-lg-0
-            if (report)
+            if (report && report.proizvod)
                 button(type="button" data-toggle="modal" data-target="#myModal").btn.btn-secondary Obriši izveštaj
 
                 .modal.fade#myModal(tabindex="-1" data-backdrop="static" data-keyboard="false")

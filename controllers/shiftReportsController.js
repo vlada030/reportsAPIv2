@@ -16,6 +16,8 @@ exports.getShiftReportsHTML = (req, res, next) => {
     // dodaj danasnji datum ukoliko se ucitava prazan template
     const report = {}
     report["datum"] = getCurrentDate();
+
+    console.log(Object.keys(report))
     
     res.status(200).render("shiftReports", {
         title: "Smenski izveštaj o radu",

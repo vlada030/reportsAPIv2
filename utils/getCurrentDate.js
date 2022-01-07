@@ -1,6 +1,18 @@
 exports.getCurrentDate = () => {
     const today = new Date();
-    return `${today.getDate()}.${
-        today.getMonth() + 1
-    }.${today.getFullYear()}.`;
+
+    const day = checkNumber(today.getDate())
+    const month = checkNumber(today.getMonth() + 1)
+    
+    const year = today.getFullYear()
+
+    return `${day}.${month}.${year}.`;
+}
+
+const checkNumber = (num) => {
+    if (num < 10) {
+        return `0${num}`
+    }
+
+    return `${num}`
 }

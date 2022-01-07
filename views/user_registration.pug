@@ -30,13 +30,13 @@ block content
                                     label(for='password') Šifra
                                     .password-container
                                         input#password.form-control.mt-1.mb-1(type='password', name='password', value=oldInput.password, placeholder='*******')
-                                        i.far.fa-eye.togglePassword
+                                        i(data-togglepassword).far.fa-eye
 
                                 .form-group.mb-4
                                     label(for='confirmPassword') Ponovite šifru
                                     .password-container
                                         input#confirmPassword.form-control.mt-1.mb-1(type='password', name='confirmPassword', value=oldInput.confirmPassword, placeholder='*******')
-                                        i.far.fa-eye.togglePassword
+                                        i(data-togglepassword).far.fa-eye
                                 //- .form-group.mb-4
                                 //-     label Odaberite profilnu sliku
                                 //-     .custom-file.mt-1.mb-1                          

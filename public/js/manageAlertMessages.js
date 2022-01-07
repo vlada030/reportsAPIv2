@@ -10,10 +10,9 @@ export const showMessage = (message, type) => {
   
     document.querySelector('body').insertAdjacentHTML('afterbegin', markup);
 
-    //window.setTimeout(deleteMessage, 2000)
 }
 
-// brisanje poruke
+// brisanje svih poruka - modala bilo success ili error
 export const deleteMessage = () => {
     const message = document.querySelector('.alert');
 
@@ -22,3 +21,14 @@ export const deleteMessage = () => {
         message.parentElement.removeChild(message)
     }
 }
+
+// brisanje sa delayem SAMO success poruke
+export const deleteSuccessMessage = () => {
+    const successMessage = document.querySelector(".alert--success");
+
+    if (successMessage) {
+        setTimeout(() => {
+            deleteMessage();
+        }, 3000);
+    }
+};

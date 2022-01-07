@@ -55,13 +55,13 @@ block content
                                             label.mb-2(for='currentPassword') Unesite postojeću šifru
                                             .password-container
                                                 input#currentPassword.form-control.mt-1.mb-1(name='currentPassword', type='password')
-                                                i.far.fa-eye.togglePassword
+                                                i(data-togglepassword).far.fa-eye
 
                                         .form-group
                                             label.mb-2(for='newPassword') Unesite novu šifru
                                             .password-container
                                                 input#newPassword.form-control.mt-1.mb-1(name='newPassword', type='password')
-                                                i.far.fa-eye.togglePassword
+                                                i(data-togglepassword).far.fa-eye
                                             br
 
                                         button.btn.btn-info.btn-block.mt-3(type='submit')#submitPassword Izmeni

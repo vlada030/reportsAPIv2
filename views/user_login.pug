@@ -26,7 +26,7 @@ block content
                                     label(for='password') Šifra
                                     .password-container
                                         input#password.form-control.mt-1.mb-1(type='password', name='password', value=oldInput.password, placeholder='*******')
-                                        i.far.fa-eye.togglePassword
+                                        i(data-togglepassword).far.fa-eye
 
                                 a.text-muted(href='/api/v2/auth/resetpassword')
                                     p Zaboravili ste šifru?
