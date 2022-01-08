@@ -36,7 +36,7 @@ exports.getUpdateProductHTML = asyncHandler((req, res, next) => {
 });
 
 // @desc   Get HTML for displaying all products
-// @route  GET /api/v1/products/allProducts
+// @route  GET /api/v2/products/allProductsHTML
 // @access Private
 
 exports.getAllProductsHTML = asyncHandler(async(req, res, next) => {
@@ -53,41 +53,39 @@ exports.getAllProductsHTML = asyncHandler(async(req, res, next) => {
 
 
 // @desc   Get all products
-// @route  GET /api/v1/products
+// @route  GET /api/v2/products
 // @access Private
 
-// exports.getProducts = async (req, res, next) => {
-//     try {
-//         const products = await Product.find();
+exports.getAllProductsJSON = asyncHandler(async (req, res, next) => {
+    
+        const products = await Product.find();
 
-//         // poziva fju za pretvaranje Decimal128 u String
-//         const newProducts = decimal128ToStringOutput(products);
+        // poziva fju za pretvaranje Decimal128 u String
+        const newProducts = decimal128ToStringOutput(products);
         
-//         res.status(200).json({
-//             success: true,
-//             count: newProducts.length,
-//             data: newProducts
-//         }); 
-//     } catch (err) {
-//         next(err);
-//     }  
-// };
+        res.status(200).json({
+            success: true,
+            count: newProducts.length,
+            data: newProducts
+        }); 
+     
+});
 
 // umesto try/catch koristimo wrapper fju asyncHandler 
-exports.getProducts = asyncHandler(async (req, res, next) => {
+// exports.getProducts = asyncHandler(async (req, res, next) => {
     
-    // poziva fju za pretvaranje Decimal128 u String jer smo u routes pre ove fje
-    // pozvali middleware advancedResults
-    //res.advancedResults.data = decimal128ToStringOutput(res.advancedResults.data);
+//     // poziva fju za pretvaranje Decimal128 u String jer smo u routes pre ove fje
+//     // pozvali middleware advancedResults
+//     //res.advancedResults.data = decimal128ToStringOutput(res.advancedResults.data);
     
-    res.status(200).json(res.advancedResults);    
-    // res.status(200).json({
-    //     success: true,
-    //     count: newProducts.length,
-    //     pagination,
-    //     data: newProducts
-    // });    
-});
+//     res.status(200).json(res.advancedResults);    
+//     // res.status(200).json({
+//     //     success: true,
+//     //     count: newProducts.length,
+//     //     pagination,
+//     //     data: newProducts
+//     // });    
+// });
 
 // @desc   Get single product and render HTML
 // @route  GET /api/v2/products/:id
@@ -270,13 +268,13 @@ exports.deleteProduct = asyncHandler(async (req, res, next) => {
 const decimal128ToStringOutput = (arrOfProductProperties) => {
     return arrOfProductProperties.map( product => {
         try {
-            let precnikZice = void 0;
-            let otpor = void 0;
-            let debIzolacije = void 0;
-            let debPlasta = void 0;
-            let spPrecnik = void 0;
-            let createdAt = void 0;
-            let updatedAt = void 0;
+            let precnikZice = null;
+            let otpor = null;
+            let debIzolacije = null;
+            let debPlasta = null;
+            let spPrecnik = null;
+            let createdAt = null;
+            let updatedAt = null;
 
             if (product.precnikZice) {
                 precnikZice =  product.precnikZice.toString();
