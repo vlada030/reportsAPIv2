@@ -9,14 +9,25 @@ axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[nam
 // posto su FE i BE na istom sajtu ovo u sustini moze da se izabci
 const baseURL = '';
 
-export const getProduct = async ( value ) => {
+export const getProduct = async ( id ) => {
         
     const result = await axios({
         method: 'GET',
-        url: `${baseURL}/api/v2/products/${value}/json`           
+        url: `${baseURL}/api/v2/products/${id}/json`           
     });
 
     return result;     
+}
+
+export const updateProduct = async ( id, data ) => {
+        
+    const result = await axios({
+        url: `${baseURL}/api/v2/products/${id}`,
+        method: 'PUT',
+        data           
+    });
+
+    return result;      
 }
 
 export const deleteReport = async ( value, kindofReport) => {
@@ -37,16 +48,6 @@ export const deleteReport = async ( value, kindofReport) => {
     return result;      
 }
 
-export const updateProduct = async ( value, data ) => {
-        
-    const result = await axios({
-        url: `${baseURL}/api/v2/products/${value}`,
-        method: 'PUT',
-        data           
-    });
-
-    return result;      
-}
 
 // promena User Name / Email / Password / Avatar
 export const updateUserDetail = async (urlPart, data ) => {

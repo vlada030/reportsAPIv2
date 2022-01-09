@@ -101,4 +101,5 @@ export const elements = {
     itemsCounter: document.getElementById("itemsCounter"),
     fltByName: document.getElementById("fltByName"),
     fltByCode: document.getElementById("fltByCode"),
+    productsListContainer: document.getElementById("productsListContainer"),
 };

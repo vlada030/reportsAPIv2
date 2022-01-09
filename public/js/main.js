@@ -10,7 +10,7 @@ import { updateReportsUI, updateProductUI, addItem, delItem, updateTotalLength, 
 import { elements } from "./elementsList";
 
 
-window.addEventListener('DOMContentLoaded', (event) => {
+window.addEventListener('DOMContentLoaded', async (event) => {
     /// brisanje sa delayem SAMO success poruke
     deleteSuccessMessage();
 
@@ -522,42 +522,151 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
     // filtriranje naziva svih proizvoda
     if (elements.filterProductName) {
-        [
-            elements.filterProductName,
-            elements.fltByName,
-            elements.fltByCode,
-        ].forEach((elem) => {
-            elem.addEventListener("input", (e) => {
-                e.preventDefault();
-                const term = elements.filterProductName.value
-                    .trim()
-                    .toUpperCase();
+        // [
+        //     elements.filterProductName,
+        //     elements.fltByName,
+        //     elements.fltByCode,
+        // ].forEach((elem) => {
+        //     elem.addEventListener("input", (e) => {
+        //         e.preventDefault();
+        //         const term = elements.filterProductName.value
+        //             .trim()
+        //             .toUpperCase();
 
-                let productsArray = Array.from(
-                    document.querySelectorAll(".item")
-                );
-                let counter = 0;
+        //         let productsArray = Array.from(
+        //             document.querySelectorAll(".item")
+        //         );
+        //         let counter = 0;
 
-                const searchBy = elements.fltByName.checked ? ".name" : ".code";
+        //         const searchBy = elements.fltByName.checked ? ".name" : ".code";
 
-                productsArray.forEach((el) => {
-                    const name = el.querySelector(searchBy).innerText;
+        //         productsArray.forEach((el) => {
+        //             const name = el.querySelector(searchBy).innerText;
 
-                    if (!name.toUpperCase().includes(term)) {
-                        el.classList.add("d-none");
-                    } else {
-                        el.classList.remove("d-none");
-                        counter++;
-                    }
-                });
+        //             if (!name.toUpperCase().includes(term)) {
+        //                 el.classList.add("d-none");
+        //             } else {
+        //                 el.classList.remove("d-none");
+        //                 counter++;
+        //             }
+        //         });
 
-                // update counter
-                if (counter === 1) {
-                    elements.itemsCounter.innerText = `Pronađena je 1 stavka`;
-                } else {
-                    elements.itemsCounter.innerText = `Pronađene su ${counter} stavke`;
+        //         // update counter
+        //         if (counter === 1) {
+        //             elements.itemsCounter.innerText = `Pronađena je 1 stavka`;
+        //         } else {
+        //             elements.itemsCounter.innerText = `Pronađene su ${counter} stavke`;
+        //         }
+        //     });
+        // });
+
+        const createProductItem = (product, ordNumber) => {
+            const item = `
+                <div class="item rounded"><a class="list-group-item list-group-item-action d-flex justify-content-start" href="/api/v2/products/${
+                    product.sifra
+                }"><span class="w-25 px-2">${
+                ordNumber + 1
+            }.</span><span class="w-25 px-2 code">${
+                product.sifra
+            }</span><span class="w-25 px-2 name">${
+                product.proizvod
+            }</span><span class="w-25 text-right px-2">${
+                product.napon
+            }</span><span class="w-25 text-right px-2">${
+                product.propis
+            }</span></a></div>
+            `;
+
+            return item;
+        };
+
+        const addItemToParentNode = (item) => {
+            elements.productsListContainer.insertAdjacentHTML(
+                "beforeend",
+                item
+            );
+        };
+
+        const updateNoOfItems = (num) => {
+            let text =
+                num > 1
+                    ? `Pronađene su ${num} stavke.`
+                    : num === 1
+                    ? `Pronađena je ${num} stavka.`
+                    : "Nije pronađena nijedna stavka.";
+
+            elements.itemsCounter.innerText = text;
+        };
+
+        function splitArray(arr, limit) {
+            let updatedArr = [];
+            let noOfArrays = Math.ceil(arr.length / limit);
+
+            for (let i = 0; i < noOfArrays; i++) {
+                let start = i * limit;
+                let end = i * limit + limit;
+                updatedArr.push(arr.slice(start, end));
+            }
+
+            return updatedArr;
+        }
+
+        function debounce(callback, time) {
+            let interval;
+            return (...args) => {
+                clearTimeout(interval);
+                interval = setTimeout(() => {
+                    interval = null;
+                    callback(...args);
+                }, time);
+            };
+        }
+
+        function loadMoreItems() {
+            
+            if (counter < splittedProductsList.length) {
+                const { scrollTop, scrollHeight, clientHeight } =
+                document.documentElement;
+
+                if (scrollTop + clientHeight >= scrollHeight - 20) {
+
+                    // inicijalna strana 0 ucitana u startu zato krece od 1 i treba da ide do broja subarraya splittedProductsList
+                    splittedProductsList[counter].forEach((product, ind) => {
+                        const item = createProductItem(product,counter * itemsPerLoad + ind);
+                        addItemToParentNode(item);
+                    });
+                    counter++;
                 }
-            });
+            }
+        }
+
+        let counter = 1
+        let itemsPerLoad = 50
+
+        let { data: productsList } = await getAdvancedResultsData(
+            "/api/v2/products"
+        );
+
+        // izvrsi filtriranje svih proizvoda
+        const filteredProducts = [...productsList.data]
+
+        // podeli ceo array na subarraye tj "strane"
+        const splittedProductsList = splitArray(filteredProducts, itemsPerLoad);
+
+        // inicijalno prikazivanje - prvih 20
+        splittedProductsList[0].forEach((product, ind) => {
+            const item = createProductItem(product, ind);
+            addItemToParentNode(item);
         });
-    }
+
+        // prikazi ukupan broj proizvoda
+        updateNoOfItems(filteredProducts.length);
+        
+        // pozovi infinite scroll
+        window.addEventListener(
+            "scroll",
+            debounce(loadMoreItems, 500)
+        );
+    }    
+
 });
