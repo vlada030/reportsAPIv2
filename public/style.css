@@ -101,7 +101,7 @@ input::placeholder {
     font-weight: 100;
 }
 
-#filterProductName {
+#filterTerm {
     background-image: url('./img/searchicon.png'); /* Add a search icon to input */
     background-position: left 5% bottom 50%; /* Position the search icon */
     background-repeat: no-repeat; /* Do not repeat the icon image */

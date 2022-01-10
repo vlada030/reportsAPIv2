@@ -97,7 +97,7 @@ export const elements = {
     itemsPerPage: document.getElementById("itemsPerPage"),
 
     // filtriranje svih proizvoda
-    filterProductName: document.getElementById("filterProductName"),
+    filterTerm: document.getElementById("filterTerm"),
     itemsCounter: document.getElementById("itemsCounter"),
     fltByName: document.getElementById("fltByName"),
     fltByCode: document.getElementById("fltByCode"),
