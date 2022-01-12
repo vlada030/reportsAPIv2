@@ -1,5 +1,5 @@
 // ovo je defaultni AXIOS error handler
-import {showMessage, deleteMessage} from './manageAlertMessages';
+import {showMessage, deleteMessage} from './alertMessagesHandler';
 
 export default error => {
     // console.log('X', error)
