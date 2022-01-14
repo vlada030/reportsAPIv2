@@ -135,8 +135,10 @@ app.use(xss());
  
 const limiter = rateLimit({
     windowMs: 10 * 60 * 1000, // 10 minutes
-    max: 400 // limit each IP to 100 requests per windowMs
-  });
+    max: 400, // limit each IP to 100 requests per windowMs
+    message:
+        "Too many requests created from this IP, please try again after a 10 minutes ** Previše zahteva je napravljeno sa ove IP adrese, pokušajte ponovo posle 10 minuta",
+});
    
 //  apply to all requests
 app.use(limiter);
