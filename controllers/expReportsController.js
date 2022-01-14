@@ -100,7 +100,7 @@ exports.getExpReport = asyncHandler( async(req, res, next) => {
 // };
 
 // @desc   Export Reports - All
-// @route  GET /api/v2/reports/exp/allReports
+// @route  GET /api/v2/reports/exp/all_reports
 // @access Private
 
 exports.getAllExpReportsHTML = asyncHandler(async(req, res) => {

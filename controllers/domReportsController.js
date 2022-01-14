@@ -107,7 +107,7 @@ exports.getDomReport = asyncHandler(async (req, res, next) => {
 // });
 
 // @desc   Domestic Reports - All
-// @route  GET /api/v2/reports/dom/allReports
+// @route  GET /api/v2/reports/dom/all_reports
 // @access Private
 
 exports.getAllDomReportsHTML = asyncHandler(async(req, res) => {

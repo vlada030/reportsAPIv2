@@ -103,7 +103,7 @@ exports.getShiftReport = asyncHandler( async(req, res, next) => {
  });
 
 // @desc   Shift Reports - all
-// @route  GET /api/v2/reports/shift/allReports
+// @route  GET /api/v2/reports/shift/all_reports
 // @access Private
  exports.getAllShiftReportsHTML = asyncHandler(async(req, res) => {
     const reports = res.advancedResults;

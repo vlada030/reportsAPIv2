@@ -36,10 +36,10 @@ exports.getUpdateProductHTML = asyncHandler((req, res, next) => {
 });
 
 // @desc   Get HTML for displaying all products
-// @route  GET /api/v2/products/allProductsHTML
+// @route  GET /api/v2/products/all_products_html
 // @access Private
 
-exports.getAllProductsHTML = asyncHandler(async(req, res, next) => {
+exports.getall_products_html = asyncHandler(async(req, res, next) => {
     const products = await Product.find();
     
     res.status(200).render("productsAll", {
