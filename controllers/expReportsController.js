@@ -37,6 +37,7 @@ exports.getExpReport = asyncHandler( async(req, res, next) => {
             return res.status(404).render("expReports", {
                 title: "Izveštaji za inostrano tržište",
                 path: "exp",
+                navItem: 'create',
                 lang,
                 userName: req.session.name,
                 avatarUrl: req.session.avatarUrl,
@@ -76,6 +77,7 @@ exports.getExpReport = asyncHandler( async(req, res, next) => {
     res.status(200).render("expReports", {
         title: "Izveštaji za inostrano tržište",
         path: "exp",
+        navItem: "create",
         lang,
         userName: req.session.name,
         avatarUrl: req.session.avatarUrl,
@@ -100,7 +102,7 @@ exports.getExpReport = asyncHandler( async(req, res, next) => {
 // };
 
 // @desc   Export Reports - All
-// @route  GET /api/v2/reports/exp/allReports
+// @route  GET /api/v2/reports/exp/all_reports
 // @access Private
 
 exports.getAllExpReportsHTML = asyncHandler(async(req, res) => {
@@ -110,9 +112,10 @@ exports.getAllExpReportsHTML = asyncHandler(async(req, res) => {
     res.status(200).render("domExpReportsAll", {
         title: "Izveštaji za inostrano tržište",
         path: "exp",
+        navItem: "find_all",
         userName: req.session.name,
         avatarUrl: req.session.avatarUrl,
-        reports
+        reports,
     });
 });
 

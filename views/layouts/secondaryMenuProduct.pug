@@ -1,13 +1,13 @@
 ul.navbar-nav.mr-auto#optionsNav
     if isAuthenticated
         li.nav-item.mr-2.mb-2.mb-lg-0
-            a(href=`/api/v2/products/create`).btn.btn-secondary Dodaj novi proizvod
+            a(href=`/api/v2/products/create` class=navItem === 'create' ? 'active': '').btn.btn-secondary Dodaj novi proizvod
 
         li.nav-item.mr-2.mb-2.mb-lg-0
-            a(href=`/api/v2/products/update`).btn.btn-secondary Izmeni proizvod
+            a(href=`/api/v2/products/update` class=navItem === 'update' ? 'active': '').btn.btn-secondary Izmeni proizvod
 
         li.nav-item.mb-2.mb-lg-0
-            a(href=`/api/v2/products/allProductsHTML`).btn.btn-secondary Svi proizvodi
+            a(href=`/api/v2/products/all_products_html` class=navItem === 'find_all' ? 'active': '').btn.btn-secondary Svi proizvodi
 
     else
         li.nav-item.mr-2.mb-2.mb-lg-0(data-toggle='tooltip', title='Morate prvo da se prijavite!', data-placement='bottom')

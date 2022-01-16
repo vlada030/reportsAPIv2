@@ -13,9 +13,10 @@ exports.getCreateProductHTML = (req, res, next) => {
     res.status(200).render("product", {
         title: "Dodaj novi proizvod",
         path: "product",
+        navItem: "create",
         product: null,
         avatarUrl: req.session.avatarUrl,
-        userName: req.session.name
+        userName: req.session.name,
     });
 };
 
@@ -28,26 +29,28 @@ exports.getUpdateProductHTML = asyncHandler((req, res, next) => {
     res.status(200).render("product", {
         title: "Izmeni proizvod",
         path: "product",
+        navItem: "update",
         userName: req.session.name,
         avatarUrl: req.session.avatarUrl,
         product: null,
-        isProductCodeIdExist: true
+        isProductCodeIdExist: true,
     });
 });
 
 // @desc   Get HTML for displaying all products
-// @route  GET /api/v2/products/allProductsHTML
+// @route  GET /api/v2/products/all_products_html
 // @access Private
 
-exports.getAllProductsHTML = asyncHandler(async(req, res, next) => {
+exports.getall_products_html = asyncHandler(async(req, res, next) => {
     const products = await Product.find();
     
     res.status(200).render("productsAll", {
         title: "Postojeće šifre proizvoda",
         path: "product",
+        navItem: "find_all",
         userName: req.session.name,
         avatarUrl: req.session.avatarUrl,
-        products
+        products,
     });
 });
 
@@ -119,9 +122,10 @@ exports.getProduct = asyncHandler(async (req, res, next) => {
     res.status(200).render("product", {
         title: "Izmeni proizvod",
         path: "product",
+        navItem: "update",
         userName: req.session.name,
         avatarUrl: req.session.avatarUrl,
-        product: convertedProduct[0]
+        product: convertedProduct[0],
     }); 
 });
 // @desc   Get single product and return JSON
@@ -170,25 +174,26 @@ exports.createProduct = asyncHandler( async (req, res, next) => {
         return res.status(422).render("product", {
             title: "Dodaj novi proizvod",
             path: "product",
+            navItem: "create",
             userName: req.session.name,
             avatarUrl: req.session.avatarUrl,
             errorMessage: errors.array()[0].msg,
-            product: req.body
-            
-        })
+            product: req.body,
+        });
     }
 
     // korekcija ulaza jer XXS modul pretvara znak '<' u '&lt;'
     req.body.parcijalna = req.body.parcijalna.replace('&lt;', '<');
     const product = await Product.create(req.body);
 
-    res.status(201).render('product', {
+    res.status(201).render("product", {
         title: "Dodaj novi proizvod",
         path: "product",
+        navItem: "create",
         userName: req.session.name,
         avatarUrl: req.session.avatarUrl,
         product: req.body,
-        successMessage: 'Proizvod je uspešno sačuvan'
+        successMessage: "Proizvod je uspešno sačuvan",
     });
 }); 
 

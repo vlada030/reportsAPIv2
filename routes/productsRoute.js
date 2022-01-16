@@ -1,7 +1,7 @@
 const express = require('express');
 const { body } = require('express-validator');
 
-const {getAllProductsJSON, getProduct, getProductJSON, getCreateProductHTML, getUpdateProductHTML, getAllProductsHTML, createProduct, updateProduct, deleteProduct} = require('../controllers/productsController');
+const {getAllProductsJSON, getProduct, getProductJSON, getCreateProductHTML, getUpdateProductHTML, getall_products_html, createProduct, updateProduct, deleteProduct} = require('../controllers/productsController');
 const advancedResults = require('../middleware/advancedResults');
 const Product = require('../models/Product');
 
@@ -60,7 +60,7 @@ router
         createProduct
     );
 router.route('/update').get(protect, getUpdateProductHTML);
-router.route("/allProductsHTML").get(protect, getAllProductsHTML);
+router.route("/all_products_html").get(protect, getall_products_html);
 router
     .route("/:id")
     .get(protect, getProduct)

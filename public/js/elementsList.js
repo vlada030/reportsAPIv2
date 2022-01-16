@@ -9,6 +9,7 @@ export const elements = {
     productHandleForm: document.getElementById("productHandleForm"),
     expReportsForm: document.getElementById("expReportsForm"),
     shiftReportsForm: document.getElementById("shiftReportsForm"),
+    findDomReportForm: document.getElementById("findDomReportForm"),
     // product properies
     cableType: document.getElementById("cableType"),
     ratedVoltage: document.getElementById("ratedVoltage"),
@@ -25,6 +26,10 @@ export const elements = {
     testVoltage: document.getElementById("testVoltage"),
     testTime: document.getElementById("testTime"),
     pDischarge: document.getElementById("pDischarge"),
+    // dom Reports
+    findMisNumberForm: document.getElementById("findMisNumberForm"),
+    findMisNumberInput: document.getElementById("findMisNumberInput"),
+    findMisNumbeBtn: document.getElementById("findMisNumbeBtn"),
     // exp Reports
     drumList: document.getElementById("drumList"),
     addItemButton: document.getElementById("addItem"),

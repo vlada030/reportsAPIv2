@@ -1,23 +1,33 @@
 mixin infoModal(label)
-    button(type="button" data-toggle="modal" data-target="#infoModal").btn.btn-secondary=label
+    button(type="button" data-toggle="modal" data-target="#findReportModal" class=navItem === 'find' ? 'active': '').btn.btn-secondary=label
 
-    .modal.fade#infoModal(tabindex="-1" data-backdrop="static" data-keyboard="false")
+    .modal.fade#findReportModal(tabindex="-1" data-backdrop="static" data-keyboard="false")
         .modal-dialog
             .modal-content
                 .modal-header.bg-warning
-                    h5.modal-title.myModalLabel Obaveštenje
+                    h5.modal-title.myModalLabel Pronađi Izveštaj za Domaće tržište
                     button(type="button" data-dismiss="modal" aria-label="Close").close
                         span &times;
                     
                 .modal-body
-                    p Opcija je u razvoju...
-                
+                    .form#findMisNumberForm
+                        .form-group
+                            label(for="findMisNumber").mb-2 Unesi MIS broj doboša:
+                            input(type="number" placeholder="npr. 2120253" value="" ).form-control#findMisReportInput
+                            
                 .modal-footer
                     button(type="button" data-dismiss="modal").btn.btn-secondary Otkaži
+                    button(type="submit" form="findMisNumberForm" data-dismiss="modal").btn.btn-warning#findMisReportBtn Pronađi
+
 ul.navbar-nav.mr-auto#optionsNav
     if isAuthenticated
         li.nav-item.mr-2.mb-2.mb-lg-0
-            a(href=`/api/v2/reports/${path}`).btn.btn-secondary Kreiraj izveštaj
+            a(href=`/api/v2/reports/${path}` class=navItem === 'create' ? 'active': '').btn.btn-secondary Kreiraj izveštaj
+
+        if (path === 'dom')
+            li.nav-item.mr-2.mb-2.mb-lg-0
+                //a(href=`#`).btn.btn-secondary Izmeni Izveštaj
+                +infoModal('Pronađi Izveštaj')
 
         li.nav-item.mr-2.mb-2.mb-lg-0
             if (report && report.proizvod)
@@ -39,13 +49,9 @@ ul.navbar-nav.mr-auto#optionsNav
                                 button(data-reportID= report.MISBroj ?  report.MISBroj : report._id type="button" data-dismiss="modal").btn.btn-warning#eraseReport Izbriši
             else
                 button(type="button" data-toggle="modal" data-target="#myModal" disabled).btn.btn-secondary Obriši izveštaj         
-            
-        li.nav-item.mr-2.mb-2.mb-lg-0
-            //a(href=`#`).btn.btn-secondary Izmeni Izveštaj
-            +infoModal('Izmeni Izveštaj')
 
         li.nav-item.mr-2.mb-2.mb-lg-0
-            a(href=`/api/v2/reports/${path}/allReports`).btn.btn-secondary Svi izveštaji
+            a(href=`/api/v2/reports/${path}/all_reports` class=navItem === 'find_all' ? 'active': '').btn.btn-secondary Svi izveštaji
 
         //- li.nav-item.mr-2.mb-2.mb-lg-0
         //-     //a(href=`#`).btn.btn-secondary Prethodni Izveštaj

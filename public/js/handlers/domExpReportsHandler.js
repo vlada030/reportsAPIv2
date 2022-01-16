@@ -110,3 +110,18 @@ export const calculateTotalLengthExpReports = () => {
         updateTotalLength();
     });
 };
+
+// dom Reports - za pronalazenje izvestaja na osnovu unetog MIS broja
+export const sendGetDomReportRequest = () => {
+    document.addEventListener("click", (e) => {
+        if (e.target.matches("#findMisReportBtn")) {
+            const input = document.getElementById("findMisReportInput").value;
+            if (!input) {
+                showMessage('Niste uneli MIS broj.', 'error')
+                return
+            }
+            
+            location.assign(`/api/v2/reports/dom?id=${input}`);
+        }
+    });
+}

@@ -19,6 +19,7 @@ import {
     addItemExpReport,
     removeItemExpReports,
     calculateTotalLengthExpReports,
+    sendGetDomReportRequest
 } from "./handlers/domExpReportsHandler";
 
 import {
@@ -74,10 +75,16 @@ document.addEventListener("DOMContentLoaded", async (event) => {
 
     // MANIPULACIJA SA DOM / EXP REPORTS
 
-    // provera da li postoji proizvod sa zadatom šifrom dom/exp Reports
     if (elements.productCode) {
+        // provera da li postoji proizvod sa zadatom šifrom dom/exp Reports
         loadExistingProduct();
+        // obrisi dom/exp report
         sendDeleteRequestDomExpReports();
+    }
+
+    // pronadji dom report na osnovu MIS broja
+    if (location.toString().includes('dom')) {
+        sendGetDomReportRequest();
     }
 
     // exp reports

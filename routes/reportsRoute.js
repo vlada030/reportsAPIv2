@@ -77,7 +77,7 @@ router
     );
 router.route('/dom/json').get(protect, advancedResults(DomReport, 'proizvod'), getAllDomReports);
 
-router.route('/dom/allReports').get(protect, advancedResults(DomReport, 'proizvod'), getAllDomReportsHTML);
+router.route('/dom/all_reports').get(protect, advancedResults(DomReport, 'proizvod'), getAllDomReportsHTML);
 
 router.route('/dom/:id').get(getDomReport).delete(protect, deleteDomReport).put(protect, updateDomReport);
 
@@ -142,7 +142,7 @@ router
     );
 router.route('/exp/json').get(protect,advancedResults(ExpReport, 'proizvod'),  getAllExpReports);
 
-router.route('/exp/allReports').get(protect, advancedResults(ExpReport, 'proizvod'), getAllExpReportsHTML);
+router.route('/exp/all_reports').get(protect, advancedResults(ExpReport, 'proizvod'), getAllExpReportsHTML);
 
 router.route('/exp/:id').get(getExpReport).delete(protect, deleteExpReport).put(protect, updateExpReport);
 
@@ -198,7 +198,7 @@ router
     );
 router.route('/shift/json').get(protect, advancedResults(ShiftReport, {path: 'createdByUser', select: 'name'}), getAllShiftReports);
 
-router.route('/shift/allReports').get(protect, advancedResults(ShiftReport, {path: 'createdByUser', select: 'name'}), getAllShiftReportsHTML);
+router.route('/shift/all_reports').get(protect, advancedResults(ShiftReport, {path: 'createdByUser', select: 'name'}), getAllShiftReportsHTML);
 
 router.route('/shift/:id').get(protect, getShiftReport).put(protect, updateShiftReport).delete(protect, deleteShiftReport);
 

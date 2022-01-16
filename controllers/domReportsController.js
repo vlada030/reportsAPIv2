@@ -42,6 +42,7 @@ exports.getDomReport = asyncHandler(async (req, res, next) => {
             return res.status(404).render("domReports", {
                 title: "Izveštaji za domaće tržište",
                 path: "dom",
+                navItem: "find",
                 lang,
                 userName: req.session.name,
                 avatarUrl: req.session.avatarUrl,
@@ -76,15 +77,19 @@ exports.getDomReport = asyncHandler(async (req, res, next) => {
         report["datum"] = getCurrentDate();
     }
 
-    res.status(200).render('domReports', {
+    // ukoliko ne postoji proizvod objekat znaci da je pozvan create navigation item
+    const navItem = !report.proizvod ? 'create' : 'find'
+
+    res.status(200).render("domReports", {
         title: "Izveštaji za domaće tržište",
         path: "dom",
+        navItem,
         lang,
         userName: req.session.name,
         avatarUrl: req.session.avatarUrl,
         report,
         readonlyInputStatus: false,
-    })
+    });
     
 });
 
@@ -107,7 +112,7 @@ exports.getDomReport = asyncHandler(async (req, res, next) => {
 // });
 
 // @desc   Domestic Reports - All
-// @route  GET /api/v2/reports/dom/allReports
+// @route  GET /api/v2/reports/dom/all_reports
 // @access Private
 
 exports.getAllDomReportsHTML = asyncHandler(async(req, res) => {
@@ -117,6 +122,7 @@ exports.getAllDomReportsHTML = asyncHandler(async(req, res) => {
     res.status(200).render("domExpReportsAll", {
         title: "Izveštaji za domaće tržište",
         path: "dom",
+        navItem: "find_all",
         userName: req.session.name,
         avatarUrl: req.session.avatarUrl,
         reports
@@ -146,6 +152,7 @@ exports.createDomReport = asyncHandler(async (req, res, next) => {
         return res.status(422).render("domReports", {
             title: "Izveštaji za domaće tržište",
             path: "dom",
+            navItem: 'create',
             lang,
             userName: req.session.name,
             avatarUrl: req.session.avatarUrl,
@@ -183,12 +190,13 @@ exports.createDomReport = asyncHandler(async (req, res, next) => {
     res.status(201).render("domReports", {
         title: "Izveštaji za domaće tržište",
         path: "dom",
+        navItem: "create",
         lang,
         userName: req.session.name,
         avatarUrl: req.session.avatarUrl,
-        successMessage: 'Izveštaj je uspešno snimljen u bazu.',
+        successMessage: "Izveštaj je uspešno snimljen u bazu.",
         report,
-        readonlyInputStatus: false    
+        readonlyInputStatus: false,
     });
 });
 
