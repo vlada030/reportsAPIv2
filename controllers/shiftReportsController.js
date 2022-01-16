@@ -22,6 +22,7 @@ exports.getShiftReportsHTML = (req, res, next) => {
     res.status(200).render("shiftReports", {
         title: "Smenski izveštaj o radu",
         path: "shift",
+        navItem: "create",
         isAuthenticated: req.session.isLoggedIn,
         avatarUrl: req.session.avatarUrl,
         userName: req.session.name,
@@ -45,11 +46,12 @@ exports.createShiftReport = asyncHandler( async(req, res, next) => {
         return res.status(422).render("shiftReports", {
             title: "Smenski izveštaj o radu",
             path: "shift",
+            navItem: "create",
             userName: req.session.name,
             avatarUrl: req.session.avatarUrl,
             errorMessage: errors.array()[0].msg,
-            report: req.body            
-        })
+            report: req.body,
+        });
     }
 
     const report = await ShiftReport.create(req.body);
@@ -57,11 +59,12 @@ exports.createShiftReport = asyncHandler( async(req, res, next) => {
     res.status(201).render("shiftReports", {
         title: "Smenski izveštaj o radu",
         path: "shift",
+        navItem: "create",
         userName: req.session.name,
         avatarUrl: req.session.avatarUrl,
-        successMessage: 'Izveštaj je uspešno kreiran',
-        report            
-    })
+        successMessage: "Izveštaj je uspešno kreiran",
+        report,
+    });
 });
 
 
@@ -83,9 +86,10 @@ exports.getShiftReport = asyncHandler( async(req, res, next) => {
         return res.status(404).render("shiftReports", {
             title: "Smenski izveštaj o radu",
             path: "shift",
+            navItem: "create",
             userName: req.session.name,
             avatarUrl: req.session.avatarUrl,
-            errorMessage: 'Traženi izveštaj ne postoji ili je izbrisan.',
+            errorMessage: "Traženi izveštaj ne postoji ili je izbrisan.",
         });
     }
     
@@ -96,9 +100,10 @@ exports.getShiftReport = asyncHandler( async(req, res, next) => {
     res.status(200).render("shiftReports", {
         title: "Smenski izveštaj o radu",
         path: "shift",
+        navItem: "create",
         userName: req.session.name,
         avatarUrl: req.session.avatarUrl,
-        report            
+        report,
     });
  });
 
@@ -112,9 +117,10 @@ exports.getShiftReport = asyncHandler( async(req, res, next) => {
     res.status(200).render("shiftReportsAll", {
         title: "Smenski izveštaj o radu",
         path: "shift",
+        navItem: "find_all",
         userName: req.session.name,
         avatarUrl: req.session.avatarUrl,
-        reports
+        reports,
     });
 });
 
