@@ -16,11 +16,11 @@ export const updateReportsUI = (elem) => {
         elements.resistance.innerText =
             fixNumberOfDecPlaces(elem.otpor, 3) || "/";
         elements.semiFirst.innerText =
-            fixNumberOfDecPlaces(elem.semiFirst) || "/";
+            fixNumberOfDecPlaces(elem.debPPS1) || "/";
         elements.thickInsulation.innerText =
             fixNumberOfDecPlaces(elem.debIzolacije) || "/";
         elements.semiSecond.innerText =
-            fixNumberOfDecPlaces(elem.semiSecond) || "/";
+            fixNumberOfDecPlaces(elem.debPPS2) || "/";
         elements.thickSheath.innerText =
             fixNumberOfDecPlaces(elem.debPlasta) || "/";
         elements.outerDiametar.innerText =
