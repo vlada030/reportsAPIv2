@@ -1,5 +1,5 @@
 import { elements } from "../elementsList";
-import { fixNumberOfDecPlaces } from "../utils";
+import { fixNumberOfDecPlaces, isNotNumericValue } from "../utils";
 
 export const updateReportsUI = (elem) => {
     if (elem) {
@@ -15,14 +15,11 @@ export const updateReportsUI = (elem) => {
             fixNumberOfDecPlaces(elem.precnikZice) || "/";
         elements.resistance.innerText =
             fixNumberOfDecPlaces(elem.otpor, 3) || "/";
-        elements.semiFirst.innerText =
-            fixNumberOfDecPlaces(elem.debPPS1) || "/";
+        elements.semiFirst.innerText = isNotNumericValue(elem.debPPS1) ? "/" : fixNumberOfDecPlaces(elem.debPPS1);
         elements.thickInsulation.innerText =
             fixNumberOfDecPlaces(elem.debIzolacije) || "/";
-        elements.semiSecond.innerText =
-            fixNumberOfDecPlaces(elem.debPPS2) || "/";
-        elements.thickSheath.innerText =
-            fixNumberOfDecPlaces(elem.debPlasta) || "/";
+        elements.semiSecond.innerText = isNotNumericValue(elem.debPPS2) ? "/" : fixNumberOfDecPlaces(elem.debPPS2);
+        elements.thickSheath.innerText = isNotNumericValue(elem.debPlasta) ? "/" : fixNumberOfDecPlaces(elem.debPlasta);
         elements.outerDiametar.innerText =
             fixNumberOfDecPlaces(elem.spPrecnik) || "/";
         elements.testVoltage.innerText = elem.ispitniNapon || "/";

@@ -4,6 +4,11 @@ const fixNumberOfDecPlaces = (value, numberOfPlaces = 2) => {
     return Number(value).toFixed(numberOfPlaces);
 };
 
+const isNotNumericValue = value => {
+    
+    return isNaN(value) || value === ''
+}
+
 function splitArray(arr, limit) {
     let updatedArr = [];
     let noOfArrays = Math.ceil(arr.length / limit);
@@ -39,4 +44,4 @@ const displayFileSize = (number) => {
     }
 };
 
-export { fixNumberOfDecPlaces, splitArray, debounce, displayFileSize };
+export { fixNumberOfDecPlaces, isNotNumericValue, splitArray, debounce, displayFileSize };
