@@ -22,7 +22,7 @@
   "homepage": "https://github.com/vlada030/reportsAPIv2#readme",
   "dependencies": {
     "@sendgrid/mail": "^7.6.0",
-    "axios": "^0.24.0",
+    "axios": "^1.6.0",
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
     "connect-flash": "^0.1.1",
